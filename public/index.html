@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Val Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-content">
+      <div class="logo">
+        <span class="material-icons">dashboard</span>
+        <h1>Val Dashboard</h1>
+      </div>
+      <button id="refreshBtn" class="refresh-btn">
+        <span class="material-icons">refresh</span>
+        Refresh Data
+      </button>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div id="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Loading Jira data...</p>
+    </div>
+
+    <div id="error" class="error-message" style="display: none;">
+      <span class="material-icons">error_outline</span>
+      <p>Failed to load data. Please try again.</p>
+    </div>
+
+    <div id="dashboard" class="dashboard" style="display: none;">
+      <div class="stats-bar">
+        <div class="stat-item">
+          <span class="stat-value" id="projectCount">0</span>
+          <span class="stat-label">Business Projects</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value" id="epicCount">0</span>
+          <span class="stat-label">Epics</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value" id="storyCount">0</span>
+          <span class="stat-label">Stories</span>
+        </div>
+      </div>
+
+      <div id="projectsList" class="projects-list"></div>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
