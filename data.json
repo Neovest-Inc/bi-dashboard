@@ -1,125 +1,682 @@
 {
-  "American Options": [
+  "Kedalion go-live": [
+    {
+      "key": "VT-1997",
+      "summary": "Q1.26: Complete Data Sourcing for Risk Workflows",
+      "dueDate": "2026-03-31",
+      "clientEnvironments": [
+        {
+          "self": "https://layerone.atlassian.net/rest/api/3/customFieldOption/18153",
+          "value": "CL055 - Kedalion",
+          "id": "18153"
+        }
+      ],
+      "stories": []
+    },
+    {
+      "key": "VT-1995",
+      "summary": "Q1.26: Psi Sensitivity, Sensitivity vs IR, Box Spread Sensitivity",
+      "dueDate": null,
+      "clientEnvironments": [
+        {
+          "self": "https://layerone.atlassian.net/rest/api/3/customFieldOption/18153",
+          "value": "CL055 - Kedalion",
+          "id": "18153"
+        }
+      ],
+      "stories": []
+    },
+    {
+      "key": "VT-1977",
+      "summary": "Exploded Bucketed Views, Regression-Based Calibration, Repo/GC01, SABR Model, Proportional Dividends",
+      "dueDate": "2026-06-30",
+      "clientEnvironments": [
+        {
+          "self": "https://layerone.atlassian.net/rest/api/3/customFieldOption/18153",
+          "value": "CL055 - Kedalion",
+          "id": "18153"
+        }
+      ],
+      "stories": [
+        {
+          "key": "VT-1976",
+          "summary": "Exploded Bucketed Views, Regression-Based Calibration, Repo/GC01, SABR Model, Proportional Dividends",
+          "status": "To Do",
+          "storyPoints": null,
+          "parent": "VT-1977"
+        }
+      ]
+    },
+    {
+      "key": "VT-1870",
+      "summary": "Q1.26: Historical Repricing",
+      "dueDate": null,
+      "clientEnvironments": null,
+      "stories": [
+        {
+          "key": "VT-687",
+          "summary": "Persist historically re-pricing",
+          "status": "To Do",
+          "storyPoints": 5,
+          "parent": "VT-1870"
+        },
+        {
+          "key": "VT-686",
+          "summary": "Historical re-pricing to be smart when Market Object is missing",
+          "status": "To Do",
+          "storyPoints": 13,
+          "parent": "VT-1870"
+        }
+      ]
+    },
     {
       "key": "VT-1839",
       "summary": "Q1.26 American Option Pricing",
+      "dueDate": "2026-02-11",
+      "clientEnvironments": [
+        {
+          "self": "https://layerone.atlassian.net/rest/api/3/customFieldOption/14737",
+          "value": "CL021 - Centiva",
+          "id": "14737"
+        }
+      ],
       "stories": [
+        {
+          "key": "VT-2079",
+          "summary": "Normalize Scenarios for the Discount Factor, Spot T1 and Fwd T1",
+          "status": "To Do",
+          "storyPoints": null,
+          "responsibleForChange": "Kevin de Conde",
+          "parent": "VT-1839"
+        },
+        {
+          "key": "VT-2076",
+          "summary": "American Option - Pricing with discrete dividends",
+          "status": "In Progress",
+          "storyPoints": 13,
+          "responsibleForChange": "Bruno Binelli",
+          "parent": "VT-1839"
+        },
         {
           "key": "VT-2060",
           "summary": "Change the appearing order of the T1 Outputs group in the Pricing Calculator",
-          "status": "To Do"
+          "status": "To Do",
+          "storyPoints": 3,
+          "responsibleForChange": "Kevin de Conde",
+          "parent": "VT-1839"
         },
         {
           "key": "VT-2055",
           "summary": "T+1 Greeks Model Details Review",
-          "status": "To Do"
+          "status": "To Do",
+          "storyPoints": 8,
+          "responsibleForChange": "Kevin de Conde",
+          "parent": "VT-1839"
         },
         {
           "key": "VT-2054",
           "summary": "Normalize Scenarios for the Dividend Yield, Discount Rate and Time variables",
-          "status": "Pending QA"
+          "status": "Pending QA",
+          "storyPoints": 3,
+          "responsibleForChange": "Kevin de Conde",
+          "parent": "VT-1839"
         },
         {
           "key": "VT-2025",
           "summary": "Review the \"Theta 1D\" (DEV1) and \"T+1\" (DEMO2) Scenarios Calculation",
-          "status": "To Do"
+          "status": "To Do",
+          "storyPoints": 3,
+          "responsibleForChange": "Kevin de Conde",
+          "parent": "VT-1839"
         },
         {
           "key": "VT-2024",
           "summary": "Set T+1 Greeks columns into SecurityPricing",
-          "status": "PM REVIEW"
+          "status": "IN TESTING",
+          "storyPoints": 1,
+          "responsibleForChange": "Kevin de Conde",
+          "parent": "VT-1839"
         },
         {
           "key": "VT-1996",
           "summary": "Greeks (Equity) - Rho_Borrow, USD DV01 Showcase",
-          "status": "To Do"
+          "status": "To Do",
+          "storyPoints": null,
+          "responsibleForChange": "Ivan Queiroz",
+          "parent": "VT-1839"
         },
         {
           "key": "VT-1974",
           "summary": "T+1 Greeks, Skew Delta Modelling Showcase",
-          "status": "In Progress"
+          "status": "In Progress",
+          "storyPoints": 8,
+          "responsibleForChange": "Kevin de Conde",
+          "parent": "VT-1839"
         },
         {
           "key": "VT-1842",
           "summary": "American Option Model Documentation with roundtripping validation",
-          "status": "To Do"
+          "status": "To Do",
+          "storyPoints": 25,
+          "parent": "VT-1839"
         },
         {
           "key": "VT-1841",
           "summary": "Option KRDs - Rate KRD and Dividend KRD",
-          "status": "To Do"
+          "status": "To Do",
+          "storyPoints": 13,
+          "parent": "VT-1839"
         },
         {
           "key": "VT-1840",
           "summary": "Multi Dividend Framework",
-          "status": "To Do"
+          "status": "To Do",
+          "storyPoints": 13,
+          "parent": "VT-1839"
         },
         {
           "key": "VT-770",
           "summary": "American Options - Volatility Surface Support",
-          "status": "To Do"
+          "status": "To Do",
+          "storyPoints": 8,
+          "parent": "VT-1839"
         },
         {
           "key": "VT-759",
           "summary": "American Option - Pricing with Forecast Dividend Table",
-          "status": "In Progress"
+          "status": "In Progress",
+          "storyPoints": 12,
+          "responsibleForChange": "Adam Albog",
+          "parent": "VT-1839"
+        }
+      ]
+    },
+    {
+      "key": "VT-1789",
+      "summary": "Q1.26: Bucketed Psi / Rho_Borrow ",
+      "dueDate": "2026-03-31",
+      "clientEnvironments": [
+        {
+          "self": "https://layerone.atlassian.net/rest/api/3/customFieldOption/18153",
+          "value": "CL055 - Kedalion",
+          "id": "18153"
+        }
+      ],
+      "stories": []
+    },
+    {
+      "key": "VT-1749",
+      "summary": "Q1.26: Bond Future Model - (CTD) Showcase",
+      "dueDate": "2026-01-31",
+      "clientEnvironments": [
+        {
+          "self": "https://layerone.atlassian.net/rest/api/3/customFieldOption/18153",
+          "value": "CL055 - Kedalion",
+          "id": "18153"
+        }
+      ],
+      "stories": [
+        {
+          "key": "VT-2070",
+          "summary": "[Bond Future] Replace Repo Curve by Discount Curve",
+          "status": "Pending QA",
+          "storyPoints": 1,
+          "responsibleForChange": "Bruno Binelli",
+          "parent": "VT-1749"
+        },
+        {
+          "key": "VT-2043",
+          "summary": "Bond Future relative spread pricing",
+          "status": "Pending QA",
+          "storyPoints": 1,
+          "responsibleForChange": "Bruno Binelli",
+          "parent": "VT-1749"
+        },
+        {
+          "key": "VT-2030",
+          "summary": "[Bond Future] Enable new model for other currencies",
+          "status": "Ready",
+          "storyPoints": 1,
+          "responsibleForChange": "Bruno Binelli",
+          "parent": "VT-1749"
+        },
+        {
+          "key": "VT-2016",
+          "summary": "Add new param input to define the behavior of net basis override",
+          "status": "Pending QA",
+          "storyPoints": 3,
+          "responsibleForChange": "Bruno Binelli",
+          "parent": "VT-1749"
+        },
+        {
+          "key": "VT-1975",
+          "summary": "Relative Value Calculation",
+          "status": "Done",
+          "storyPoints": 0,
+          "responsibleForChange": "Bruno Binelli",
+          "parent": "VT-1749"
+        },
+        {
+          "key": "VT-1961",
+          "summary": "Review KRD fields",
+          "status": "Ready",
+          "storyPoints": 1,
+          "responsibleForChange": "Ivan Queiroz",
+          "parent": "VT-1749"
+        },
+        {
+          "key": "VT-1960",
+          "summary": "Set CTD Source overwritable",
+          "status": "Ready",
+          "storyPoints": 1,
+          "responsibleForChange": "Ivan Queiroz",
+          "parent": "VT-1749"
+        },
+        {
+          "key": "VT-1954",
+          "summary": "Set CTD columns into SecurityPricing",
+          "status": "Ready",
+          "storyPoints": 1,
+          "responsibleForChange": "Ivan Queiroz",
+          "parent": "VT-1749"
+        },
+        {
+          "key": "VT-1939",
+          "summary": "Configure Bond Futures to tick in the same cycle as Bond",
+          "status": "Ready",
+          "storyPoints": 3,
+          "responsibleForChange": "Ivan Queiroz",
+          "parent": "VT-1749"
+        },
+        {
+          "key": "VT-1937",
+          "summary": "[Bond Future] Create Analytics job to keep deliverables updated",
+          "status": "Ready",
+          "storyPoints": 5,
+          "responsibleForChange": "Adriano Bittencourt",
+          "parent": "VT-1749"
+        },
+        {
+          "key": "VT-1899",
+          "summary": "Bond Forward",
+          "status": "To Do",
+          "storyPoints": null,
+          "parent": "VT-1749"
+        },
+        {
+          "key": "VT-1844",
+          "summary": "[Bond Future] Implement Bond Future CTD Model",
+          "status": "Ready",
+          "storyPoints": 8,
+          "responsibleForChange": "Bruno Binelli",
+          "parent": "VT-1749"
+        },
+        {
+          "key": "VT-1843",
+          "summary": "Calculate Bond Future's  CTD Bond repo rate and net basis",
+          "status": "PM REVIEW",
+          "storyPoints": 8,
+          "parent": "VT-1749"
+        },
+        {
+          "key": "VT-1804",
+          "summary": "[Bond Future] Calculate CTD Analytics for Bond Futures",
+          "status": "Ready",
+          "storyPoints": 8,
+          "responsibleForChange": "Bruno Binelli",
+          "parent": "VT-1749"
+        },
+        {
+          "key": "VT-1799",
+          "summary": "[Bond Future] Calculate CTD conversion factor for US T Bond Futures",
+          "status": "Ready",
+          "storyPoints": 3,
+          "responsibleForChange": "Bruno Binelli",
+          "parent": "VT-1749"
         }
       ]
     },
     {
       "key": "VT-1740",
       "summary": "Q4.25: American Options",
+      "dueDate": null,
+      "clientEnvironments": [
+        {
+          "self": "https://layerone.atlassian.net/rest/api/3/customFieldOption/14737",
+          "value": "CL021 - Centiva",
+          "id": "14737"
+        },
+        {
+          "self": "https://layerone.atlassian.net/rest/api/3/customFieldOption/18153",
+          "value": "CL055 - Kedalion",
+          "id": "18153"
+        }
+      ],
       "stories": [
         {
           "key": "VT-1775",
           "summary": "UI: Add new columns to Equity Dividend projection schedule",
-          "status": "Ready"
+          "status": "Ready",
+          "storyPoints": 2,
+          "responsibleForChange": "Adriano Bittencourt",
+          "parent": "VT-1740"
         },
         {
           "key": "VT-1720",
           "summary": "Dividend projection schedule refactor and fix",
-          "status": "Ready"
+          "status": "Ready",
+          "storyPoints": 3,
+          "responsibleForChange": "Aleksandar Simic",
+          "parent": "VT-1740"
         }
       ]
     },
     {
       "key": "VT-349",
       "summary": "Q1.25: American Options",
+      "dueDate": null,
+      "clientEnvironments": [
+        {
+          "self": "https://layerone.atlassian.net/rest/api/3/customFieldOption/14737",
+          "value": "CL021 - Centiva",
+          "id": "14737"
+        },
+        {
+          "self": "https://layerone.atlassian.net/rest/api/3/customFieldOption/18153",
+          "value": "CL055 - Kedalion",
+          "id": "18153"
+        }
+      ],
       "stories": [
         {
           "key": "VT-848",
           "summary": "American Option - LookUpTable -  Date Range to TaxRate",
-          "status": "Done"
+          "status": "Done",
+          "storyPoints": null,
+          "responsibleForChange": "Aleksandar Simic",
+          "parent": "VT-349"
         },
         {
           "key": "VT-847",
           "summary": "American Option - ValuationEngine -  Forecast Dividend schedule support",
-          "status": "Done"
+          "status": "Done",
+          "storyPoints": null,
+          "responsibleForChange": "Aleksandar Simic",
+          "parent": "VT-349"
         },
         {
           "key": "VT-833",
           "summary": "American Option - WebAPI -  Forecast Dividend Table method",
-          "status": "Done"
+          "status": "Done",
+          "storyPoints": 1,
+          "responsibleForChange": "Aleksandar Simic",
+          "parent": "VT-349"
         },
         {
           "key": "VT-773",
           "summary": "Dividend Projection UI Equity Security Form",
-          "status": "Done"
+          "status": "Done",
+          "storyPoints": 3,
+          "responsibleForChange": "Harllon Paz",
+          "parent": "VT-349"
         },
         {
           "key": "VT-462",
           "summary": "[ListedOption] - Spot shock should affect Model Price",
-          "status": "Done"
+          "status": "Done",
+          "storyPoints": 1,
+          "responsibleForChange": "Tomas Ojeda",
+          "parent": "VT-349"
         },
         {
           "key": "VT-348",
           "summary": "American Option - Analytics -Forecast Dividend Table",
-          "status": "Done"
+          "status": "Done",
+          "storyPoints": 21,
+          "responsibleForChange": "Aleksandar Simic",
+          "parent": "VT-349"
         },
         {
           "key": "VT-346",
           "summary": "American Options - use discrete dividends for pricing",
-          "status": "Done"
+          "status": "Done",
+          "storyPoints": 5,
+          "responsibleForChange": "Adam Albog",
+          "parent": "VT-349"
+        }
+      ]
+    }
+  ],
+  "American Options": [
+    {
+      "key": "VT-1839",
+      "summary": "Q1.26 American Option Pricing",
+      "dueDate": "2026-02-11",
+      "clientEnvironments": [
+        {
+          "self": "https://layerone.atlassian.net/rest/api/3/customFieldOption/14737",
+          "value": "CL021 - Centiva",
+          "id": "14737"
+        }
+      ],
+      "stories": [
+        {
+          "key": "VT-2079",
+          "summary": "Normalize Scenarios for the Discount Factor, Spot T1 and Fwd T1",
+          "status": "To Do",
+          "storyPoints": null,
+          "responsibleForChange": "Kevin de Conde",
+          "parent": "VT-1839"
+        },
+        {
+          "key": "VT-2076",
+          "summary": "American Option - Pricing with discrete dividends",
+          "status": "In Progress",
+          "storyPoints": 13,
+          "responsibleForChange": "Bruno Binelli",
+          "parent": "VT-1839"
+        },
+        {
+          "key": "VT-2060",
+          "summary": "Change the appearing order of the T1 Outputs group in the Pricing Calculator",
+          "status": "To Do",
+          "storyPoints": 3,
+          "responsibleForChange": "Kevin de Conde",
+          "parent": "VT-1839"
+        },
+        {
+          "key": "VT-2055",
+          "summary": "T+1 Greeks Model Details Review",
+          "status": "To Do",
+          "storyPoints": 8,
+          "responsibleForChange": "Kevin de Conde",
+          "parent": "VT-1839"
+        },
+        {
+          "key": "VT-2054",
+          "summary": "Normalize Scenarios for the Dividend Yield, Discount Rate and Time variables",
+          "status": "Pending QA",
+          "storyPoints": 3,
+          "responsibleForChange": "Kevin de Conde",
+          "parent": "VT-1839"
+        },
+        {
+          "key": "VT-2025",
+          "summary": "Review the \"Theta 1D\" (DEV1) and \"T+1\" (DEMO2) Scenarios Calculation",
+          "status": "To Do",
+          "storyPoints": 3,
+          "responsibleForChange": "Kevin de Conde",
+          "parent": "VT-1839"
+        },
+        {
+          "key": "VT-2024",
+          "summary": "Set T+1 Greeks columns into SecurityPricing",
+          "status": "IN TESTING",
+          "storyPoints": 1,
+          "responsibleForChange": "Kevin de Conde",
+          "parent": "VT-1839"
+        },
+        {
+          "key": "VT-1996",
+          "summary": "Greeks (Equity) - Rho_Borrow, USD DV01 Showcase",
+          "status": "To Do",
+          "storyPoints": null,
+          "responsibleForChange": "Ivan Queiroz",
+          "parent": "VT-1839"
+        },
+        {
+          "key": "VT-1974",
+          "summary": "T+1 Greeks, Skew Delta Modelling Showcase",
+          "status": "In Progress",
+          "storyPoints": 8,
+          "responsibleForChange": "Kevin de Conde",
+          "parent": "VT-1839"
+        },
+        {
+          "key": "VT-1842",
+          "summary": "American Option Model Documentation with roundtripping validation",
+          "status": "To Do",
+          "storyPoints": 25,
+          "parent": "VT-1839"
+        },
+        {
+          "key": "VT-1841",
+          "summary": "Option KRDs - Rate KRD and Dividend KRD",
+          "status": "To Do",
+          "storyPoints": 13,
+          "parent": "VT-1839"
+        },
+        {
+          "key": "VT-1840",
+          "summary": "Multi Dividend Framework",
+          "status": "To Do",
+          "storyPoints": 13,
+          "parent": "VT-1839"
+        },
+        {
+          "key": "VT-770",
+          "summary": "American Options - Volatility Surface Support",
+          "status": "To Do",
+          "storyPoints": 8,
+          "parent": "VT-1839"
+        },
+        {
+          "key": "VT-759",
+          "summary": "American Option - Pricing with Forecast Dividend Table",
+          "status": "In Progress",
+          "storyPoints": 12,
+          "responsibleForChange": "Adam Albog",
+          "parent": "VT-1839"
+        }
+      ]
+    },
+    {
+      "key": "VT-1740",
+      "summary": "Q4.25: American Options",
+      "dueDate": null,
+      "clientEnvironments": [
+        {
+          "self": "https://layerone.atlassian.net/rest/api/3/customFieldOption/14737",
+          "value": "CL021 - Centiva",
+          "id": "14737"
+        },
+        {
+          "self": "https://layerone.atlassian.net/rest/api/3/customFieldOption/18153",
+          "value": "CL055 - Kedalion",
+          "id": "18153"
+        }
+      ],
+      "stories": [
+        {
+          "key": "VT-1775",
+          "summary": "UI: Add new columns to Equity Dividend projection schedule",
+          "status": "Ready",
+          "storyPoints": 2,
+          "responsibleForChange": "Adriano Bittencourt",
+          "parent": "VT-1740"
+        },
+        {
+          "key": "VT-1720",
+          "summary": "Dividend projection schedule refactor and fix",
+          "status": "Ready",
+          "storyPoints": 3,
+          "responsibleForChange": "Aleksandar Simic",
+          "parent": "VT-1740"
+        }
+      ]
+    },
+    {
+      "key": "VT-349",
+      "summary": "Q1.25: American Options",
+      "dueDate": null,
+      "clientEnvironments": [
+        {
+          "self": "https://layerone.atlassian.net/rest/api/3/customFieldOption/14737",
+          "value": "CL021 - Centiva",
+          "id": "14737"
+        },
+        {
+          "self": "https://layerone.atlassian.net/rest/api/3/customFieldOption/18153",
+          "value": "CL055 - Kedalion",
+          "id": "18153"
+        }
+      ],
+      "stories": [
+        {
+          "key": "VT-848",
+          "summary": "American Option - LookUpTable -  Date Range to TaxRate",
+          "status": "Done",
+          "storyPoints": null,
+          "responsibleForChange": "Aleksandar Simic",
+          "parent": "VT-349"
+        },
+        {
+          "key": "VT-847",
+          "summary": "American Option - ValuationEngine -  Forecast Dividend schedule support",
+          "status": "Done",
+          "storyPoints": null,
+          "responsibleForChange": "Aleksandar Simic",
+          "parent": "VT-349"
+        },
+        {
+          "key": "VT-833",
+          "summary": "American Option - WebAPI -  Forecast Dividend Table method",
+          "status": "Done",
+          "storyPoints": 1,
+          "responsibleForChange": "Aleksandar Simic",
+          "parent": "VT-349"
+        },
+        {
+          "key": "VT-773",
+          "summary": "Dividend Projection UI Equity Security Form",
+          "status": "Done",
+          "storyPoints": 3,
+          "responsibleForChange": "Harllon Paz",
+          "parent": "VT-349"
+        },
+        {
+          "key": "VT-462",
+          "summary": "[ListedOption] - Spot shock should affect Model Price",
+          "status": "Done",
+          "storyPoints": 1,
+          "responsibleForChange": "Tomas Ojeda",
+          "parent": "VT-349"
+        },
+        {
+          "key": "VT-348",
+          "summary": "American Option - Analytics -Forecast Dividend Table",
+          "status": "Done",
+          "storyPoints": 21,
+          "responsibleForChange": "Aleksandar Simic",
+          "parent": "VT-349"
+        },
+        {
+          "key": "VT-346",
+          "summary": "American Options - use discrete dividends for pricing",
+          "status": "Done",
+          "storyPoints": 5,
+          "responsibleForChange": "Adam Albog",
+          "parent": "VT-349"
         }
       ]
     }
@@ -128,248 +685,232 @@
     {
       "key": "VT-1839",
       "summary": "Q1.26 American Option Pricing",
+      "dueDate": "2026-02-11",
+      "clientEnvironments": [
+        {
+          "self": "https://layerone.atlassian.net/rest/api/3/customFieldOption/14737",
+          "value": "CL021 - Centiva",
+          "id": "14737"
+        }
+      ],
       "stories": [
+        {
+          "key": "VT-2079",
+          "summary": "Normalize Scenarios for the Discount Factor, Spot T1 and Fwd T1",
+          "status": "To Do",
+          "storyPoints": null,
+          "responsibleForChange": "Kevin de Conde",
+          "parent": "VT-1839"
+        },
+        {
+          "key": "VT-2076",
+          "summary": "American Option - Pricing with discrete dividends",
+          "status": "In Progress",
+          "storyPoints": 13,
+          "responsibleForChange": "Bruno Binelli",
+          "parent": "VT-1839"
+        },
         {
           "key": "VT-2060",
           "summary": "Change the appearing order of the T1 Outputs group in the Pricing Calculator",
-          "status": "To Do"
+          "status": "To Do",
+          "storyPoints": 3,
+          "responsibleForChange": "Kevin de Conde",
+          "parent": "VT-1839"
         },
         {
           "key": "VT-2055",
           "summary": "T+1 Greeks Model Details Review",
-          "status": "To Do"
+          "status": "To Do",
+          "storyPoints": 8,
+          "responsibleForChange": "Kevin de Conde",
+          "parent": "VT-1839"
         },
         {
           "key": "VT-2054",
           "summary": "Normalize Scenarios for the Dividend Yield, Discount Rate and Time variables",
-          "status": "Pending QA"
+          "status": "Pending QA",
+          "storyPoints": 3,
+          "responsibleForChange": "Kevin de Conde",
+          "parent": "VT-1839"
         },
         {
           "key": "VT-2025",
           "summary": "Review the \"Theta 1D\" (DEV1) and \"T+1\" (DEMO2) Scenarios Calculation",
-          "status": "To Do"
+          "status": "To Do",
+          "storyPoints": 3,
+          "responsibleForChange": "Kevin de Conde",
+          "parent": "VT-1839"
         },
         {
           "key": "VT-2024",
           "summary": "Set T+1 Greeks columns into SecurityPricing",
-          "status": "PM REVIEW"
+          "status": "IN TESTING",
+          "storyPoints": 1,
+          "responsibleForChange": "Kevin de Conde",
+          "parent": "VT-1839"
         },
         {
           "key": "VT-1996",
           "summary": "Greeks (Equity) - Rho_Borrow, USD DV01 Showcase",
-          "status": "To Do"
+          "status": "To Do",
+          "storyPoints": null,
+          "responsibleForChange": "Ivan Queiroz",
+          "parent": "VT-1839"
         },
         {
           "key": "VT-1974",
           "summary": "T+1 Greeks, Skew Delta Modelling Showcase",
-          "status": "In Progress"
+          "status": "In Progress",
+          "storyPoints": 8,
+          "responsibleForChange": "Kevin de Conde",
+          "parent": "VT-1839"
         },
         {
           "key": "VT-1842",
           "summary": "American Option Model Documentation with roundtripping validation",
-          "status": "To Do"
+          "status": "To Do",
+          "storyPoints": 25,
+          "parent": "VT-1839"
         },
         {
           "key": "VT-1841",
           "summary": "Option KRDs - Rate KRD and Dividend KRD",
-          "status": "To Do"
+          "status": "To Do",
+          "storyPoints": 13,
+          "parent": "VT-1839"
         },
         {
           "key": "VT-1840",
           "summary": "Multi Dividend Framework",
-          "status": "To Do"
+          "status": "To Do",
+          "storyPoints": 13,
+          "parent": "VT-1839"
         },
         {
           "key": "VT-770",
           "summary": "American Options - Volatility Surface Support",
-          "status": "To Do"
+          "status": "To Do",
+          "storyPoints": 8,
+          "parent": "VT-1839"
         },
         {
           "key": "VT-759",
           "summary": "American Option - Pricing with Forecast Dividend Table",
-          "status": "In Progress"
+          "status": "In Progress",
+          "storyPoints": 12,
+          "responsibleForChange": "Adam Albog",
+          "parent": "VT-1839"
         }
       ]
     },
     {
       "key": "VT-1740",
       "summary": "Q4.25: American Options",
+      "dueDate": null,
+      "clientEnvironments": [
+        {
+          "self": "https://layerone.atlassian.net/rest/api/3/customFieldOption/14737",
+          "value": "CL021 - Centiva",
+          "id": "14737"
+        },
+        {
+          "self": "https://layerone.atlassian.net/rest/api/3/customFieldOption/18153",
+          "value": "CL055 - Kedalion",
+          "id": "18153"
+        }
+      ],
       "stories": [
         {
           "key": "VT-1775",
           "summary": "UI: Add new columns to Equity Dividend projection schedule",
-          "status": "Ready"
+          "status": "Ready",
+          "storyPoints": 2,
+          "responsibleForChange": "Adriano Bittencourt",
+          "parent": "VT-1740"
         },
         {
           "key": "VT-1720",
           "summary": "Dividend projection schedule refactor and fix",
-          "status": "Ready"
+          "status": "Ready",
+          "storyPoints": 3,
+          "responsibleForChange": "Aleksandar Simic",
+          "parent": "VT-1740"
         }
       ]
     },
     {
       "key": "VT-349",
       "summary": "Q1.25: American Options",
+      "dueDate": null,
+      "clientEnvironments": [
+        {
+          "self": "https://layerone.atlassian.net/rest/api/3/customFieldOption/14737",
+          "value": "CL021 - Centiva",
+          "id": "14737"
+        },
+        {
+          "self": "https://layerone.atlassian.net/rest/api/3/customFieldOption/18153",
+          "value": "CL055 - Kedalion",
+          "id": "18153"
+        }
+      ],
       "stories": [
         {
           "key": "VT-848",
           "summary": "American Option - LookUpTable -  Date Range to TaxRate",
-          "status": "Done"
+          "status": "Done",
+          "storyPoints": null,
+          "responsibleForChange": "Aleksandar Simic",
+          "parent": "VT-349"
         },
         {
           "key": "VT-847",
           "summary": "American Option - ValuationEngine -  Forecast Dividend schedule support",
-          "status": "Done"
+          "status": "Done",
+          "storyPoints": null,
+          "responsibleForChange": "Aleksandar Simic",
+          "parent": "VT-349"
         },
         {
           "key": "VT-833",
           "summary": "American Option - WebAPI -  Forecast Dividend Table method",
-          "status": "Done"
+          "status": "Done",
+          "storyPoints": 1,
+          "responsibleForChange": "Aleksandar Simic",
+          "parent": "VT-349"
         },
         {
           "key": "VT-773",
           "summary": "Dividend Projection UI Equity Security Form",
-          "status": "Done"
+          "status": "Done",
+          "storyPoints": 3,
+          "responsibleForChange": "Harllon Paz",
+          "parent": "VT-349"
         },
         {
           "key": "VT-462",
           "summary": "[ListedOption] - Spot shock should affect Model Price",
-          "status": "Done"
+          "status": "Done",
+          "storyPoints": 1,
+          "responsibleForChange": "Tomas Ojeda",
+          "parent": "VT-349"
         },
         {
           "key": "VT-348",
           "summary": "American Option - Analytics -Forecast Dividend Table",
-          "status": "Done"
+          "status": "Done",
+          "storyPoints": 21,
+          "responsibleForChange": "Aleksandar Simic",
+          "parent": "VT-349"
         },
         {
           "key": "VT-346",
           "summary": "American Options - use discrete dividends for pricing",
-          "status": "Done"
-        }
-      ]
-    }
-  ],
-  "Kedalion go-live": [
-    {
-      "key": "VT-1839",
-      "summary": "Q1.26 American Option Pricing",
-      "stories": [
-        {
-          "key": "VT-2060",
-          "summary": "Change the appearing order of the T1 Outputs group in the Pricing Calculator",
-          "status": "To Do"
-        },
-        {
-          "key": "VT-2055",
-          "summary": "T+1 Greeks Model Details Review",
-          "status": "To Do"
-        },
-        {
-          "key": "VT-2054",
-          "summary": "Normalize Scenarios for the Dividend Yield, Discount Rate and Time variables",
-          "status": "Pending QA"
-        },
-        {
-          "key": "VT-2025",
-          "summary": "Review the \"Theta 1D\" (DEV1) and \"T+1\" (DEMO2) Scenarios Calculation",
-          "status": "To Do"
-        },
-        {
-          "key": "VT-2024",
-          "summary": "Set T+1 Greeks columns into SecurityPricing",
-          "status": "PM REVIEW"
-        },
-        {
-          "key": "VT-1996",
-          "summary": "Greeks (Equity) - Rho_Borrow, USD DV01 Showcase",
-          "status": "To Do"
-        },
-        {
-          "key": "VT-1974",
-          "summary": "T+1 Greeks, Skew Delta Modelling Showcase",
-          "status": "In Progress"
-        },
-        {
-          "key": "VT-1842",
-          "summary": "American Option Model Documentation with roundtripping validation",
-          "status": "To Do"
-        },
-        {
-          "key": "VT-1841",
-          "summary": "Option KRDs - Rate KRD and Dividend KRD",
-          "status": "To Do"
-        },
-        {
-          "key": "VT-1840",
-          "summary": "Multi Dividend Framework",
-          "status": "To Do"
-        },
-        {
-          "key": "VT-770",
-          "summary": "American Options - Volatility Surface Support",
-          "status": "To Do"
-        },
-        {
-          "key": "VT-759",
-          "summary": "American Option - Pricing with Forecast Dividend Table",
-          "status": "In Progress"
-        }
-      ]
-    },
-    {
-      "key": "VT-1740",
-      "summary": "Q4.25: American Options",
-      "stories": [
-        {
-          "key": "VT-1775",
-          "summary": "UI: Add new columns to Equity Dividend projection schedule",
-          "status": "Ready"
-        },
-        {
-          "key": "VT-1720",
-          "summary": "Dividend projection schedule refactor and fix",
-          "status": "Ready"
-        }
-      ]
-    },
-    {
-      "key": "VT-349",
-      "summary": "Q1.25: American Options",
-      "stories": [
-        {
-          "key": "VT-848",
-          "summary": "American Option - LookUpTable -  Date Range to TaxRate",
-          "status": "Done"
-        },
-        {
-          "key": "VT-847",
-          "summary": "American Option - ValuationEngine -  Forecast Dividend schedule support",
-          "status": "Done"
-        },
-        {
-          "key": "VT-833",
-          "summary": "American Option - WebAPI -  Forecast Dividend Table method",
-          "status": "Done"
-        },
-        {
-          "key": "VT-773",
-          "summary": "Dividend Projection UI Equity Security Form",
-          "status": "Done"
-        },
-        {
-          "key": "VT-462",
-          "summary": "[ListedOption] - Spot shock should affect Model Price",
-          "status": "Done"
-        },
-        {
-          "key": "VT-348",
-          "summary": "American Option - Analytics -Forecast Dividend Table",
-          "status": "Done"
-        },
-        {
-          "key": "VT-346",
-          "summary": "American Options - use discrete dividends for pricing",
-          "status": "Done"
+          "status": "Done",
+          "storyPoints": 5,
+          "responsibleForChange": "Adam Albog",
+          "parent": "VT-349"
         }
       ]
     }

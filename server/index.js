@@ -44,7 +44,7 @@ app.get('/api/jira', async (req, res) => {
     // 1. Fetch all Epics for project VT with Business Projects populated
     const epicsResponse = await axios.post(`${process.env.JIRA_BASE_URL}/rest/api/3/search/jql`, {
       jql: 'project = VT AND issuetype = Epic AND "Business Projects[Select List (multiple choices)]" is not empty',
-      fields: ['summary', 'customfield_16369'],
+      fields: ['summary', 'customfield_16369', 'duedate', 'customfield_13235'],
       maxResults: 100
     }, { headers });
 
@@ -56,24 +56,32 @@ app.get('/api/jira', async (req, res) => {
     for (const epic of epics) {
       const epicKey = epic.key;
       const epicSummary = epic.fields.summary;
+      const epicDueDate = epic.fields.duedate;
+      const epicClientEnvironments = epic.fields.customfield_13235;
       const businessProjects = epic.fields.customfield_16369 || [];
 
       // Fetch Stories linked to this Epic
       const storiesResponse = await axios.post(`${process.env.JIRA_BASE_URL}/rest/api/3/search/jql`, {
         jql: `project = VT AND issuetype = Story AND "Epic Link" = ${epicKey}`,
-        fields: ['summary', 'status'],
+        fields: ['summary', 'status', 'customfield_10115', 'customfield_10400', 'parent'],
         maxResults: 100
       }, { headers });
+      
 
       const stories = storiesResponse.data.issues.map(story => ({
         key: story.key,
         summary: story.fields.summary,
-        status: story.fields.status?.name
+        status: story.fields.status?.name,
+        storyPoints: story.fields.customfield_10115,
+        responsibleForChange: story.fields.customfield_10400?.displayName,
+        parent: story.fields.parent?.key
       }));
 
       const epicData = {
         key: epicKey,
         summary: epicSummary,
+        dueDate: epicDueDate,
+        clientEnvironments: epicClientEnvironments,
         stories
       };
 
@@ -98,8 +106,11 @@ app.get('/api/jira', async (req, res) => {
     const dataPath = path.join(__dirname, '..', 'data.json');
     fs.writeFileSync(dataPath, JSON.stringify(businessProjectsMap, null, 2));
 
-    // 6. Return the JSON
-    res.json(businessProjectsMap);
+    // 6. Return the JSON with Jira base URL for linking
+    res.json({
+      jiraBaseUrl: process.env.JIRA_BASE_URL,
+      projects: businessProjectsMap
+    });
   } catch (error) {
     console.error('Jira API error:', error.response?.data || error.message);
     res.status(500).json({ error: 'Failed to fetch Jira issues' });
