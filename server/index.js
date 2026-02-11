@@ -63,7 +63,7 @@ app.get('/api/jira', async (req, res) => {
       // Fetch Stories linked to this Epic
       const storiesResponse = await axios.post(`${process.env.JIRA_BASE_URL}/rest/api/3/search/jql`, {
         jql: `project = VT AND issuetype = Story AND "Epic Link" = ${epicKey}`,
-        fields: ['summary', 'status', 'customfield_10115', 'customfield_10400', 'parent'],
+        fields: ['summary', 'status', 'customfield_10115', 'customfield_10400', 'parent', 'customfield_16369'],
         maxResults: 100
       }, { headers });
       
@@ -74,7 +74,8 @@ app.get('/api/jira', async (req, res) => {
         status: story.fields.status?.name,
         storyPoints: story.fields.customfield_10115,
         responsibleForChange: story.fields.customfield_10400?.displayName,
-        parent: story.fields.parent?.key
+        parent: story.fields.parent?.key,
+        businessProjects: story.fields.customfield_16369 || []
       }));
 
       const epicData = {
@@ -82,7 +83,8 @@ app.get('/api/jira', async (req, res) => {
         summary: epicSummary,
         dueDate: epicDueDate,
         clientEnvironments: epicClientEnvironments,
-        stories
+        stories,
+        type: 'epic'
       };
 
       // 3. Group by Business Project
@@ -102,7 +104,54 @@ app.get('/api/jira', async (req, res) => {
       }
     }
 
-    // 5. Save to data.json
+    // 4. Fetch Stories with Business Projects populated
+    const standaloneStoriesResponse = await axios.post(`${process.env.JIRA_BASE_URL}/rest/api/3/search/jql`, {
+      jql: 'project = VT AND issuetype = Story AND "Business Projects[Select List (multiple choices)]" is not empty',
+      fields: ['summary', 'status', 'customfield_10115', 'customfield_10400', 'parent', 'customfield_16369'],
+      maxResults: 100
+    }, { headers });
+
+    const standaloneStories = standaloneStoriesResponse.data.issues;
+console.log('Fetched standalone stories:', standaloneStories.length);
+    // 5. Add Stories to their Business Projects
+    for (const story of standaloneStories) {
+      const storyKey = story.key;
+      const storySummary = story.fields.summary;
+      const storyStatus = story.fields.status?.name;
+      const storyPoints = story.fields.customfield_10115;
+      const responsibleForChange = story.fields.customfield_10400?.displayName;
+      const parent = story.fields.parent?.key;
+      const businessProjects = story.fields.customfield_16369 || [];
+
+      const storyData = {
+        key: storyKey,
+        summary: storySummary,
+        status: storyStatus,
+        storyPoints: storyPoints,
+        responsibleForChange: responsibleForChange,
+        parent: parent,
+        type: 'story',
+        stories: [] // Empty array for consistency
+      };
+
+      // Group by Business Project
+      if (businessProjects.length === 0) {
+        if (!businessProjectsMap['Uncategorized']) {
+          businessProjectsMap['Uncategorized'] = [];
+        }
+        businessProjectsMap['Uncategorized'].push(storyData);
+      } else {
+        for (const bp of businessProjects) {
+          const bpName = bp.value || bp;
+          if (!businessProjectsMap[bpName]) {
+            businessProjectsMap[bpName] = [];
+          }
+          businessProjectsMap[bpName].push(storyData);
+        }
+      }
+    }
+
+    // 6. Save to data.json
     const dataPath = path.join(__dirname, '..', 'data.json');
     fs.writeFileSync(dataPath, JSON.stringify(businessProjectsMap, null, 2));
 

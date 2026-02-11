@@ -11,7 +11,8 @@
           "id": "18153"
         }
       ],
-      "stories": []
+      "stories": [],
+      "type": "epic"
     },
     {
       "key": "VT-1995",
@@ -24,7 +25,8 @@
           "id": "18153"
         }
       ],
-      "stories": []
+      "stories": [],
+      "type": "epic"
     },
     {
       "key": "VT-1977",
@@ -43,9 +45,11 @@
           "summary": "Exploded Bucketed Views, Regression-Based Calibration, Repo/GC01, SABR Model, Proportional Dividends",
           "status": "To Do",
           "storyPoints": null,
-          "parent": "VT-1977"
+          "parent": "VT-1977",
+          "businessProjects": []
         }
-      ]
+      ],
+      "type": "epic"
     },
     {
       "key": "VT-1870",
@@ -58,16 +62,19 @@
           "summary": "Persist historically re-pricing",
           "status": "To Do",
           "storyPoints": 5,
-          "parent": "VT-1870"
+          "parent": "VT-1870",
+          "businessProjects": []
         },
         {
           "key": "VT-686",
           "summary": "Historical re-pricing to be smart when Market Object is missing",
           "status": "To Do",
           "storyPoints": 13,
-          "parent": "VT-1870"
+          "parent": "VT-1870",
+          "businessProjects": []
         }
-      ]
+      ],
+      "type": "epic"
     },
     {
       "key": "VT-1839",
@@ -87,7 +94,8 @@
           "status": "To Do",
           "storyPoints": null,
           "responsibleForChange": "Kevin de Conde",
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-2076",
@@ -95,7 +103,8 @@
           "status": "In Progress",
           "storyPoints": 13,
           "responsibleForChange": "Bruno Binelli",
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-2060",
@@ -103,7 +112,8 @@
           "status": "To Do",
           "storyPoints": 3,
           "responsibleForChange": "Kevin de Conde",
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-2055",
@@ -111,7 +121,8 @@
           "status": "To Do",
           "storyPoints": 8,
           "responsibleForChange": "Kevin de Conde",
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-2054",
@@ -119,7 +130,8 @@
           "status": "Pending QA",
           "storyPoints": 3,
           "responsibleForChange": "Kevin de Conde",
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-2025",
@@ -127,7 +139,8 @@
           "status": "To Do",
           "storyPoints": 3,
           "responsibleForChange": "Kevin de Conde",
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-2024",
@@ -135,7 +148,8 @@
           "status": "IN TESTING",
           "storyPoints": 1,
           "responsibleForChange": "Kevin de Conde",
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-1996",
@@ -143,7 +157,8 @@
           "status": "To Do",
           "storyPoints": null,
           "responsibleForChange": "Ivan Queiroz",
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-1974",
@@ -151,35 +166,40 @@
           "status": "In Progress",
           "storyPoints": 8,
           "responsibleForChange": "Kevin de Conde",
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-1842",
           "summary": "American Option Model Documentation with roundtripping validation",
           "status": "To Do",
           "storyPoints": 25,
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-1841",
           "summary": "Option KRDs - Rate KRD and Dividend KRD",
           "status": "To Do",
           "storyPoints": 13,
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-1840",
           "summary": "Multi Dividend Framework",
           "status": "To Do",
           "storyPoints": 13,
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-770",
           "summary": "American Options - Volatility Surface Support",
           "status": "To Do",
           "storyPoints": 8,
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-759",
@@ -187,9 +207,11 @@
           "status": "In Progress",
           "storyPoints": 12,
           "responsibleForChange": "Adam Albog",
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         }
-      ]
+      ],
+      "type": "epic"
     },
     {
       "key": "VT-1789",
@@ -202,7 +224,8 @@
           "id": "18153"
         }
       ],
-      "stories": []
+      "stories": [],
+      "type": "epic"
     },
     {
       "key": "VT-1749",
@@ -222,7 +245,8 @@
           "status": "Pending QA",
           "storyPoints": 1,
           "responsibleForChange": "Bruno Binelli",
-          "parent": "VT-1749"
+          "parent": "VT-1749",
+          "businessProjects": []
         },
         {
           "key": "VT-2043",
@@ -230,7 +254,8 @@
           "status": "Pending QA",
           "storyPoints": 1,
           "responsibleForChange": "Bruno Binelli",
-          "parent": "VT-1749"
+          "parent": "VT-1749",
+          "businessProjects": []
         },
         {
           "key": "VT-2030",
@@ -238,7 +263,8 @@
           "status": "Ready",
           "storyPoints": 1,
           "responsibleForChange": "Bruno Binelli",
-          "parent": "VT-1749"
+          "parent": "VT-1749",
+          "businessProjects": []
         },
         {
           "key": "VT-2016",
@@ -246,7 +272,8 @@
           "status": "Pending QA",
           "storyPoints": 3,
           "responsibleForChange": "Bruno Binelli",
-          "parent": "VT-1749"
+          "parent": "VT-1749",
+          "businessProjects": []
         },
         {
           "key": "VT-1975",
@@ -254,7 +281,8 @@
           "status": "Done",
           "storyPoints": 0,
           "responsibleForChange": "Bruno Binelli",
-          "parent": "VT-1749"
+          "parent": "VT-1749",
+          "businessProjects": []
         },
         {
           "key": "VT-1961",
@@ -262,7 +290,8 @@
           "status": "Ready",
           "storyPoints": 1,
           "responsibleForChange": "Ivan Queiroz",
-          "parent": "VT-1749"
+          "parent": "VT-1749",
+          "businessProjects": []
         },
         {
           "key": "VT-1960",
@@ -270,7 +299,8 @@
           "status": "Ready",
           "storyPoints": 1,
           "responsibleForChange": "Ivan Queiroz",
-          "parent": "VT-1749"
+          "parent": "VT-1749",
+          "businessProjects": []
         },
         {
           "key": "VT-1954",
@@ -278,7 +308,8 @@
           "status": "Ready",
           "storyPoints": 1,
           "responsibleForChange": "Ivan Queiroz",
-          "parent": "VT-1749"
+          "parent": "VT-1749",
+          "businessProjects": []
         },
         {
           "key": "VT-1939",
@@ -286,7 +317,8 @@
           "status": "Ready",
           "storyPoints": 3,
           "responsibleForChange": "Ivan Queiroz",
-          "parent": "VT-1749"
+          "parent": "VT-1749",
+          "businessProjects": []
         },
         {
           "key": "VT-1937",
@@ -294,14 +326,16 @@
           "status": "Ready",
           "storyPoints": 5,
           "responsibleForChange": "Adriano Bittencourt",
-          "parent": "VT-1749"
+          "parent": "VT-1749",
+          "businessProjects": []
         },
         {
           "key": "VT-1899",
           "summary": "Bond Forward",
           "status": "To Do",
           "storyPoints": null,
-          "parent": "VT-1749"
+          "parent": "VT-1749",
+          "businessProjects": []
         },
         {
           "key": "VT-1844",
@@ -309,14 +343,16 @@
           "status": "Ready",
           "storyPoints": 8,
           "responsibleForChange": "Bruno Binelli",
-          "parent": "VT-1749"
+          "parent": "VT-1749",
+          "businessProjects": []
         },
         {
           "key": "VT-1843",
           "summary": "Calculate Bond Future's  CTD Bond repo rate and net basis",
           "status": "PM REVIEW",
           "storyPoints": 8,
-          "parent": "VT-1749"
+          "parent": "VT-1749",
+          "businessProjects": []
         },
         {
           "key": "VT-1804",
@@ -324,7 +360,8 @@
           "status": "Ready",
           "storyPoints": 8,
           "responsibleForChange": "Bruno Binelli",
-          "parent": "VT-1749"
+          "parent": "VT-1749",
+          "businessProjects": []
         },
         {
           "key": "VT-1799",
@@ -332,9 +369,11 @@
           "status": "Ready",
           "storyPoints": 3,
           "responsibleForChange": "Bruno Binelli",
-          "parent": "VT-1749"
+          "parent": "VT-1749",
+          "businessProjects": []
         }
-      ]
+      ],
+      "type": "epic"
     },
     {
       "key": "VT-1740",
@@ -359,7 +398,8 @@
           "status": "Ready",
           "storyPoints": 2,
           "responsibleForChange": "Adriano Bittencourt",
-          "parent": "VT-1740"
+          "parent": "VT-1740",
+          "businessProjects": []
         },
         {
           "key": "VT-1720",
@@ -367,9 +407,11 @@
           "status": "Ready",
           "storyPoints": 3,
           "responsibleForChange": "Aleksandar Simic",
-          "parent": "VT-1740"
+          "parent": "VT-1740",
+          "businessProjects": []
         }
-      ]
+      ],
+      "type": "epic"
     },
     {
       "key": "VT-349",
@@ -394,7 +436,8 @@
           "status": "Done",
           "storyPoints": null,
           "responsibleForChange": "Aleksandar Simic",
-          "parent": "VT-349"
+          "parent": "VT-349",
+          "businessProjects": []
         },
         {
           "key": "VT-847",
@@ -402,7 +445,8 @@
           "status": "Done",
           "storyPoints": null,
           "responsibleForChange": "Aleksandar Simic",
-          "parent": "VT-349"
+          "parent": "VT-349",
+          "businessProjects": []
         },
         {
           "key": "VT-833",
@@ -410,7 +454,8 @@
           "status": "Done",
           "storyPoints": 1,
           "responsibleForChange": "Aleksandar Simic",
-          "parent": "VT-349"
+          "parent": "VT-349",
+          "businessProjects": []
         },
         {
           "key": "VT-773",
@@ -418,7 +463,8 @@
           "status": "Done",
           "storyPoints": 3,
           "responsibleForChange": "Harllon Paz",
-          "parent": "VT-349"
+          "parent": "VT-349",
+          "businessProjects": []
         },
         {
           "key": "VT-462",
@@ -426,7 +472,8 @@
           "status": "Done",
           "storyPoints": 1,
           "responsibleForChange": "Tomas Ojeda",
-          "parent": "VT-349"
+          "parent": "VT-349",
+          "businessProjects": []
         },
         {
           "key": "VT-348",
@@ -434,7 +481,8 @@
           "status": "Done",
           "storyPoints": 21,
           "responsibleForChange": "Aleksandar Simic",
-          "parent": "VT-349"
+          "parent": "VT-349",
+          "businessProjects": []
         },
         {
           "key": "VT-346",
@@ -442,9 +490,158 @@
           "status": "Done",
           "storyPoints": 5,
           "responsibleForChange": "Adam Albog",
-          "parent": "VT-349"
+          "parent": "VT-349",
+          "businessProjects": []
         }
-      ]
+      ],
+      "type": "epic"
+    },
+    {
+      "key": "VT-1967",
+      "summary": "Funded Commitment upsize",
+      "status": "In Progress",
+      "storyPoints": null,
+      "parent": "VT-1850",
+      "type": "story",
+      "stories": []
+    }
+  ],
+  "Tech/Infra Optimizations": [
+    {
+      "key": "VT-1941",
+      "summary": "Q1.26: Synchronise Curves & IRS Templates between client environments and GCM",
+      "dueDate": null,
+      "clientEnvironments": null,
+      "stories": [
+        {
+          "key": "VT-1905",
+          "summary": "Storage Procedure for Import/Export IRS Templates",
+          "status": "To Do",
+          "storyPoints": 5,
+          "responsibleForChange": "Milan Cvetanovic",
+          "parent": "VT-1941",
+          "businessProjects": []
+        },
+        {
+          "key": "VT-1645",
+          "summary": "Update AUD.CCS curve for all environments ",
+          "status": "Done",
+          "storyPoints": 5,
+          "responsibleForChange": "Milan Cvetanovic",
+          "parent": "VT-1941",
+          "businessProjects": []
+        }
+      ],
+      "type": "epic"
+    },
+    {
+      "key": "VT-1802",
+      "summary": "Q1.26: VAL Engine Optimization",
+      "dueDate": null,
+      "clientEnvironments": null,
+      "stories": [
+        {
+          "key": "VT-1989",
+          "summary": "CL053 Remove Core Affinities for all Services on the Server",
+          "status": "Done",
+          "storyPoints": 1,
+          "responsibleForChange": "Milan Cvetanovic",
+          "parent": "VT-1802",
+          "businessProjects": []
+        },
+        {
+          "key": "VT-114",
+          "summary": "CompositionPriceable Topic - EvaluateMany to run in batch rather than individually",
+          "status": "To Do",
+          "storyPoints": 21,
+          "responsibleForChange": "Tomas Ojeda",
+          "parent": "VT-1802",
+          "businessProjects": []
+        },
+        {
+          "key": "VT-113",
+          "summary": "Optimize Bulk Yield Tag Override for Pricing Bonds on Spread",
+          "status": "To Do",
+          "storyPoints": 8,
+          "parent": "VT-1802",
+          "businessProjects": []
+        }
+      ],
+      "type": "epic"
+    }
+  ],
+  "Loan Tranches": [
+    {
+      "key": "VT-1850",
+      "summary": "Q1.26: Loan Tranches",
+      "dueDate": null,
+      "clientEnvironments": [
+        {
+          "self": "https://layerone.atlassian.net/rest/api/3/customFieldOption/14733",
+          "value": "CL014 - Carronade",
+          "id": "14733"
+        },
+        {
+          "self": "https://layerone.atlassian.net/rest/api/3/customFieldOption/14752",
+          "value": "CL031 - Aperture",
+          "id": "14752"
+        },
+        {
+          "self": "https://layerone.atlassian.net/rest/api/3/customFieldOption/14754",
+          "value": "CL032 - Shorecliff",
+          "id": "14754"
+        }
+      ],
+      "stories": [
+        {
+          "key": "VT-2074",
+          "summary": "Handle Cost of Carry fee streams generation on Analytics",
+          "status": "To Do",
+          "storyPoints": 3,
+          "responsibleForChange": "Adriano Bittencourt",
+          "parent": "VT-1850",
+          "businessProjects": []
+        },
+        {
+          "key": "VT-1967",
+          "summary": "Funded Commitment upsize",
+          "status": "In Progress",
+          "storyPoints": null,
+          "parent": "VT-1850",
+          "businessProjects": [
+            {
+              "self": "https://layerone.atlassian.net/rest/api/3/customFieldOption/18895",
+              "value": "Kedalion go-live",
+              "id": "18895"
+            }
+          ]
+        },
+        {
+          "key": "VT-1817",
+          "summary": "Fix UI allocation issues on multi stream for all LT (Term,DD, Rev)",
+          "status": "To Do",
+          "storyPoints": 21,
+          "parent": "VT-1850",
+          "businessProjects": []
+        },
+        {
+          "key": "VT-789",
+          "summary": "Add Loan to Value to Loan Tranche security static",
+          "status": "To Do",
+          "storyPoints": null,
+          "parent": "VT-1850",
+          "businessProjects": []
+        },
+        {
+          "key": "VT-539",
+          "summary": "Loan Tranche - Empty period preventing coupons and accrual generation LCS-45367",
+          "status": "To Do",
+          "storyPoints": 2,
+          "parent": "VT-1850",
+          "businessProjects": []
+        }
+      ],
+      "type": "epic"
     }
   ],
   "American Options": [
@@ -466,7 +663,8 @@
           "status": "To Do",
           "storyPoints": null,
           "responsibleForChange": "Kevin de Conde",
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-2076",
@@ -474,7 +672,8 @@
           "status": "In Progress",
           "storyPoints": 13,
           "responsibleForChange": "Bruno Binelli",
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-2060",
@@ -482,7 +681,8 @@
           "status": "To Do",
           "storyPoints": 3,
           "responsibleForChange": "Kevin de Conde",
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-2055",
@@ -490,7 +690,8 @@
           "status": "To Do",
           "storyPoints": 8,
           "responsibleForChange": "Kevin de Conde",
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-2054",
@@ -498,7 +699,8 @@
           "status": "Pending QA",
           "storyPoints": 3,
           "responsibleForChange": "Kevin de Conde",
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-2025",
@@ -506,7 +708,8 @@
           "status": "To Do",
           "storyPoints": 3,
           "responsibleForChange": "Kevin de Conde",
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-2024",
@@ -514,7 +717,8 @@
           "status": "IN TESTING",
           "storyPoints": 1,
           "responsibleForChange": "Kevin de Conde",
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-1996",
@@ -522,7 +726,8 @@
           "status": "To Do",
           "storyPoints": null,
           "responsibleForChange": "Ivan Queiroz",
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-1974",
@@ -530,35 +735,40 @@
           "status": "In Progress",
           "storyPoints": 8,
           "responsibleForChange": "Kevin de Conde",
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-1842",
           "summary": "American Option Model Documentation with roundtripping validation",
           "status": "To Do",
           "storyPoints": 25,
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-1841",
           "summary": "Option KRDs - Rate KRD and Dividend KRD",
           "status": "To Do",
           "storyPoints": 13,
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-1840",
           "summary": "Multi Dividend Framework",
           "status": "To Do",
           "storyPoints": 13,
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-770",
           "summary": "American Options - Volatility Surface Support",
           "status": "To Do",
           "storyPoints": 8,
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-759",
@@ -566,9 +776,11 @@
           "status": "In Progress",
           "storyPoints": 12,
           "responsibleForChange": "Adam Albog",
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         }
-      ]
+      ],
+      "type": "epic"
     },
     {
       "key": "VT-1740",
@@ -593,7 +805,8 @@
           "status": "Ready",
           "storyPoints": 2,
           "responsibleForChange": "Adriano Bittencourt",
-          "parent": "VT-1740"
+          "parent": "VT-1740",
+          "businessProjects": []
         },
         {
           "key": "VT-1720",
@@ -601,9 +814,11 @@
           "status": "Ready",
           "storyPoints": 3,
           "responsibleForChange": "Aleksandar Simic",
-          "parent": "VT-1740"
+          "parent": "VT-1740",
+          "businessProjects": []
         }
-      ]
+      ],
+      "type": "epic"
     },
     {
       "key": "VT-349",
@@ -628,7 +843,8 @@
           "status": "Done",
           "storyPoints": null,
           "responsibleForChange": "Aleksandar Simic",
-          "parent": "VT-349"
+          "parent": "VT-349",
+          "businessProjects": []
         },
         {
           "key": "VT-847",
@@ -636,7 +852,8 @@
           "status": "Done",
           "storyPoints": null,
           "responsibleForChange": "Aleksandar Simic",
-          "parent": "VT-349"
+          "parent": "VT-349",
+          "businessProjects": []
         },
         {
           "key": "VT-833",
@@ -644,7 +861,8 @@
           "status": "Done",
           "storyPoints": 1,
           "responsibleForChange": "Aleksandar Simic",
-          "parent": "VT-349"
+          "parent": "VT-349",
+          "businessProjects": []
         },
         {
           "key": "VT-773",
@@ -652,7 +870,8 @@
           "status": "Done",
           "storyPoints": 3,
           "responsibleForChange": "Harllon Paz",
-          "parent": "VT-349"
+          "parent": "VT-349",
+          "businessProjects": []
         },
         {
           "key": "VT-462",
@@ -660,7 +879,8 @@
           "status": "Done",
           "storyPoints": 1,
           "responsibleForChange": "Tomas Ojeda",
-          "parent": "VT-349"
+          "parent": "VT-349",
+          "businessProjects": []
         },
         {
           "key": "VT-348",
@@ -668,7 +888,8 @@
           "status": "Done",
           "storyPoints": 21,
           "responsibleForChange": "Aleksandar Simic",
-          "parent": "VT-349"
+          "parent": "VT-349",
+          "businessProjects": []
         },
         {
           "key": "VT-346",
@@ -676,9 +897,11 @@
           "status": "Done",
           "storyPoints": 5,
           "responsibleForChange": "Adam Albog",
-          "parent": "VT-349"
+          "parent": "VT-349",
+          "businessProjects": []
         }
-      ]
+      ],
+      "type": "epic"
     }
   ],
   "JPMC Remediation": [
@@ -700,7 +923,8 @@
           "status": "To Do",
           "storyPoints": null,
           "responsibleForChange": "Kevin de Conde",
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-2076",
@@ -708,7 +932,8 @@
           "status": "In Progress",
           "storyPoints": 13,
           "responsibleForChange": "Bruno Binelli",
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-2060",
@@ -716,7 +941,8 @@
           "status": "To Do",
           "storyPoints": 3,
           "responsibleForChange": "Kevin de Conde",
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-2055",
@@ -724,7 +950,8 @@
           "status": "To Do",
           "storyPoints": 8,
           "responsibleForChange": "Kevin de Conde",
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-2054",
@@ -732,7 +959,8 @@
           "status": "Pending QA",
           "storyPoints": 3,
           "responsibleForChange": "Kevin de Conde",
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-2025",
@@ -740,7 +968,8 @@
           "status": "To Do",
           "storyPoints": 3,
           "responsibleForChange": "Kevin de Conde",
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-2024",
@@ -748,7 +977,8 @@
           "status": "IN TESTING",
           "storyPoints": 1,
           "responsibleForChange": "Kevin de Conde",
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-1996",
@@ -756,7 +986,8 @@
           "status": "To Do",
           "storyPoints": null,
           "responsibleForChange": "Ivan Queiroz",
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-1974",
@@ -764,35 +995,40 @@
           "status": "In Progress",
           "storyPoints": 8,
           "responsibleForChange": "Kevin de Conde",
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-1842",
           "summary": "American Option Model Documentation with roundtripping validation",
           "status": "To Do",
           "storyPoints": 25,
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-1841",
           "summary": "Option KRDs - Rate KRD and Dividend KRD",
           "status": "To Do",
           "storyPoints": 13,
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-1840",
           "summary": "Multi Dividend Framework",
           "status": "To Do",
           "storyPoints": 13,
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-770",
           "summary": "American Options - Volatility Surface Support",
           "status": "To Do",
           "storyPoints": 8,
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         },
         {
           "key": "VT-759",
@@ -800,9 +1036,29 @@
           "status": "In Progress",
           "storyPoints": 12,
           "responsibleForChange": "Adam Albog",
-          "parent": "VT-1839"
+          "parent": "VT-1839",
+          "businessProjects": []
         }
-      ]
+      ],
+      "type": "epic"
+    },
+    {
+      "key": "VT-1832",
+      "summary": "Q1.26: Multi Curve Framework",
+      "dueDate": "2025-12-26",
+      "clientEnvironments": null,
+      "stories": [
+        {
+          "key": "VT-1895",
+          "summary": "Multi Curve Framework",
+          "status": "Ready",
+          "storyPoints": 13,
+          "responsibleForChange": "Adam Albog",
+          "parent": "VT-1832",
+          "businessProjects": []
+        }
+      ],
+      "type": "epic"
     },
     {
       "key": "VT-1740",
@@ -827,7 +1083,8 @@
           "status": "Ready",
           "storyPoints": 2,
           "responsibleForChange": "Adriano Bittencourt",
-          "parent": "VT-1740"
+          "parent": "VT-1740",
+          "businessProjects": []
         },
         {
           "key": "VT-1720",
@@ -835,9 +1092,11 @@
           "status": "Ready",
           "storyPoints": 3,
           "responsibleForChange": "Aleksandar Simic",
-          "parent": "VT-1740"
+          "parent": "VT-1740",
+          "businessProjects": []
         }
-      ]
+      ],
+      "type": "epic"
     },
     {
       "key": "VT-349",
@@ -862,7 +1121,8 @@
           "status": "Done",
           "storyPoints": null,
           "responsibleForChange": "Aleksandar Simic",
-          "parent": "VT-349"
+          "parent": "VT-349",
+          "businessProjects": []
         },
         {
           "key": "VT-847",
@@ -870,7 +1130,8 @@
           "status": "Done",
           "storyPoints": null,
           "responsibleForChange": "Aleksandar Simic",
-          "parent": "VT-349"
+          "parent": "VT-349",
+          "businessProjects": []
         },
         {
           "key": "VT-833",
@@ -878,7 +1139,8 @@
           "status": "Done",
           "storyPoints": 1,
           "responsibleForChange": "Aleksandar Simic",
-          "parent": "VT-349"
+          "parent": "VT-349",
+          "businessProjects": []
         },
         {
           "key": "VT-773",
@@ -886,7 +1148,8 @@
           "status": "Done",
           "storyPoints": 3,
           "responsibleForChange": "Harllon Paz",
-          "parent": "VT-349"
+          "parent": "VT-349",
+          "businessProjects": []
         },
         {
           "key": "VT-462",
@@ -894,7 +1157,8 @@
           "status": "Done",
           "storyPoints": 1,
           "responsibleForChange": "Tomas Ojeda",
-          "parent": "VT-349"
+          "parent": "VT-349",
+          "businessProjects": []
         },
         {
           "key": "VT-348",
@@ -902,7 +1166,8 @@
           "status": "Done",
           "storyPoints": 21,
           "responsibleForChange": "Aleksandar Simic",
-          "parent": "VT-349"
+          "parent": "VT-349",
+          "businessProjects": []
         },
         {
           "key": "VT-346",
@@ -910,9 +1175,31 @@
           "status": "Done",
           "storyPoints": 5,
           "responsibleForChange": "Adam Albog",
-          "parent": "VT-349"
+          "parent": "VT-349",
+          "businessProjects": []
         }
-      ]
+      ],
+      "type": "epic"
+    }
+  ],
+  "Cross Currency Swaps": [
+    {
+      "key": "VT-1832",
+      "summary": "Q1.26: Multi Curve Framework",
+      "dueDate": "2025-12-26",
+      "clientEnvironments": null,
+      "stories": [
+        {
+          "key": "VT-1895",
+          "summary": "Multi Curve Framework",
+          "status": "Ready",
+          "storyPoints": 13,
+          "responsibleForChange": "Adam Albog",
+          "parent": "VT-1832",
+          "businessProjects": []
+        }
+      ],
+      "type": "epic"
     }
   ]
 }

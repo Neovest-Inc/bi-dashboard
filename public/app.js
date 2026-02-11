@@ -16,6 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let jiraBaseUrl = '';
   let currentData = null;
   let currentFilter = 'all';
+  let developerSortState = 'none'; // 'none', 'desc', 'asc'
+  let originalMissingItems = [];
 
   // Tab switching
   navTabs.forEach(tab => {
@@ -41,8 +43,24 @@ document.addEventListener('DOMContentLoaded', () => {
       filterBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       currentFilter = btn.dataset.filter;
+      developerSortState = 'none'; // Reset sort when changing filter
       if (currentData) renderMissingDataTable(currentData);
     });
+  });
+
+  // Developer sort handler (event delegation)
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('.developer-sort-header')) {
+      // Cycle through sort states: none -> asc -> desc -> none
+      if (developerSortState === 'none') {
+        developerSortState = 'asc';
+      } else if (developerSortState === 'asc') {
+        developerSortState = 'desc';
+      } else {
+        developerSortState = 'none';
+      }
+      if (currentData) renderMissingDataTable(currentData);
+    }
   });
 
   async function fetchData() {
@@ -68,6 +86,11 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderDashboard(data) {
     loading.style.display = 'none';
     dashboard.style.display = 'block';
+    
+    // Switch to dashboard tab
+    navTabs.forEach(t => t.classList.remove('active'));
+    const dashboardTab = document.querySelector('.nav-tab[data-tab="dashboard"]');
+    if (dashboardTab) dashboardTab.classList.add('active');
 
     // Calculate stats
     const projects = Object.keys(data);
@@ -75,9 +98,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let totalStories = 0;
 
     projects.forEach(project => {
-      totalEpics += data[project].length;
-      data[project].forEach(epic => {
-        totalStories += epic.stories.length;
+      data[project].forEach(item => {
+        if (item.type === 'epic') {
+          totalEpics++;
+          totalStories += item.stories.length;
+        } else if (item.type === 'story') {
+          totalStories++;
+        }
       });
     });
 
@@ -87,8 +114,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Render projects
     projectsList.innerHTML = projects.map(projectName => {
-      const epics = data[projectName];
-      const epicCards = epics.map(epic => renderEpic(epic)).join('');
+      const items = data[projectName];
+      const epics = items.filter(item => item.type === 'epic');
+      const stories = items.filter(item => item.type === 'story');
+      
+      const itemCards = items.map(item => {
+        if (item.type === 'epic') {
+          return renderEpic(item);
+        } else {
+          return renderStandaloneStory(item);
+        }
+      }).join('');
+
+      const totalStoriesInEpics = epics.reduce((sum, e) => sum + e.stories.length, 0);
+      const itemCountText = `${epics.length} epic${epics.length !== 1 ? 's' : ''}, ${stories.length} standalone stor${stories.length !== 1 ? 'ies' : 'y'}`;
 
       return `
         <div class="business-project">
@@ -96,12 +135,12 @@ document.addEventListener('DOMContentLoaded', () => {
             <span class="material-icons expand-icon">chevron_right</span>
             <div class="project-info">
               <div class="project-name">${escapeHtml(projectName)}</div>
-              <div class="project-meta">${epics.length} epic${epics.length !== 1 ? 's' : ''}</div>
+              <div class="project-meta">${itemCountText}</div>
             </div>
-            <span class="project-badge">${epics.reduce((sum, e) => sum + e.stories.length, 0)} stories</span>
+            <span class="project-badge">${totalStoriesInEpics} stories in epics</span>
           </div>
           <div class="project-content">
-            ${epicCards}
+            ${itemCards}
           </div>
         </div>
       `;
@@ -116,6 +155,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const dueDateDisplay = epic.dueDate 
       ? new Date(epic.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
       : 'No Due Date';
+    
+    // Client Environments display
+    const clientEnvDisplay = hasNoClientEnv
+      ? `<span class="epic-client-env client-env-warning"><span class="material-icons">cloud_off</span>No Client</span>`
+      : epic.clientEnvironments.map(env => 
+          `<span class="epic-client-env"><span class="material-icons">cloud</span>${escapeHtml(env.value)}</span>`
+        ).join('');
+    
     const storiesHtml = epic.stories.length > 0
       ? `<div class="stories-list">${epic.stories.map(story => renderStory(story)).join('')}</div>`
       : `<div class="no-stories"><span class="material-icons">inbox</span><p>No stories in this epic</p></div>`;
@@ -131,6 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="epic-key"><a href="${jiraBaseUrl}/browse/${escapeHtml(epic.key)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">${escapeHtml(epic.key)}</a></div>
             <div class="epic-summary">${escapeHtml(epic.summary)}</div>
           </div>
+          ${clientEnvDisplay}
           <span class="epic-due-date${hasNoDueDate ? ' date-warning' : ''}"><span class="material-icons">event</span>${dueDateDisplay}</span>
           <span class="epic-stories-count${hasNoStories ? ' count-warning' : ''}">${epic.stories.length} stor${epic.stories.length !== 1 ? 'ies' : 'y'}</span>
         </div>
@@ -165,10 +213,37 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
   }
 
+  function renderStandaloneStory(story) {
+    const statusClass = getStatusClass(story.status);
+    const hasNoPoints = story.storyPoints === null || story.storyPoints === undefined;
+    const storyPointsDisplay = hasNoPoints ? 'No SP' : `${story.storyPoints} SP`;
+    const responsibleDisplay = story.responsibleForChange 
+      ? `<span class="story-responsible"><span class="material-icons">person</span>${escapeHtml(story.responsibleForChange)}</span>`
+      : '';
+    const hasWarning = hasNoPoints;
+
+    return `
+      <div class="standalone-story-card${hasWarning ? ' story-warning' : ''}">
+        <div class="standalone-story-header">
+          <div class="story-icon">
+            <span class="material-icons">bookmark</span>
+          </div>
+          <div class="story-info">
+            <div class="story-key"><a href="${jiraBaseUrl}/browse/${escapeHtml(story.key)}" target="_blank" rel="noopener noreferrer">${escapeHtml(story.key)}</a></div>
+            <div class="story-summary">${escapeHtml(story.summary)}</div>
+          </div>
+          ${responsibleDisplay}
+          <span class="story-points${hasNoPoints ? ' points-warning' : ''}">${storyPointsDisplay}</span>
+          <span class="story-status ${statusClass}">${escapeHtml(story.status || 'To Do')}</span>
+        </div>
+      </div>
+    `;
+  }
+
   function getStatusClass(status) {
     if (!status) return 'status-todo';
     const s = status.toLowerCase();
-    if (s.includes('done') || s.includes('closed') || s.includes('resolved')) return 'status-done';
+    if (s.includes('done') || s.includes('closed') || s.includes('resolved') || s.includes('ready')) return 'status-done';
     if (s.includes('progress') || s.includes('review') || s.includes('testing')) return 'status-in-progress';
     return 'status-todo';
   }
@@ -176,57 +251,109 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderMissingDataTable(data) {
     const missingItems = [];
     const seenEpics = new Set();
+    const seenStories = new Set();
 
     // Collect all epics and stories with missing data
-    Object.values(data).forEach(epics => {
-      epics.forEach(epic => {
-        // Check epic for missing fields (avoid duplicates)
-        if (!seenEpics.has(epic.key)) {
-          seenEpics.add(epic.key);
-          const missingFields = [];
-          if (!epic.dueDate) missingFields.push('Due Date');
-          if (!epic.clientEnvironments || (Array.isArray(epic.clientEnvironments) && epic.clientEnvironments.length === 0)) {
-            missingFields.push('Client Environment(s)');
+    Object.values(data).forEach(items => {
+      items.forEach(item => {
+        if (item.type === 'epic') {
+          // Check epic for missing fields (avoid duplicates)
+          if (!seenEpics.has(item.key)) {
+            seenEpics.add(item.key);
+            const missingFields = [];
+            if (!item.dueDate) missingFields.push('Due Date');
+            if (!item.clientEnvironments || (Array.isArray(item.clientEnvironments) && item.clientEnvironments.length === 0)) {
+              missingFields.push('Client Environment(s)');
+            }
+            
+            if (missingFields.length > 0) {
+              missingItems.push({
+                type: 'epic',
+                key: item.key,
+                summary: item.summary,
+                missingFields,
+                dueDate: item.dueDate,
+                clientEnvironments: item.clientEnvironments,
+                responsibleForChange: null
+              });
+            }
           }
-          
-          if (missingFields.length > 0) {
-            missingItems.push({
-              type: 'epic',
-              key: epic.key,
-              summary: epic.summary,
-              missingFields,
-              dueDate: epic.dueDate,
-              clientEnvironments: epic.clientEnvironments
-            });
+
+          // Check stories within epic for missing fields
+          item.stories.forEach(story => {
+            if (!seenStories.has(story.key)) {
+              seenStories.add(story.key);
+              const missingFields = [];
+              if (story.storyPoints === null || story.storyPoints === undefined) missingFields.push('Story Points');
+              if (!story.responsibleForChange) missingFields.push('Responsible for Change');
+              if (!story.parent) missingFields.push('Parent');
+
+              if (missingFields.length > 0) {
+                missingItems.push({
+                  type: 'story',
+                  key: story.key,
+                  summary: story.summary,
+                  missingFields,
+                  storyPoints: story.storyPoints,
+                  responsibleForChange: story.responsibleForChange,
+                  parent: story.parent
+                });
+              }
+            }
+          });
+        } else if (item.type === 'story') {
+          // Check standalone story for missing fields (avoid duplicates)
+          if (!seenStories.has(item.key)) {
+            seenStories.add(item.key);
+            const missingFields = [];
+            if (item.storyPoints === null || item.storyPoints === undefined) missingFields.push('Story Points');
+            if (!item.responsibleForChange) missingFields.push('Responsible for Change');
+            if (!item.parent) missingFields.push('Parent');
+
+            if (missingFields.length > 0) {
+              missingItems.push({
+                type: 'story',
+                key: item.key,
+                summary: item.summary,
+                missingFields,
+                storyPoints: item.storyPoints,
+                responsibleForChange: item.responsibleForChange,
+                parent: item.parent
+              });
+            }
           }
         }
-
-        // Check stories for missing fields
-        epic.stories.forEach(story => {
-          const missingFields = [];
-          if (story.storyPoints === null || story.storyPoints === undefined) missingFields.push('Story Points');
-          if (!story.responsibleForChange) missingFields.push('Responsible for Change');
-          if (!story.parent) missingFields.push('Parent');
-
-          if (missingFields.length > 0) {
-            missingItems.push({
-              type: 'story',
-              key: story.key,
-              summary: story.summary,
-              missingFields,
-              storyPoints: story.storyPoints,
-              responsibleForChange: story.responsibleForChange,
-              parent: story.parent
-            });
-          }
-        });
       });
     });
 
+    // Store original order
+    if (developerSortState === 'none') {
+      originalMissingItems = [...missingItems];
+    }
+
     // Apply filter
-    const filteredItems = currentFilter === 'all' 
+    let filteredItems = currentFilter === 'all' 
       ? missingItems 
       : missingItems.filter(item => item.type === currentFilter);
+
+    // Apply developer sort
+    if (developerSortState !== 'none') {
+      filteredItems = [...filteredItems].sort((a, b) => {
+        const devA = (a.responsibleForChange || '').toLowerCase();
+        const devB = (b.responsibleForChange || '').toLowerCase();
+        
+        // Empty values go to the end
+        if (!devA && !devB) return 0;
+        if (!devA) return 1;
+        if (!devB) return -1;
+        
+        if (developerSortState === 'desc') {
+          return devB.localeCompare(devA);
+        } else {
+          return devA.localeCompare(devB);
+        }
+      });
+    }
 
     if (filteredItems.length === 0) {
       missingDataTable.innerHTML = `
@@ -238,6 +365,12 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    const getSortIcon = () => {
+      if (developerSortState === 'desc') return 'arrow_downward';
+      if (developerSortState === 'asc') return 'arrow_upward';
+      return 'unfold_more';
+    };
+
     const tableHtml = `
       <table class="missing-data-table">
         <thead>
@@ -245,6 +378,10 @@ document.addEventListener('DOMContentLoaded', () => {
             <th>Type</th>
             <th>Key</th>
             <th>Summary</th>
+            <th class="developer-sort-header">
+              Developer
+              <span class="material-icons sort-icon">${getSortIcon()}</span>
+            </th>
             <th>Missing Fields</th>
           </tr>
         </thead>
@@ -261,6 +398,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <a href="${jiraBaseUrl}/browse/${escapeHtml(item.key)}" target="_blank" rel="noopener noreferrer" class="item-key">${escapeHtml(item.key)}</a>
               </td>
               <td class="summary-cell">${escapeHtml(item.summary)}</td>
+              <td>${item.responsibleForChange ? escapeHtml(item.responsibleForChange) : '-'}</td>
               <td>
                 <div class="missing-fields">
                   ${item.missingFields.map(field => `<span class="missing-field-tag">${escapeHtml(field)}</span>`).join('')}

@@ -354,6 +354,30 @@ body {
   border-radius: 12px;
 }
 
+.epic-client-env {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: #1565c0;
+  background: #e3f2fd;
+  padding: 4px 8px;
+  border-radius: 12px;
+  margin-right: 8px;
+  flex-shrink: 0;
+  font-weight: 500;
+}
+
+.epic-client-env .material-icons {
+  font-size: 14px;
+}
+
+.client-env-warning {
+  background: #ffebee !important;
+  color: #c62828 !important;
+  font-weight: 600;
+}
+
 .epic-due-date {
   display: flex;
   align-items: center;
@@ -510,6 +534,87 @@ body {
   margin-right: 8px;
 }
 
+/* Standalone Story Card */
+.standalone-story-card {
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+
+.standalone-story-card:last-child {
+  margin-bottom: 0;
+}
+
+.standalone-story-header {
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  transition: background 0.2s;
+}
+
+.standalone-story-header:hover {
+  background: #e8eaed;
+}
+
+.standalone-story-header .story-icon {
+  width: 24px;
+  height: 24px;
+  background: #1a73e8;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.standalone-story-header .story-icon .material-icons {
+  font-size: 16px;
+  color: white;
+}
+
+.standalone-story-header .story-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.standalone-story-header .story-key {
+  font-size: 12px;
+  font-weight: 500;
+  color: #1a73e8;
+  text-transform: uppercase;
+}
+
+.standalone-story-header .story-key a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.standalone-story-header .story-key a:hover {
+  text-decoration: underline;
+}
+
+.standalone-story-header .story-summary {
+  font-size: 14px;
+  color: #202124;
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+.standalone-story-card.story-warning {
+  background: #fff8f6;
+  border-left: 4px solid #ff6b6b;
+}
+
+.standalone-story-card.story-warning .standalone-story-header {
+  background: #fff8f6;
+}
+
+.standalone-story-card.story-warning .standalone-story-header:hover {
+  background: #ffefeb;
+}
+
 /* Warning States */
 .epic-warning {
   background: #fff8f6;
@@ -637,6 +742,23 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.5px;
   border-bottom: 1px solid #e8eaed;
+}
+
+.developer-sort-header {
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s;
+}
+
+.developer-sort-header:hover {
+  background-color: #e8eaed;
+}
+
+.developer-sort-header .sort-icon {
+  font-size: 16px;
+  vertical-align: middle;
+  margin-left: 4px;
+  color: #5f6368;
 }
 
 .missing-data-table td {
