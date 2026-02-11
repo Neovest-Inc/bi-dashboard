@@ -500,7 +500,7 @@
       "key": "VT-1967",
       "summary": "Funded Commitment upsize",
       "status": "In Progress",
-      "storyPoints": null,
+      "storyPoints": 3,
       "parent": "VT-1850",
       "type": "story",
       "stories": []
@@ -606,7 +606,7 @@
           "key": "VT-1967",
           "summary": "Funded Commitment upsize",
           "status": "In Progress",
-          "storyPoints": null,
+          "storyPoints": 3,
           "parent": "VT-1850",
           "businessProjects": [
             {
