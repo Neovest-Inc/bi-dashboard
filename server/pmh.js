@@ -32,7 +32,7 @@ function shouldFlagStory(fixVersions, targetParsed) {
   if (!fixVersions || fixVersions.length === 0) return false;
 
   let maxHotfixMinor = null;
-  let maxReleaseMinor = null;
+  let maxReleaseMinorBeforeTarget = null;
   let hasTargetVersion = false;
 
   for (const fv of fixVersions) {
@@ -51,24 +51,28 @@ function shouldFlagStory(fixVersions, targetParsed) {
 
     // Categorize by patch (0 = release, non-0 = hotfix)
     if (parsed.patch === 0) {
-      // Release version
-      if (maxReleaseMinor === null || parsed.minor > maxReleaseMinor) {
-        maxReleaseMinor = parsed.minor;
+      // Release version - only consider if minor <= target.minor
+      if (parsed.minor <= targetParsed.minor) {
+        if (maxReleaseMinorBeforeTarget === null || parsed.minor > maxReleaseMinorBeforeTarget) {
+          maxReleaseMinorBeforeTarget = parsed.minor;
+        }
       }
     } else {
-      // Hotfix version
-      if (maxHotfixMinor === null || parsed.minor > maxHotfixMinor) {
-        maxHotfixMinor = parsed.minor;
+      // Hotfix version - only consider if minor < target.minor
+      if (parsed.minor < targetParsed.minor) {
+        if (maxHotfixMinor === null || parsed.minor > maxHotfixMinor) {
+          maxHotfixMinor = parsed.minor;
+        }
       }
     }
   }
 
   // Flag if:
   // - maxHotfixMinor exists
-  // - AND (maxReleaseMinor is null OR maxHotfixMinor > maxReleaseMinor)
+  // - AND (maxReleaseMinorBeforeTarget is null OR maxHotfixMinor > maxReleaseMinorBeforeTarget)
   // - AND story does NOT include targetVersion exactly
   return maxHotfixMinor !== null && 
-         (maxReleaseMinor === null || maxHotfixMinor > maxReleaseMinor) && 
+         (maxReleaseMinorBeforeTarget === null || maxHotfixMinor > maxReleaseMinorBeforeTarget) && 
          !hasTargetVersion;
 }
 

@@ -1,6 +1,6 @@
 {
   "targetVersion": "9.93.0",
-  "fetchedAt": "2026-02-13T14:18:49.491Z",
+  "fetchedAt": "2026-02-13T15:35:48.102Z",
   "missingStories": [
     {
       "key": "VT-2072",
@@ -10,6 +10,26 @@
         "9.92.64"
       ],
       "responsibleForChange": "Milan Cvetanovic",
+      "status": "Ready"
+    },
+    {
+      "key": "VT-2044",
+      "summary": "[VaR] Add lookback Period to risk methodology - UI",
+      "fixVersions": [
+        "9.92.34",
+        "9.94.0"
+      ],
+      "responsibleForChange": "Harllon Paz",
+      "status": "Ready"
+    },
+    {
+      "key": "VT-2030",
+      "summary": "[Bond Future] Enable new model for other currencies",
+      "fixVersions": [
+        "9.92.34",
+        "9.94.0"
+      ],
+      "responsibleForChange": "Bruno Binelli",
       "status": "Ready"
     },
     {
@@ -40,6 +60,86 @@
       "status": "Ready"
     },
     {
+      "key": "VT-1961",
+      "summary": "Review KRD fields",
+      "fixVersions": [
+        "9.92.34",
+        "9.94.0"
+      ],
+      "responsibleForChange": "Ivan Queiroz",
+      "status": "Ready"
+    },
+    {
+      "key": "VT-1960",
+      "summary": "Set CTD Source overwritable",
+      "fixVersions": [
+        "9.92.34",
+        "9.94.0"
+      ],
+      "responsibleForChange": "Ivan Queiroz",
+      "status": "Ready"
+    },
+    {
+      "key": "VT-1954",
+      "summary": "Set CTD columns into SecurityPricing",
+      "fixVersions": [
+        "9.92.34",
+        "9.94.0"
+      ],
+      "responsibleForChange": "Ivan Queiroz",
+      "status": "Ready"
+    },
+    {
+      "key": "VT-1939",
+      "summary": "Configure Bond Futures to tick in the same cycle as Bond",
+      "fixVersions": [
+        "9.92.34",
+        "9.94.0"
+      ],
+      "responsibleForChange": "Ivan Queiroz",
+      "status": "Ready"
+    },
+    {
+      "key": "VT-1844",
+      "summary": "[Bond Future] Implement Bond Future CTD Model",
+      "fixVersions": [
+        "9.92.34",
+        "9.94.0"
+      ],
+      "responsibleForChange": "Bruno Binelli",
+      "status": "Ready"
+    },
+    {
+      "key": "VT-1810",
+      "summary": "LCS-73485 - Fw: Haidar - GS cleared BRL IRS",
+      "fixVersions": [
+        "9.91.42",
+        "9.94.0"
+      ],
+      "responsibleForChange": "Kevin de Conde",
+      "status": "Ready"
+    },
+    {
+      "key": "VT-1804",
+      "summary": "[Bond Future] Calculate CTD Analytics for Bond Futures",
+      "fixVersions": [
+        "9.92.34",
+        "9.94.0"
+      ],
+      "responsibleForChange": "Bruno Binelli",
+      "status": "Ready"
+    },
+    {
+      "key": "VT-1799",
+      "summary": "[Bond Future] Calculate CTD conversion factor for US T Bond Futures",
+      "fixVersions": [
+        "9.92.34",
+        "9.94.0"
+      ],
+      "responsibleForChange": "Bruno Binelli",
+      "status": "Ready"
+    },
+    {
       "key": "VT-1757",
       "summary": "LCS-72322 - ***URGENT***Balance difference for COB: 11/13",
       "fixVersions": [
@@ -57,6 +157,28 @@
       ],
       "responsibleForChange": "Harllon Paz",
       "status": "Done"
+    },
+    {
+      "key": "VT-1675",
+      "summary": "Add support for FX Vol Surface in var batch",
+      "fixVersions": [
+        "9.92.34",
+        "9.92.37",
+        "9.94.0"
+      ],
+      "responsibleForChange": "Harllon Paz",
+      "status": "Ready"
+    },
+    {
+      "key": "VT-1528",
+      "summary": "shock FX DepoCurves to support ShiftCurveInputs",
+      "fixVersions": [
+        "9.92.34",
+        "9.92.37",
+        "9.94.0"
+      ],
+      "responsibleForChange": "Harllon Paz",
+      "status": "Ready"
     }
   ]
 }
