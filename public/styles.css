@@ -1278,3 +1278,175 @@ body {
   font-size: 14px;
   color: #5f6368;
 }
+
+/* Heatmap Styles */
+.heatmap-container {
+  margin-top: 32px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.heatmap-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid #e8eaed;
+}
+
+.heatmap-header h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Google Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #202124;
+  margin: 0;
+}
+
+.heatmap-header h3 .material-icons {
+  font-size: 20px;
+  color: #1a73e8;
+}
+
+.heatmap-wrapper {
+  padding: 20px;
+  overflow-x: auto;
+}
+
+.heatmap-table {
+  border-collapse: collapse;
+  min-width: 100%;
+}
+
+.heatmap-corner {
+  background: #f8f9fa;
+  min-width: 150px;
+}
+
+.heatmap-client-header {
+  padding: 10px 12px;
+  background: #f8f9fa;
+  font-weight: 500;
+  font-size: 11px;
+  color: #5f6368;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  text-align: center;
+  min-width: 80px;
+  border-bottom: 1px solid #e8eaed;
+  white-space: nowrap;
+}
+
+.heatmap-sectype-header {
+  padding: 10px 12px;
+  background: #f8f9fa;
+  font-weight: 500;
+  font-size: 11px;
+  color: #5f6368;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  text-align: left;
+  min-width: 150px;
+  border-right: 1px solid #e8eaed;
+  white-space: nowrap;
+}
+
+.heatmap-cell {
+  padding: 12px 16px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid #e8eaed;
+  transition: transform 0.1s;
+}
+
+.heatmap-cell:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  position: relative;
+  z-index: 1;
+}
+
+.heatmap-cell.clickable {
+  cursor: pointer;
+}
+
+.heatmap-cell.selected {
+  outline: 3px solid #1a73e8;
+  outline-offset: -3px;
+  box-shadow: inset 0 0 0 1px #1a73e8;
+}
+
+.hotfix-filter-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: #e8f0fe;
+  border: 1px solid #d2e3fc;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.hotfix-filter-status span {
+  color: #1967d2;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.clear-filter-btn {
+  padding: 6px 12px;
+  background: #fff;
+  border: 1px solid #1a73e8;
+  border-radius: 4px;
+  color: #1a73e8;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.clear-filter-btn:hover {
+  background: #e8f0fe;
+}
+
+.heatmap-legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 20px;
+  border-top: 1px solid #e8eaed;
+  background: #f8f9fa;
+}
+
+.legend-label {
+  font-size: 12px;
+  color: #5f6368;
+}
+
+.legend-gradient {
+  width: 120px;
+  height: 12px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #f8f9fa 0%, #ffeb3b 25%, #ff9800 50%, #f44336 100%);
+  border: 1px solid #e8eaed;
+}
+
+.heatmap-empty {
+  padding: 40px 24px;
+  text-align: center;
+}
+
+.heatmap-empty .material-icons {
+  font-size: 36px;
+  color: #9aa0a6;
+  margin-bottom: 12px;
+}
+
+.heatmap-empty p {
+  font-size: 14px;
+  color: #5f6368;
+  margin: 0;
+}

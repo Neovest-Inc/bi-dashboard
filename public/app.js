@@ -31,6 +31,9 @@ document.addEventListener('DOMContentLoaded', () => {
   let hotfixSortColumn = 'none'; // 'securityTypes', 'clients', 'developer'
   let hotfixSortDirection = 'none'; // 'none', 'asc', 'desc'
   let currentHotfixData = null;
+  
+  // Heatmap cell selection state
+  let selectedHeatmapCells = []; // Array of {securityType, client}
 
   // Tab switching
   navTabs.forEach(tab => {
@@ -572,7 +575,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function renderHotfixResults(data, preserveSort = false) {
+  function renderHotfixResults(data, preserveSort = false, preserveHeatmapSelection = false) {
     const { targetVersion, missingStories, jiraBaseUrl: baseUrl } = data;
     
     // Store for re-rendering when sorting
@@ -594,9 +597,28 @@ document.addEventListener('DOMContentLoaded', () => {
       hotfixSortColumn = 'none';
       hotfixSortDirection = 'none';
     }
+    
+    // Reset heatmap selection if not preserving
+    if (!preserveHeatmapSelection) {
+      selectedHeatmapCells = [];
+    }
+
+    // Filter stories based on selected heatmap cells
+    let filteredStories = [...missingStories];
+    if (selectedHeatmapCells.length > 0) {
+      filteredStories = missingStories.filter(story => {
+        const storySecTypes = story.securityTypes || [];
+        const storyClients = story.clientEnvironments || [];
+        
+        // Story matches if it matches ANY of the selected cells
+        return selectedHeatmapCells.some(cell => 
+          storySecTypes.includes(cell.securityType) && storyClients.includes(cell.client)
+        );
+      });
+    }
 
     // Sort stories if needed
-    let sortedStories = [...missingStories];
+    let sortedStories = [...filteredStories];
     if (hotfixSortColumn !== 'none' && hotfixSortDirection !== 'none') {
       sortedStories.sort((a, b) => {
         let valA, valB;
@@ -629,12 +651,26 @@ document.addEventListener('DOMContentLoaded', () => {
       return 'unfold_more';
     };
 
+    // Build filter status display
+    const isFiltered = selectedHeatmapCells.length > 0;
+    const filterStatusHtml = isFiltered ? `
+      <div class="hotfix-filter-status">
+        <span class="material-icons">filter_alt</span>
+        <span>Filtered: ${sortedStories.length} of ${missingStories.length} stories (${selectedHeatmapCells.length} cell${selectedHeatmapCells.length > 1 ? 's' : ''} selected)</span>
+        <button class="clear-filter-btn" id="clearHeatmapFilter">
+          <span class="material-icons">close</span>
+          Clear Filter
+        </button>
+      </div>
+    ` : '';
+
     const tableHtml = `
       <div class="hotfix-results-header">
         <span class="material-icons">warning</span>
         <span>Found ${missingStories.length} stor${missingStories.length !== 1 ? 'ies' : 'y'} missing from ${escapeHtml(targetVersion)}</span>
       </div>
-      <table class="hotfix-table">
+      ${filterStatusHtml}
+      <table class="hotfix-table${isFiltered ? ' filtered' : ''}">
         <thead>
           <tr>
             <th>Key</th>
@@ -689,7 +725,136 @@ document.addEventListener('DOMContentLoaded', () => {
       </table>
     `;
 
-    hotfixResults.innerHTML = tableHtml;
+    // Generate heatmap data - only include stories with both security types AND clients
+    const heatmapData = buildHeatmapData(missingStories);
+    const heatmapHtml = renderHeatmap(heatmapData);
+
+    hotfixResults.innerHTML = tableHtml + heatmapHtml;
+  }
+
+  function buildHeatmapData(stories) {
+    const matrix = {}; // { securityType: { client: count } }
+    const allClients = new Set();
+    const allSecurityTypes = new Set();
+
+    for (const story of stories) {
+      const secTypes = story.securityTypes || [];
+      const clients = story.clientEnvironments || [];
+
+      // Only include stories that have BOTH security types AND clients
+      if (secTypes.length === 0 || clients.length === 0) continue;
+
+      for (const secType of secTypes) {
+        if (!matrix[secType]) {
+          matrix[secType] = {};
+        }
+        allSecurityTypes.add(secType);
+
+        for (const client of clients) {
+          allClients.add(client);
+          matrix[secType][client] = (matrix[secType][client] || 0) + 1;
+        }
+      }
+    }
+
+    return {
+      matrix,
+      clients: Array.from(allClients).sort(),
+      securityTypes: Array.from(allSecurityTypes).sort()
+    };
+  }
+
+  function renderHeatmap(data) {
+    const { matrix, clients, securityTypes } = data;
+
+    if (clients.length === 0 || securityTypes.length === 0) {
+      return `
+        <div class="heatmap-container">
+          <div class="heatmap-header">
+            <h3><span class="material-icons">grid_on</span> Heatmap: Security Types vs Clients</h3>
+          </div>
+          <div class="heatmap-empty">
+            <span class="material-icons">info</span>
+            <p>No stories with both Security Types and Clients to display.</p>
+          </div>
+        </div>
+      `;
+    }
+
+    // Find max value for color scaling
+    let maxCount = 0;
+    for (const secType of securityTypes) {
+      for (const client of clients) {
+        const count = matrix[secType]?.[client] || 0;
+        if (count > maxCount) maxCount = count;
+      }
+    }
+
+    const getHeatColor = (count) => {
+      if (count === 0) return '#f8f9fa';
+      const intensity = count / maxCount;
+      // Gradient from light yellow to orange to red
+      if (intensity <= 0.33) {
+        return `rgba(255, 235, 59, ${0.3 + intensity * 0.7})`; // Yellow
+      } else if (intensity <= 0.66) {
+        return `rgba(255, 152, 0, ${0.5 + (intensity - 0.33) * 0.5})`; // Orange
+      } else {
+        return `rgba(244, 67, 54, ${0.6 + (intensity - 0.66) * 0.4})`; // Red
+      }
+    };
+
+    // Helper to check if a cell is selected
+    const isCellSelected = (secType, client) => {
+      return selectedHeatmapCells.some(c => c.securityType === secType && c.client === client);
+    };
+
+    const headerCells = clients.map(client => 
+      `<th class="heatmap-client-header">${escapeHtml(client)}</th>`
+    ).join('');
+
+    const rows = securityTypes.map(secType => {
+      const cells = clients.map(client => {
+        const count = matrix[secType]?.[client] || 0;
+        const bgColor = getHeatColor(count);
+        const textColor = count > 0 ? '#202124' : '#9aa0a6';
+        const isSelected = isCellSelected(secType, client);
+        const cellClass = `heatmap-cell${count > 0 ? ' clickable' : ''}${isSelected ? ' selected' : ''}`;
+        return `<td class="${cellClass}" data-sectype="${escapeHtml(secType)}" data-client="${escapeHtml(client)}" data-count="${count}" style="background-color: ${bgColor}; color: ${textColor};">${count}</td>`;
+      }).join('');
+
+      return `
+        <tr>
+          <th class="heatmap-sectype-header">${escapeHtml(secType)}</th>
+          ${cells}
+        </tr>
+      `;
+    }).join('');
+
+    return `
+      <div class="heatmap-container">
+        <div class="heatmap-header">
+          <h3><span class="material-icons">grid_on</span> Heatmap: Security Types vs Clients</h3>
+        </div>
+        <div class="heatmap-wrapper">
+          <table class="heatmap-table">
+            <thead>
+              <tr>
+                <th class="heatmap-corner"></th>
+                ${headerCells}
+              </tr>
+            </thead>
+            <tbody>
+              ${rows}
+            </tbody>
+          </table>
+        </div>
+        <div class="heatmap-legend">
+          <span class="legend-label">Less</span>
+          <div class="legend-gradient"></div>
+          <span class="legend-label">More</span>
+        </div>
+      </div>
+    `;
   }
 
   // Hotfix table sort handler (event delegation)
@@ -713,7 +878,39 @@ document.addEventListener('DOMContentLoaded', () => {
         hotfixSortDirection = 'asc';
       }
       
-      renderHotfixResults(currentHotfixData, true);
+      renderHotfixResults(currentHotfixData, true, true);
+    }
+    
+    // Handle heatmap cell clicks
+    const heatmapCell = e.target.closest('.heatmap-cell.clickable');
+    if (heatmapCell && currentHotfixData) {
+      const secType = heatmapCell.dataset.sectype;
+      const client = heatmapCell.dataset.client;
+      const count = parseInt(heatmapCell.dataset.count, 10);
+      
+      // Only allow clicking on cells with count > 0
+      if (count === 0) return;
+      
+      // Check if this cell is already selected
+      const existingIndex = selectedHeatmapCells.findIndex(
+        c => c.securityType === secType && c.client === client
+      );
+      
+      if (existingIndex >= 0) {
+        // Deselect this cell
+        selectedHeatmapCells.splice(existingIndex, 1);
+      } else {
+        // Select this cell
+        selectedHeatmapCells.push({ securityType: secType, client: client });
+      }
+      
+      renderHotfixResults(currentHotfixData, true, true);
+    }
+    
+    // Handle clear filter button click
+    if (e.target.closest('#clearHeatmapFilter')) {
+      selectedHeatmapCells = [];
+      renderHotfixResults(currentHotfixData, true, false);
     }
   });
 
