@@ -203,9 +203,13 @@
         const storySecTypes = story.securityTypes || [];
         const storyClients = story.clientEnvironments || [];
         
-        return selectedReleaseHeatmapCells.some(cell => 
-          storySecTypes.includes(cell.securityType) && storyClients.includes(cell.client)
-        );
+        return selectedReleaseHeatmapCells.some(cell => {
+          // __ALL__ means all clients for that security type, but only if the story has clients
+          if (cell.client === '__ALL__') {
+            return storySecTypes.includes(cell.securityType) && storyClients.length > 0;
+          }
+          return storySecTypes.includes(cell.securityType) && storyClients.includes(cell.client);
+        });
       });
     }
 

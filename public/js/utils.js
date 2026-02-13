@@ -125,6 +125,12 @@ function renderHeatmap(data, selectedCells = []) {
   ).join('');
 
   const rows = securityTypes.map(secType => {
+    // Calculate row total
+    let rowTotal = 0;
+    for (const client of clients) {
+      rowTotal += matrix[secType]?.[client] || 0;
+    }
+
     const cells = clients.map(client => {
       const count = matrix[secType]?.[client] || 0;
       const bgColor = getHeatColor(count);
@@ -134,10 +140,18 @@ function renderHeatmap(data, selectedCells = []) {
       return `<td class="${cellClass}" data-sectype="${escapeHtml(secType)}" data-client="${escapeHtml(client)}" data-count="${count}" style="background-color: ${bgColor}; color: ${textColor};">${count}</td>`;
     }).join('');
 
+    // Total cell - uses __ALL__ as special client marker
+    const totalBgColor = getHeatColor(rowTotal);
+    const totalTextColor = rowTotal > 0 ? '#202124' : '#9aa0a6';
+    const isTotalSelected = isCellSelected(secType, '__ALL__');
+    const totalCellClass = `heatmap-cell heatmap-total-cell${rowTotal > 0 ? ' clickable' : ''}${isTotalSelected ? ' selected' : ''}`;
+    const totalCell = `<td class="${totalCellClass}" data-sectype="${escapeHtml(secType)}" data-client="__ALL__" data-count="${rowTotal}" style="background-color: ${totalBgColor}; color: ${totalTextColor}; font-weight: 600;">${rowTotal}</td>`;
+
     return `
       <tr>
         <th class="heatmap-sectype-header">${escapeHtml(secType)}</th>
         ${cells}
+        ${totalCell}
       </tr>
     `;
   }).join('');
@@ -153,6 +167,7 @@ function renderHeatmap(data, selectedCells = []) {
             <tr>
               <th class="heatmap-corner"></th>
               ${headerCells}
+              <th class="heatmap-total-header">Total</th>
             </tr>
           </thead>
           <tbody>

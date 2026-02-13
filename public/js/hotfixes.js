@@ -205,9 +205,13 @@
         const storySecTypes = story.securityTypes || [];
         const storyClients = story.clientEnvironments || [];
         
-        return selectedHeatmapCells.some(cell => 
-          storySecTypes.includes(cell.securityType) && storyClients.includes(cell.client)
-        );
+        return selectedHeatmapCells.some(cell => {
+          // __ALL__ means all clients for that security type, but only if the story has clients
+          if (cell.client === '__ALL__') {
+            return storySecTypes.includes(cell.securityType) && storyClients.length > 0;
+          }
+          return storySecTypes.includes(cell.securityType) && storyClients.includes(cell.client);
+        });
       });
     }
 
@@ -266,6 +270,7 @@
         <thead>
           <tr>
             <th>Key</th>
+            <th>Type</th>
             <th>Summary</th>
             <th>Fix Versions</th>
             <th class="hotfix-sort-header" data-sort="securityTypes">
@@ -288,6 +293,9 @@
             <tr>
               <td>
                 <a href="${baseUrl}/browse/${escapeHtml(story.key)}" target="_blank" rel="noopener noreferrer" class="item-key">${escapeHtml(story.key)}</a>
+              </td>
+              <td>
+                <span class="issue-type-badge ${story.issueType === 'Bug' ? 'issue-type-bug' : 'issue-type-story'}">${escapeHtml(story.issueType || 'Story')}</span>
               </td>
               <td class="summary-cell">${escapeHtml(story.summary)}</td>
               <td>

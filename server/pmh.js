@@ -112,7 +112,7 @@ async function fetchStoriesWithFixVersions() {
 
   const response = await axios.post(`${baseUrl}/rest/api/3/search/jql`, {
     jql: 'project = VT AND issuetype in (Story, Bug) AND status in (Done, Ready, "Partial Release") AND fixVersion is not EMPTY',
-    fields: ['summary', 'status', 'fixVersions', 'customfield_10400', 'customfield_16068', 'customfield_13235'],
+    fields: ['summary', 'status', 'fixVersions', 'issuetype', 'customfield_10400', 'customfield_16068', 'customfield_13235'],
     maxResults: 500
   }, { headers });
 
@@ -184,6 +184,7 @@ router.get('/hotfix-check', async (req, res) => {
         missingStories.push({
           key: issue.key,
           summary: issue.fields.summary,
+          issueType: issue.fields.issuetype?.name || 'Unknown',
           fixVersions: fixVersions.map(fv => fv.name),
           securityTypes: securityTypes.map(st => st.value),
           clientEnvironments: clientEnvironments.map(ce => ce.value),

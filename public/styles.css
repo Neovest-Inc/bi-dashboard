@@ -1398,6 +1398,9 @@ body {
   padding: 12px 16px;
   text-align: left;
   border-bottom: 1px solid #e8eaed;
+  font-size: 13px;
+  color: #202124;
+  vertical-align: middle;
 }
 
 .release-table th {
@@ -1592,6 +1595,26 @@ body {
   min-width: 150px;
   border-right: 1px solid #e8eaed;
   white-space: nowrap;
+}
+
+.heatmap-total-header {
+  padding: 10px 12px;
+  background: #e8eaed;
+  font-weight: 600;
+  font-size: 11px;
+  color: #202124;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  text-align: center;
+  min-width: 70px;
+  border-bottom: 1px solid #dadce0;
+  border-left: 2px solid #dadce0;
+  white-space: nowrap;
+}
+
+.heatmap-total-cell {
+  border-left: 2px solid #dadce0;
+  background: #f1f3f4 !important;
 }
 
 .heatmap-cell {
