@@ -53,6 +53,36 @@ app.get('/api/jira', async (req, res) => {
     // 2. For each Epic, fetch Stories and build structure
     const businessProjectsMap = {};
 
+    // Helper function to check if a story is completed
+    const isStoryCompleted = (status) => {
+      if (!status) return false;
+      const statusLower = status.toLowerCase();
+      return statusLower === 'done' || statusLower === 'ready' || statusLower === 'partial release';
+    };
+
+    // Helper function to calculate progress for an epic
+    const calculateEpicProgress = (stories) => {
+      let totalPoints = 0;
+      let completedPoints = 0;
+
+      stories.forEach(story => {
+        const points = story.storyPoints;
+        // Ignore stories with null, undefined, or 0 story points
+        if (points && points > 0) {
+          totalPoints += points;
+          if (isStoryCompleted(story.status)) {
+            completedPoints += points;
+          }
+        }
+      });
+
+      const progressPercentage = totalPoints > 0 
+        ? Math.round((completedPoints / totalPoints) * 100) 
+        : null;
+
+      return { totalPoints, completedPoints, progressPercentage };
+    };
+
     for (const epic of epics) {
       const epicKey = epic.key;
       const epicSummary = epic.fields.summary;
@@ -78,13 +108,19 @@ app.get('/api/jira', async (req, res) => {
         businessProjects: story.fields.customfield_16369 || []
       }));
 
+      // Calculate progress for this epic
+      const progress = calculateEpicProgress(stories);
+
       const epicData = {
         key: epicKey,
         summary: epicSummary,
         dueDate: epicDueDate,
         clientEnvironments: epicClientEnvironments,
         stories,
-        type: 'epic'
+        type: 'epic',
+        totalPoints: progress.totalPoints,
+        completedPoints: progress.completedPoints,
+        progressPercentage: progress.progressPercentage
       };
 
       // 3. Group by Business Project
@@ -151,14 +187,49 @@ console.log('Fetched standalone stories:', standaloneStories.length);
       }
     }
 
-    // 6. Save to data.json
-    const dataPath = path.join(__dirname, '..', 'data.json');
-    fs.writeFileSync(dataPath, JSON.stringify(businessProjectsMap, null, 2));
+    // 6. Calculate project-level progress for each business project
+    const projectsWithProgress = {};
+    Object.keys(businessProjectsMap).forEach(projectName => {
+      const items = businessProjectsMap[projectName];
+      let projectTotalPoints = 0;
+      let projectCompletedPoints = 0;
 
-    // 6. Return the JSON with Jira base URL for linking
+      items.forEach(item => {
+        if (item.type === 'epic') {
+          projectTotalPoints += item.totalPoints || 0;
+          projectCompletedPoints += item.completedPoints || 0;
+        } else if (item.type === 'story') {
+          // Include standalone stories in project progress
+          const points = item.storyPoints;
+          if (points && points > 0) {
+            projectTotalPoints += points;
+            if (isStoryCompleted(item.status)) {
+              projectCompletedPoints += points;
+            }
+          }
+        }
+      });
+
+      const projectProgressPercentage = projectTotalPoints > 0
+        ? Math.round((projectCompletedPoints / projectTotalPoints) * 100)
+        : null;
+
+      projectsWithProgress[projectName] = {
+        items: items,
+        totalPoints: projectTotalPoints,
+        completedPoints: projectCompletedPoints,
+        progressPercentage: projectProgressPercentage
+      };
+    });
+
+    // 7. Save to data.json
+    const dataPath = path.join(__dirname, '..', 'data.json');
+    fs.writeFileSync(dataPath, JSON.stringify(projectsWithProgress, null, 2));
+
+    // 8. Return the JSON with Jira base URL for linking
     res.json({
       jiraBaseUrl: process.env.JIRA_BASE_URL,
-      projects: businessProjectsMap
+      projects: projectsWithProgress
     });
   } catch (error) {
     console.error('Jira API error:', error.response?.data || error.message);

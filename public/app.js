@@ -98,7 +98,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let totalStories = 0;
 
     projects.forEach(project => {
-      data[project].forEach(item => {
+      const items = data[project].items || data[project];
+      items.forEach(item => {
         if (item.type === 'epic') {
           totalEpics++;
           totalStories += item.stories.length;
@@ -114,7 +115,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Render projects
     projectsList.innerHTML = projects.map(projectName => {
-      const items = data[projectName];
+      const projectData = data[projectName];
+      const items = projectData.items || projectData;
+      const projectProgress = projectData.progressPercentage;
+      const projectTotalPoints = projectData.totalPoints || 0;
+      const projectCompletedPoints = projectData.completedPoints || 0;
+      
       const epics = items.filter(item => item.type === 'epic');
       const stories = items.filter(item => item.type === 'story');
       
@@ -127,7 +133,36 @@ document.addEventListener('DOMContentLoaded', () => {
       }).join('');
 
       const totalStoriesInEpics = epics.reduce((sum, e) => sum + e.stories.length, 0);
+      const totalStories = totalStoriesInEpics + stories.length;
       const itemCountText = `${epics.length} epic${epics.length !== 1 ? 's' : ''}, ${stories.length} standalone stor${stories.length !== 1 ? 'ies' : 'y'}`;
+
+      // Progress display with dynamic gradient
+      let progressGradient = '';
+      if (projectProgress !== null && projectProgress !== undefined) {
+        if (projectProgress < 30) {
+          // 0-30%: gray to slightly blue
+          const blueAmount = Math.round((projectProgress / 30) * 100);
+          progressGradient = `linear-gradient(90deg, #9aa0a6 0%, #9aa0a6 ${100 - blueAmount}%, #5f9dea ${blueAmount}%, #1a73e8 100%)`;
+        } else if (projectProgress < 70) {
+          // 30-70%: blue
+          progressGradient = 'linear-gradient(90deg, #1a73e8 0%, #1967d2 100%)';
+        } else {
+          // 70-100%: blue to green
+          const greenStart = Math.round(((projectProgress - 70) / 30) * 100);
+          progressGradient = `linear-gradient(90deg, #1a73e8 0%, #1a73e8 ${100 - greenStart}%, #34a853 ${greenStart}%, #34a853 100%)`;
+        }
+      }
+      
+      const progressDisplay = projectProgress !== null && projectProgress !== undefined
+        ? `
+          <div class="project-progress-container">
+            <div class="project-progress-bar">
+              <div class="project-progress-fill" style="width: ${projectProgress}%; background: ${progressGradient};"></div>
+            </div>
+            <span class="project-progress-text">${projectProgress}% (${projectCompletedPoints}/${projectTotalPoints} points)</span>
+          </div>
+        `
+        : '<div class="project-progress-container"><span class="project-progress-text no-estimates">No estimates yet</span></div>';
 
       return `
         <div class="business-project">
@@ -135,9 +170,10 @@ document.addEventListener('DOMContentLoaded', () => {
             <span class="material-icons expand-icon">chevron_right</span>
             <div class="project-info">
               <div class="project-name">${escapeHtml(projectName)}</div>
+              ${progressDisplay}
               <div class="project-meta">${itemCountText}</div>
             </div>
-            <span class="project-badge">${totalStoriesInEpics} stories in epics</span>
+            <span class="project-badge">${totalStories} stor${totalStories !== 1 ? 'ies' : 'y'}</span>
           </div>
           <div class="project-content">
             ${itemCards}
@@ -163,6 +199,20 @@ document.addEventListener('DOMContentLoaded', () => {
           `<span class="epic-client-env"><span class="material-icons">cloud</span>${escapeHtml(env.value)}</span>`
         ).join('');
     
+    // Progress display - last badge on the right
+    let progressBadgeClass = '';
+    if (epic.progressPercentage !== null && epic.progressPercentage !== undefined) {
+      if (epic.progressPercentage === 100) {
+        progressBadgeClass = ' complete';
+      } else if (epic.progressPercentage >= 30) {
+        progressBadgeClass = ' in-progress';
+      }
+      // else: 0-29% uses default gray style
+    }
+    const progressDisplay = epic.progressPercentage !== null && epic.progressPercentage !== undefined
+      ? `<span class="epic-progress-badge${progressBadgeClass}">${epic.progressPercentage}%</span>`
+      : '<span class="epic-progress-badge no-estimates">No estimates</span>';
+
     const storiesHtml = epic.stories.length > 0
       ? `<div class="stories-list">${epic.stories.map(story => renderStory(story)).join('')}</div>`
       : `<div class="no-stories"><span class="material-icons">inbox</span><p>No stories in this epic</p></div>`;
@@ -181,6 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ${clientEnvDisplay}
           <span class="epic-due-date${hasNoDueDate ? ' date-warning' : ''}"><span class="material-icons">event</span>${dueDateDisplay}</span>
           <span class="epic-stories-count${hasNoStories ? ' count-warning' : ''}">${epic.stories.length} stor${epic.stories.length !== 1 ? 'ies' : 'y'}</span>
+          ${progressDisplay}
         </div>
         <div class="epic-content">
           ${storiesHtml}
@@ -254,7 +305,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const seenStories = new Set();
 
     // Collect all epics and stories with missing data
-    Object.values(data).forEach(items => {
+    Object.values(data).forEach(projectData => {
+      const items = projectData.items || projectData;
       items.forEach(item => {
         if (item.type === 'epic') {
           // Check epic for missing fields (avoid duplicates)
