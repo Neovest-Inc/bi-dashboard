@@ -24,6 +24,10 @@
           <span class="material-icons">warning</span>
           Missing Data
         </button>
+        <button class="nav-tab" data-tab="hotfix-check">
+          <span class="material-icons">bug_report</span>
+          Post-Release Hotfixes
+        </button>
       </nav>
       <button id="refreshBtn" class="refresh-btn">
         <span class="material-icons">refresh</span>
@@ -73,6 +77,28 @@
         <button class="filter-btn" data-filter="story">Stories Only</button>
       </div>
       <div id="missingDataTable" class="missing-data-table-container"></div>
+    </div>
+
+    <div id="hotfix-check" class="hotfix-check tab-content" style="display: none;">
+      <div class="hotfix-check-header">
+        <h2><span class="material-icons">bug_report</span> Post-Release Hotfix Check</h2>
+        <p class="hotfix-check-subtitle">Identify stories included in hotfixes but missing from release versions</p>
+      </div>
+      <div class="hotfix-check-controls">
+        <label for="targetVersionSelect">Target Release Version:</label>
+        <select id="targetVersionSelect" class="version-select">
+          <option value="">Select a version...</option>
+        </select>
+        <button id="checkHotfixBtn" class="check-hotfix-btn">
+          <span class="material-icons">search</span>
+          Check
+        </button>
+      </div>
+      <div id="hotfixLoading" class="hotfix-loading" style="display: none;">
+        <div class="spinner"></div>
+        <p>Checking for missing stories...</p>
+      </div>
+      <div id="hotfixResults" class="hotfix-results"></div>
     </div>
   </main>
 

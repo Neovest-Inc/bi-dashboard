@@ -9,6 +9,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const navTabs = document.querySelectorAll('.nav-tab');
   const filterBtns = document.querySelectorAll('.filter-btn');
 
+  // Hotfix check elements
+  const hotfixCheckView = document.getElementById('hotfix-check');
+  const targetVersionSelect = document.getElementById('targetVersionSelect');
+  const checkHotfixBtn = document.getElementById('checkHotfixBtn');
+  const hotfixLoading = document.getElementById('hotfixLoading');
+  const hotfixResults = document.getElementById('hotfixResults');
+
   const projectCount = document.getElementById('projectCount');
   const epicCount = document.getElementById('epicCount');
   const storyCount = document.getElementById('storyCount');
@@ -18,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentFilter = 'all';
   let developerSortState = 'none'; // 'none', 'desc', 'asc'
   let originalMissingItems = [];
+  let hotfixVersionsLoaded = false;
 
   // Tab switching
   navTabs.forEach(tab => {
@@ -29,10 +37,19 @@ document.addEventListener('DOMContentLoaded', () => {
       if (tabId === 'dashboard') {
         dashboard.style.display = 'block';
         missingDataView.style.display = 'none';
+        hotfixCheckView.style.display = 'none';
       } else if (tabId === 'missing-data') {
         dashboard.style.display = 'none';
         missingDataView.style.display = 'block';
+        hotfixCheckView.style.display = 'none';
         if (currentData) renderMissingDataTable(currentData);
+      } else if (tabId === 'hotfix-check') {
+        dashboard.style.display = 'none';
+        missingDataView.style.display = 'none';
+        hotfixCheckView.style.display = 'block';
+        if (!hotfixVersionsLoaded) {
+          loadHotfixVersions();
+        }
       }
     });
   });
@@ -294,7 +311,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function getStatusClass(status) {
     if (!status) return 'status-todo';
     const s = status.toLowerCase();
-    if (s.includes('done') || s.includes('closed') || s.includes('resolved') || s.includes('ready')) return 'status-done';
+    if (s.includes('done') || s.includes('closed') || s.includes('resolved') || s.includes('ready') || s.includes('partial')) return 'status-done';
     if (s.includes('progress') || s.includes('review') || s.includes('testing')) return 'status-in-progress';
     return 'status-todo';
   }
@@ -488,6 +505,121 @@ document.addEventListener('DOMContentLoaded', () => {
     const content = header.nextElementSibling;
     content.classList.toggle('expanded');
   };
+
+  // Hotfix Check Functions
+  async function loadHotfixVersions() {
+    try {
+      const response = await fetch('/api/hotfix-versions');
+      if (!response.ok) throw new Error('Failed to fetch versions');
+      const data = await response.json();
+      
+      targetVersionSelect.innerHTML = '<option value="">Select a version...</option>';
+      data.versions.forEach(version => {
+        const option = document.createElement('option');
+        option.value = version;
+        option.textContent = version;
+        targetVersionSelect.appendChild(option);
+      });
+      
+      hotfixVersionsLoaded = true;
+    } catch (err) {
+      console.error('Error loading hotfix versions:', err);
+      hotfixResults.innerHTML = `
+        <div class="hotfix-error">
+          <span class="material-icons">error_outline</span>
+          <p>Failed to load versions. Please try again.</p>
+        </div>
+      `;
+    }
+  }
+
+  async function checkHotfixes() {
+    const targetVersion = targetVersionSelect.value;
+    if (!targetVersion) {
+      hotfixResults.innerHTML = `
+        <div class="hotfix-info">
+          <span class="material-icons">info</span>
+          <p>Please select a target release version.</p>
+        </div>
+      `;
+      return;
+    }
+
+    hotfixLoading.style.display = 'flex';
+    hotfixResults.innerHTML = '';
+
+    try {
+      const response = await fetch(`/api/hotfix-check?targetVersion=${encodeURIComponent(targetVersion)}`);
+      if (!response.ok) throw new Error('Failed to check hotfixes');
+      const data = await response.json();
+      
+      renderHotfixResults(data);
+    } catch (err) {
+      console.error('Error checking hotfixes:', err);
+      hotfixResults.innerHTML = `
+        <div class="hotfix-error">
+          <span class="material-icons">error_outline</span>
+          <p>Failed to check hotfixes. Please try again.</p>
+        </div>
+      `;
+    } finally {
+      hotfixLoading.style.display = 'none';
+    }
+  }
+
+  function renderHotfixResults(data) {
+    const { targetVersion, missingStories, jiraBaseUrl: baseUrl } = data;
+
+    if (missingStories.length === 0) {
+      hotfixResults.innerHTML = `
+        <div class="hotfix-success">
+          <span class="material-icons">check_circle</span>
+          <p>No missing stories found for version ${escapeHtml(targetVersion)}!</p>
+          <p class="hotfix-success-subtitle">All hotfixed stories are included in this release.</p>
+        </div>
+      `;
+      return;
+    }
+
+    const tableHtml = `
+      <div class="hotfix-results-header">
+        <span class="material-icons">warning</span>
+        <span>Found ${missingStories.length} stor${missingStories.length !== 1 ? 'ies' : 'y'} missing from ${escapeHtml(targetVersion)}</span>
+      </div>
+      <table class="hotfix-table">
+        <thead>
+          <tr>
+            <th>Key</th>
+            <th>Summary</th>
+            <th>Fix Versions</th>
+            <th>Responsible</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${missingStories.map(story => `
+            <tr>
+              <td>
+                <a href="${baseUrl}/browse/${escapeHtml(story.key)}" target="_blank" rel="noopener noreferrer" class="item-key">${escapeHtml(story.key)}</a>
+              </td>
+              <td class="summary-cell">${escapeHtml(story.summary)}</td>
+              <td>
+                <div class="fix-versions-list">
+                  ${story.fixVersions.map(v => `<span class="fix-version-tag">${escapeHtml(v)}</span>`).join('')}
+                </div>
+              </td>
+              <td>${story.responsibleForChange ? escapeHtml(story.responsibleForChange) : '-'}</td>
+              <td><span class="story-status ${getStatusClass(story.status)}">${escapeHtml(story.status || 'Unknown')}</span></td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    `;
+
+    hotfixResults.innerHTML = tableHtml;
+  }
+
+  checkHotfixBtn.addEventListener('click', checkHotfixes);
 
   refreshBtn.addEventListener('click', fetchData);
 

@@ -5,6 +5,8 @@ const express = require('express');
 const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
+const { getJiraHeaders, getJiraBaseUrl } = require('./auth');
+const pmhRoutes = require('./pmh');
 
 // Test Jira connectivity on server startup
 // (async () => {
@@ -32,17 +34,16 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
+// Mount PMH (Post-Release Hotfix) routes
+app.use('/api', pmhRoutes);
+
 app.get('/api/jira', async (req, res) => {
   try {
-    const auth = Buffer.from(`${process.env.JIRA_EMAIL}:${process.env.JIRA_API_TOKEN}`).toString('base64');
-    const headers = {
-      'Authorization': `Basic ${auth}`,
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    };
+    const headers = getJiraHeaders();
+    const baseUrl = getJiraBaseUrl();
 
     // 1. Fetch all Epics for project VT with Business Projects populated
-    const epicsResponse = await axios.post(`${process.env.JIRA_BASE_URL}/rest/api/3/search/jql`, {
+    const epicsResponse = await axios.post(`${baseUrl}/rest/api/3/search/jql`, {
       jql: 'project = VT AND issuetype = Epic AND "Business Projects[Select List (multiple choices)]" is not empty',
       fields: ['summary', 'customfield_16369', 'duedate', 'customfield_13235'],
       maxResults: 100
@@ -91,7 +92,7 @@ app.get('/api/jira', async (req, res) => {
       const businessProjects = epic.fields.customfield_16369 || [];
 
       // Fetch Stories linked to this Epic
-      const storiesResponse = await axios.post(`${process.env.JIRA_BASE_URL}/rest/api/3/search/jql`, {
+      const storiesResponse = await axios.post(`${baseUrl}/rest/api/3/search/jql`, {
         jql: `project = VT AND issuetype = Story AND "Epic Link" = ${epicKey}`,
         fields: ['summary', 'status', 'customfield_10115', 'customfield_10400', 'parent', 'customfield_16369'],
         maxResults: 100
@@ -141,7 +142,7 @@ app.get('/api/jira', async (req, res) => {
     }
 
     // 4. Fetch Stories with Business Projects populated
-    const standaloneStoriesResponse = await axios.post(`${process.env.JIRA_BASE_URL}/rest/api/3/search/jql`, {
+    const standaloneStoriesResponse = await axios.post(`${baseUrl}/rest/api/3/search/jql`, {
       jql: 'project = VT AND issuetype = Story AND "Business Projects[Select List (multiple choices)]" is not empty',
       fields: ['summary', 'status', 'customfield_10115', 'customfield_10400', 'parent', 'customfield_16369'],
       maxResults: 100
@@ -228,7 +229,7 @@ console.log('Fetched standalone stories:', standaloneStories.length);
 
     // 8. Return the JSON with Jira base URL for linking
     res.json({
-      jiraBaseUrl: process.env.JIRA_BASE_URL,
+      jiraBaseUrl: baseUrl,
       projects: projectsWithProgress
     });
   } catch (error) {

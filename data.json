@@ -433,7 +433,7 @@
           {
             "key": "VT-1775",
             "summary": "UI: Add new columns to Equity Dividend projection schedule",
-            "status": "Ready",
+            "status": "Partial Release",
             "storyPoints": 2,
             "responsibleForChange": "Adriano Bittencourt",
             "parent": "VT-1740",
@@ -845,7 +845,7 @@
           {
             "key": "VT-1775",
             "summary": "UI: Add new columns to Equity Dividend projection schedule",
-            "status": "Ready",
+            "status": "Partial Release",
             "storyPoints": 2,
             "responsibleForChange": "Adriano Bittencourt",
             "parent": "VT-1740",
@@ -1151,7 +1151,7 @@
           {
             "key": "VT-1775",
             "summary": "UI: Add new columns to Equity Dividend projection schedule",
-            "status": "Ready",
+            "status": "Partial Release",
             "storyPoints": 2,
             "responsibleForChange": "Adriano Bittencourt",
             "parent": "VT-1740",

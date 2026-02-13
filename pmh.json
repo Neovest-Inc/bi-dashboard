@@ -1,0 +1,62 @@
+{
+  "targetVersion": "9.94.0",
+  "fetchedAt": "2026-02-13T11:49:28.680Z",
+  "missingStories": [
+    {
+      "key": "VT-2072",
+      "summary": "LCS-78011 - URGENT - BAM Symbol lookup issue on Rates ",
+      "fixVersions": [
+        "9.92.63",
+        "9.92.64"
+      ],
+      "responsibleForChange": "Milan Cvetanovic",
+      "status": "Ready"
+    },
+    {
+      "key": "VT-2021",
+      "summary": "LCS-76999 - Bloomberg Connection Is broken",
+      "fixVersions": [
+        "9.92.9"
+      ],
+      "responsibleForChange": "Aleksandar Simic",
+      "status": "Ready"
+    },
+    {
+      "key": "VT-1989",
+      "summary": "CL053 Remove Core Affinities for all Services on the Server",
+      "fixVersions": [
+        "9.91.102"
+      ],
+      "responsibleForChange": "Milan Cvetanovic",
+      "status": "Done"
+    },
+    {
+      "key": "VT-1964",
+      "summary": "4Y VaR Support",
+      "fixVersions": [
+        "9.92.34"
+      ],
+      "responsibleForChange": "Milan Cvetanovic",
+      "status": "Ready"
+    },
+    {
+      "key": "VT-1757",
+      "summary": "LCS-72322 - ***URGENT***Balance difference for COB: 11/13",
+      "fixVersions": [
+        "9.90.47",
+        "9.90.39"
+      ],
+      "responsibleForChange": "Harllon Paz",
+      "status": "Partial Release"
+    },
+    {
+      "key": "VT-1724",
+      "summary": "LCS-71862 - Re: [CL023] [Error] - 15:00 Americas Bond Close",
+      "fixVersions": [
+        "9.90.12"
+      ],
+      "responsibleForChange": "Harllon Paz",
+      "status": "Done"
+    }
+  ]
+}
