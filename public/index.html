@@ -28,6 +28,10 @@
           <span class="material-icons">bug_report</span>
           Post-Release Hotfixes
         </button>
+        <button class="nav-tab" data-tab="releases">
+          <span class="material-icons">new_releases</span>
+          Releases
+        </button>
       </nav>
       <button id="refreshBtn" class="refresh-btn">
         <span class="material-icons">refresh</span>
@@ -100,8 +104,33 @@
       </div>
       <div id="hotfixResults" class="hotfix-results"></div>
     </div>
+
+    <div id="releases" class="releases-view tab-content" style="display: none;">
+      <div class="releases-header">
+        <h2><span class="material-icons">new_releases</span> Release Contents</h2>
+        <p class="releases-subtitle">View all stories and bugs included in a release version</p>
+      </div>
+      <div class="releases-controls">
+        <label for="releaseVersionSelect">Target Release Version:</label>
+        <select id="releaseVersionSelect" class="version-select">
+          <option value="">Select a version...</option>
+        </select>
+        <button id="checkReleaseBtn" class="check-release-btn">
+          <span class="material-icons">search</span>
+          Check
+        </button>
+      </div>
+      <div id="releaseLoading" class="release-loading" style="display: none;">
+        <div class="spinner"></div>
+        <p>Loading release content...</p>
+      </div>
+      <div id="releaseResults" class="release-results"></div>
+    </div>
   </main>
 
+  <script src="js/utils.js"></script>
+  <script src="js/hotfixes.js"></script>
+  <script src="js/releases.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

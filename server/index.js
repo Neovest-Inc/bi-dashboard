@@ -7,6 +7,7 @@ const fs = require('fs');
 const path = require('path');
 const { getJiraHeaders, getJiraBaseUrl } = require('./auth');
 const pmhRoutes = require('./pmh');
+const releasesRoutes = require('./releases');
 
 // Test Jira connectivity on server startup
 // (async () => {
@@ -36,6 +37,9 @@ app.get('/health', (req, res) => {
 
 // Mount PMH (Post-Release Hotfix) routes
 app.use('/api', pmhRoutes);
+
+// Mount Releases routes
+app.use('/api', releasesRoutes);
 
 app.get('/api/jira', async (req, res) => {
   try {

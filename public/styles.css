@@ -1279,6 +1279,248 @@ body {
   color: #5f6368;
 }
 
+/* ==========================================
+   RELEASES TAB STYLES
+   ========================================== */
+.releases-view {
+  padding: 0;
+}
+
+.releases-header {
+  margin-bottom: 24px;
+}
+
+.releases-header h2 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Google Sans', sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  color: #202124;
+  margin-bottom: 8px;
+}
+
+.releases-header h2 .material-icons {
+  font-size: 28px;
+  color: #1a73e8;
+}
+
+.releases-subtitle {
+  color: #5f6368;
+  font-size: 14px;
+  margin-left: 40px;
+}
+
+.releases-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding: 16px 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.releases-controls label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #202124;
+}
+
+.check-release-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Google Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.check-release-btn:hover {
+  background: #1557b0;
+  box-shadow: 0 2px 8px rgba(26, 115, 232, 0.3);
+}
+
+.check-release-btn .material-icons {
+  font-size: 18px;
+}
+
+.release-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+}
+
+.release-loading p {
+  margin-top: 16px;
+  color: #5f6368;
+  font-size: 14px;
+}
+
+.release-results-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 16px;
+  background: #e8f0fe;
+  color: #1967d2;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 8px 8px 0 0;
+}
+
+.release-results-header .material-icons {
+  font-size: 20px;
+}
+
+.release-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 0 0 8px 8px;
+  margin-bottom: 16px;
+}
+
+.release-table th,
+.release-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #e8eaed;
+}
+
+.release-table th {
+  background: #f8f9fa;
+  font-weight: 500;
+  color: #202124;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.release-table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+.release-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.release-sort-header {
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.release-sort-header:hover {
+  background: #e8eaed;
+}
+
+.release-sort-header .sort-icon {
+  font-size: 16px;
+  vertical-align: middle;
+  margin-left: 4px;
+  color: #5f6368;
+}
+
+.release-filter-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: #e8f0fe;
+  border: 1px solid #d2e3fc;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.release-filter-status span {
+  color: #1967d2;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.release-filter-status .clear-filter-btn {
+  margin-left: auto;
+}
+
+.release-empty,
+.release-error,
+.release-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.release-empty .material-icons {
+  font-size: 36px;
+  color: #5f6368;
+  margin-bottom: 12px;
+}
+
+.release-error .material-icons {
+  font-size: 36px;
+  color: #d93025;
+  margin-bottom: 12px;
+}
+
+.release-info .material-icons {
+  font-size: 36px;
+  color: #1a73e8;
+  margin-bottom: 12px;
+}
+
+.release-empty p,
+.release-error p,
+.release-info p {
+  font-size: 14px;
+  color: #5f6368;
+}
+
+/* Issue Type Badges for Releases */
+.issue-type-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.issue-type-story {
+  background: #e8f0fe;
+  color: #1967d2;
+}
+
+.issue-type-bug {
+  background: #fce8e6;
+  color: #d93025;
+}
+
+/* Current version highlight in releases */
+.fix-version-tag.current-version {
+  background: #e6f4ea;
+  color: #137333;
+  border: 1px solid #34a853;
+}
+
 /* Heatmap Styles */
 .heatmap-container {
   margin-top: 32px;
