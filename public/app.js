@@ -26,6 +26,11 @@ document.addEventListener('DOMContentLoaded', () => {
   let developerSortState = 'none'; // 'none', 'desc', 'asc'
   let originalMissingItems = [];
   let hotfixVersionsLoaded = false;
+  
+  // Hotfix table sorting state
+  let hotfixSortColumn = 'none'; // 'securityTypes', 'clients', 'developer'
+  let hotfixSortDirection = 'none'; // 'none', 'asc', 'desc'
+  let currentHotfixData = null;
 
   // Tab switching
   navTabs.forEach(tab => {
@@ -567,8 +572,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function renderHotfixResults(data) {
+  function renderHotfixResults(data, preserveSort = false) {
     const { targetVersion, missingStories, jiraBaseUrl: baseUrl } = data;
+    
+    // Store for re-rendering when sorting
+    currentHotfixData = data;
 
     if (missingStories.length === 0) {
       hotfixResults.innerHTML = `
@@ -581,6 +589,46 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    // Reset sort state if not preserving
+    if (!preserveSort) {
+      hotfixSortColumn = 'none';
+      hotfixSortDirection = 'none';
+    }
+
+    // Sort stories if needed
+    let sortedStories = [...missingStories];
+    if (hotfixSortColumn !== 'none' && hotfixSortDirection !== 'none') {
+      sortedStories.sort((a, b) => {
+        let valA, valB;
+        
+        if (hotfixSortColumn === 'securityTypes') {
+          valA = (a.securityTypes && a.securityTypes.length > 0) ? a.securityTypes.join(', ').toLowerCase() : '';
+          valB = (b.securityTypes && b.securityTypes.length > 0) ? b.securityTypes.join(', ').toLowerCase() : '';
+        } else if (hotfixSortColumn === 'clients') {
+          valA = (a.clientEnvironments && a.clientEnvironments.length > 0) ? a.clientEnvironments.join(', ').toLowerCase() : '';
+          valB = (b.clientEnvironments && b.clientEnvironments.length > 0) ? b.clientEnvironments.join(', ').toLowerCase() : '';
+        } else if (hotfixSortColumn === 'developer') {
+          valA = (a.responsibleForChange || '').toLowerCase();
+          valB = (b.responsibleForChange || '').toLowerCase();
+        }
+        
+        // Empty values go to the end
+        if (!valA && !valB) return 0;
+        if (!valA) return 1;
+        if (!valB) return -1;
+        
+        const result = valA.localeCompare(valB);
+        return hotfixSortDirection === 'desc' ? -result : result;
+      });
+    }
+
+    const getSortIcon = (column) => {
+      if (hotfixSortColumn !== column) return 'unfold_more';
+      if (hotfixSortDirection === 'asc') return 'arrow_upward';
+      if (hotfixSortDirection === 'desc') return 'arrow_downward';
+      return 'unfold_more';
+    };
+
     const tableHtml = `
       <div class="hotfix-results-header">
         <span class="material-icons">warning</span>
@@ -592,12 +640,23 @@ document.addEventListener('DOMContentLoaded', () => {
             <th>Key</th>
             <th>Summary</th>
             <th>Fix Versions</th>
-            <th>Responsible</th>
+            <th class="hotfix-sort-header" data-sort="securityTypes">
+              Security Types
+              <span class="material-icons sort-icon">${getSortIcon('securityTypes')}</span>
+            </th>
+            <th class="hotfix-sort-header" data-sort="clients">
+              Clients
+              <span class="material-icons sort-icon">${getSortIcon('clients')}</span>
+            </th>
+            <th class="hotfix-sort-header" data-sort="developer">
+              Developer
+              <span class="material-icons sort-icon">${getSortIcon('developer')}</span>
+            </th>
             <th>Status</th>
           </tr>
         </thead>
         <tbody>
-          ${missingStories.map(story => `
+          ${sortedStories.map(story => `
             <tr>
               <td>
                 <a href="${baseUrl}/browse/${escapeHtml(story.key)}" target="_blank" rel="noopener noreferrer" class="item-key">${escapeHtml(story.key)}</a>
@@ -606,6 +665,20 @@ document.addEventListener('DOMContentLoaded', () => {
               <td>
                 <div class="fix-versions-list">
                   ${story.fixVersions.map(v => `<span class="fix-version-tag">${escapeHtml(v)}</span>`).join('')}
+                </div>
+              </td>
+              <td>
+                <div class="security-types-list">
+                  ${story.securityTypes && story.securityTypes.length > 0 
+                    ? story.securityTypes.map(st => `<span class="security-type-tag">${escapeHtml(st)}</span>`).join('') 
+                    : '-'}
+                </div>
+              </td>
+              <td>
+                <div class="client-env-list">
+                  ${story.clientEnvironments && story.clientEnvironments.length > 0 
+                    ? story.clientEnvironments.map(ce => `<span class="client-env-tag">${escapeHtml(ce)}</span>`).join('') 
+                    : '-'}
                 </div>
               </td>
               <td>${story.responsibleForChange ? escapeHtml(story.responsibleForChange) : '-'}</td>
@@ -618,6 +691,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     hotfixResults.innerHTML = tableHtml;
   }
+
+  // Hotfix table sort handler (event delegation)
+  document.addEventListener('click', (e) => {
+    const sortHeader = e.target.closest('.hotfix-sort-header');
+    if (sortHeader && currentHotfixData) {
+      const column = sortHeader.dataset.sort;
+      
+      if (hotfixSortColumn === column) {
+        // Cycle through sort states: none -> asc -> desc -> none
+        if (hotfixSortDirection === 'none') {
+          hotfixSortDirection = 'asc';
+        } else if (hotfixSortDirection === 'asc') {
+          hotfixSortDirection = 'desc';
+        } else {
+          hotfixSortDirection = 'none';
+          hotfixSortColumn = 'none';
+        }
+      } else {
+        hotfixSortColumn = column;
+        hotfixSortDirection = 'asc';
+      }
+      
+      renderHotfixResults(currentHotfixData, true);
+    }
+  });
 
   checkHotfixBtn.addEventListener('click', checkHotfixes);
 

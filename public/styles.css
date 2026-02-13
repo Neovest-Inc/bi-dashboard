@@ -1128,6 +1128,27 @@ body {
   border-bottom: 1px solid #e8eaed;
 }
 
+.hotfix-table th.hotfix-sort-header {
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.2s;
+}
+
+.hotfix-table th.hotfix-sort-header:hover {
+  background: #e8eaed;
+}
+
+.hotfix-table th.hotfix-sort-header .sort-icon {
+  font-size: 16px;
+  vertical-align: middle;
+  margin-left: 4px;
+  color: #9aa0a6;
+}
+
+.hotfix-table th.hotfix-sort-header:hover .sort-icon {
+  color: #5f6368;
+}
+
 .hotfix-table td {
   padding: 14px 16px;
   border-bottom: 1px solid #e8eaed;
@@ -1155,6 +1176,38 @@ body {
   padding: 3px 8px;
   background: #e8f0fe;
   color: #1a73e8;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.security-types-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.security-type-tag {
+  display: inline-block;
+  padding: 3px 8px;
+  background: #fef7e0;
+  color: #ea8600;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.client-env-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.client-env-tag {
+  display: inline-block;
+  padding: 3px 8px;
+  background: #e3f2fd;
+  color: #1565c0;
   border-radius: 4px;
   font-size: 11px;
   font-weight: 500;
