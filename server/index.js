@@ -231,8 +231,8 @@ app.get('/api/jira', async (req, res) => {
       };
     });
 
-    // 7. Save to data.json
-    const dataPath = path.join(__dirname, '..', 'data.json');
+    // 7. Save to data/data.json
+    const dataPath = path.join(__dirname, '..', 'data', 'data.json');
     fs.writeFileSync(dataPath, JSON.stringify(projectsWithProgress, null, 2));
 
     // 8. Return the JSON with Jira base URL for linking

@@ -53,8 +53,8 @@ router.get('/cms', async (req, res) => {
       targetDeploymentDate: issue.fields.customfield_10751 || null
     }));
 
-    // Save to cm.json
-    const dataPath = path.join(__dirname, '..', 'cm.json');
+    // Save to data/cm.json
+    const dataPath = path.join(__dirname, '..', 'data', 'cm.json');
     fs.writeFileSync(dataPath, JSON.stringify(cms, null, 2));
 
     res.json({

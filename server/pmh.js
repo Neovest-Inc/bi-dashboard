@@ -194,8 +194,8 @@ router.get('/hotfix-check', async (req, res) => {
       }
     }
 
-    // Save to pmh.json
-    const dataPath = path.join(__dirname, '..', 'pmh.json');
+    // Save to data/pmh.json
+    const dataPath = path.join(__dirname, '..', 'data', 'pmh.json');
     const result = {
       targetVersion,
       fetchedAt: new Date().toISOString(),

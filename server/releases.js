@@ -152,8 +152,8 @@ router.get('/release-stories', async (req, res) => {
       }
     }
 
-    // Save to releases.json
-    const dataPath = path.join(__dirname, '..', 'releases.json');
+    // Save to data/releases.json
+    const dataPath = path.join(__dirname, '..', 'data', 'releases.json');
     const result = {
       targetVersion,
       fetchedAt: new Date().toISOString(),
