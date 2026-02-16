@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Tab view elements
   const releasesView = document.getElementById('releases');
   const cmsView = document.getElementById('cms');
+  const dependencyMapView = document.getElementById('dependency-map');
   
   // Releases sub-views
   const releaseContentsView = document.getElementById('releaseContentsView');
@@ -37,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentTab = 'dashboard';
 
   // Valid tabs for hash routing
-  const validTabs = ['dashboard', 'missing-data', 'releases', 'cms'];
+  const validTabs = ['dashboard', 'missing-data', 'releases', 'cms', 'dependency-map'];
 
   // Initialize modules
   initializeModules();
@@ -57,6 +58,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (window.CmModule) {
       window.CmModule.init();
+    }
+    if (window.DependenciesModule) {
+      window.DependenciesModule.init();
     }
   }
 
@@ -80,6 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
     missingDataView.style.display = 'none';
     releasesView.style.display = 'none';
     cmsView.style.display = 'none';
+    dependencyMapView.style.display = 'none';
     error.style.display = 'none';
     
     if (tabId === 'dashboard') {
@@ -115,6 +120,11 @@ document.addEventListener('DOMContentLoaded', () => {
       cmsView.style.display = 'block';
       if (window.CmModule) {
         window.CmModule.onTabShow();
+      }
+    } else if (tabId === 'dependency-map') {
+      dependencyMapView.style.display = 'block';
+      if (window.DependenciesModule) {
+        window.DependenciesModule.onTabShow();
       }
     }
   }
@@ -224,6 +234,10 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (currentTab === 'cms') {
       if (window.CmModule) {
         window.CmModule.onTabShow();
+      }
+    } else if (currentTab === 'dependency-map') {
+      if (window.DependenciesModule) {
+        window.DependenciesModule.onTabShow();
       }
     }
   });

@@ -32,6 +32,10 @@
           <span class="material-icons">swap_horiz</span>
           CMs
         </button>
+        <button class="nav-tab" data-tab="dependency-map">
+          <span class="material-icons">account_tree</span>
+          Dep Map
+        </button>
       </nav>
       <button id="refreshBtn" class="refresh-btn">
         <span class="material-icons">refresh</span>
@@ -157,6 +161,24 @@
       </div>
       <div id="cmResults" class="cm-results"></div>
     </div>
+
+    <div id="dependency-map" class="dependency-map-view tab-content" style="display: none;">
+      <div class="dep-header">
+        <h2><span class="material-icons">account_tree</span> Dependency Map</h2>
+        <p class="dep-subtitle">Cross-team dependencies by quarter</p>
+      </div>
+      <div class="dep-controls">
+        <label for="quarterSelect">Quarter:</label>
+        <select id="quarterSelect" class="quarter-select">
+          <option value="">Select a quarter...</option>
+        </select>
+      </div>
+      <div id="depLoading" class="dep-loading" style="display: none;">
+        <div class="spinner"></div>
+        <p>Loading dependencies...</p>
+      </div>
+      <div id="depResults" class="dep-results"></div>
+    </div>
   </main>
 
   <script src="js/utils.js"></script>
@@ -165,6 +187,7 @@
   <script src="js/hotfixes.js"></script>
   <script src="js/releases.js"></script>
   <script src="js/cm.js"></script>
+  <script src="js/dependencies.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

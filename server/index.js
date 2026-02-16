@@ -9,6 +9,7 @@ const { getJiraHeaders, getJiraBaseUrl } = require('./auth');
 const pmhRoutes = require('./pmh');
 const releasesRoutes = require('./releases');
 const cmRoutes = require('./cm');
+const dependenciesRoutes = require('./dependencies');
 
 // Test Jira connectivity on server startup
 // (async () => {
@@ -44,6 +45,9 @@ app.use('/api', releasesRoutes);
 
 // Mount CM (Change Management) routes
 app.use('/api', cmRoutes);
+
+// Mount Dependencies routes
+app.use('/api', dependenciesRoutes);
 
 app.get('/api/jira', async (req, res) => {
   try {
