@@ -16,7 +16,7 @@
         <h1>Val Dashboard</h1>
       </div>
       <nav class="nav-tabs">
-        <button class="nav-tab active" data-tab="dashboard">
+        <button class="nav-tab" data-tab="dashboard">
           <span class="material-icons">view_list</span>
           Projects
         </button>
@@ -41,18 +41,18 @@
   </header>
 
   <main class="main-content">
-    <div id="loading" class="loading">
-      <div class="spinner"></div>
-      <p>Loading Jira data...</p>
-    </div>
-
     <div id="error" class="error-message" style="display: none;">
       <span class="material-icons">error_outline</span>
       <p>Failed to load data. Please try again.</p>
     </div>
 
-    <div id="dashboard" class="dashboard tab-content active" style="display: none;">
-      <div class="stats-bar">
+    <div id="dashboard" class="dashboard tab-content" style="display: none;">
+      <div id="dashboardLoading" class="tab-loading">
+        <div class="spinner"></div>
+        <p>Loading Projects data...</p>
+      </div>
+      <div id="dashboardContent" style="display: none;">
+        <div class="stats-bar">
         <div class="stat-item">
           <span class="stat-value" id="projectCount">0</span>
           <span class="stat-label">Business Projects</span>
@@ -67,11 +67,17 @@
         </div>
       </div>
 
-      <div id="projectsList" class="projects-list"></div>
+        <div id="projectsList" class="projects-list"></div>
+      </div>
     </div>
 
     <div id="missing-data" class="missing-data tab-content" style="display: none;">
-      <div class="missing-data-header">
+      <div id="missingDataLoading" class="tab-loading">
+        <div class="spinner"></div>
+        <p>Loading data...</p>
+      </div>
+      <div id="missingDataContent" style="display: none;">
+        <div class="missing-data-header">
         <h2><span class="material-icons">warning</span> Items with Missing Information</h2>
         <p class="missing-data-subtitle">The following Epics and Stories are missing required fields</p>
       </div>
@@ -80,7 +86,8 @@
         <button class="filter-btn" data-filter="epic">Epics Only</button>
         <button class="filter-btn" data-filter="story">Stories Only</button>
       </div>
-      <div id="missingDataTable" class="missing-data-table-container"></div>
+        <div id="missingDataTable" class="missing-data-table-container"></div>
+      </div>
     </div>
 
     <div id="releases" class="releases-view tab-content" style="display: none;">

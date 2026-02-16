@@ -1,8 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const loading = document.getElementById('loading');
   const error = document.getElementById('error');
   const dashboard = document.getElementById('dashboard');
+  const dashboardLoading = document.getElementById('dashboardLoading');
+  const dashboardContent = document.getElementById('dashboardContent');
   const missingDataView = document.getElementById('missing-data');
+  const missingDataLoading = document.getElementById('missingDataLoading');
+  const missingDataContent = document.getElementById('missingDataContent');
   const missingDataTable = document.getElementById('missingDataTable');
   const projectsList = document.getElementById('projectsList');
   const refreshBtn = document.getElementById('refreshBtn');
@@ -27,6 +30,14 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentFilter = 'all';
   let developerSortState = 'none'; // 'none', 'desc', 'asc'
   let originalMissingItems = [];
+  
+  // Lazy loading state
+  let jiraDataLoaded = false;
+  let dashboardRendered = false;
+  let currentTab = 'dashboard';
+
+  // Valid tabs for hash routing
+  const validTabs = ['dashboard', 'missing-data', 'releases', 'cms'];
 
   // Initialize modules
   if (window.HotfixesModule) {
@@ -40,38 +51,66 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Tab switching
+  function switchToTab(tabId, updateHash = true) {
+    if (!validTabs.includes(tabId)) tabId = 'dashboard';
+    currentTab = tabId;
+    
+    // Update nav tabs
+    navTabs.forEach(t => t.classList.remove('active'));
+    const activeTab = document.querySelector(`.nav-tab[data-tab="${tabId}"]`);
+    if (activeTab) activeTab.classList.add('active');
+    
+    // Update URL hash
+    if (updateHash) {
+      window.location.hash = tabId;
+    }
+    
+    // Hide all tab content
+    dashboard.style.display = 'none';
+    missingDataView.style.display = 'none';
+    releasesView.style.display = 'none';
+    cmsView.style.display = 'none';
+    error.style.display = 'none';
+    
+    if (tabId === 'dashboard') {
+      dashboard.style.display = 'block';
+      if (!jiraDataLoaded) {
+        fetchJiraData('dashboard');
+      } else if (!dashboardRendered) {
+        // Data loaded from Missing Data tab, need to render dashboard
+        renderDashboard(currentData);
+      } else {
+        dashboardLoading.style.display = 'none';
+        dashboardContent.style.display = 'block';
+      }
+    } else if (tabId === 'missing-data') {
+      missingDataView.style.display = 'block';
+      if (!jiraDataLoaded) {
+        fetchJiraData('missing-data');
+      } else {
+        missingDataLoading.style.display = 'none';
+        missingDataContent.style.display = 'block';
+        renderMissingDataTable(currentData);
+      }
+    } else if (tabId === 'releases') {
+      releasesView.style.display = 'block';
+      if (window.ReleasesModule) {
+        window.ReleasesModule.onTabShow();
+      }
+      if (window.HotfixesModule) {
+        window.HotfixesModule.onTabShow();
+      }
+    } else if (tabId === 'cms') {
+      cmsView.style.display = 'block';
+      if (window.CmModule) {
+        window.CmModule.onTabShow();
+      }
+    }
+  }
+
   navTabs.forEach(tab => {
     tab.addEventListener('click', () => {
-      navTabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      
-      const tabId = tab.dataset.tab;
-      // Hide all tab content
-      dashboard.style.display = 'none';
-      missingDataView.style.display = 'none';
-      releasesView.style.display = 'none';
-      cmsView.style.display = 'none';
-      
-      if (tabId === 'dashboard') {
-        dashboard.style.display = 'block';
-      } else if (tabId === 'missing-data') {
-        missingDataView.style.display = 'block';
-        if (currentData) renderMissingDataTable(currentData);
-      } else if (tabId === 'releases') {
-        releasesView.style.display = 'block';
-        // Initialize both modules when tab is shown
-        if (window.ReleasesModule) {
-          window.ReleasesModule.onTabShow();
-        }
-        if (window.HotfixesModule) {
-          window.HotfixesModule.onTabShow();
-        }
-      } else if (tabId === 'cms') {
-        cmsView.style.display = 'block';
-        if (window.CmModule) {
-          window.CmModule.onTabShow();
-        }
-      }
+      switchToTab(tab.dataset.tab);
     });
   });
 
@@ -118,11 +157,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  async function fetchData() {
-    loading.style.display = 'flex';
+  async function fetchJiraData(targetTab) {
+    // Show loading in the target tab
+    if (targetTab === 'dashboard') {
+      dashboardLoading.style.display = 'flex';
+      dashboardContent.style.display = 'none';
+    } else if (targetTab === 'missing-data') {
+      missingDataLoading.style.display = 'flex';
+      missingDataContent.style.display = 'none';
+    }
     error.style.display = 'none';
-    dashboard.style.display = 'none';
-    missingDataView.style.display = 'none';
 
     try {
       const response = await fetch('/api/jira');
@@ -130,22 +174,28 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await response.json();
       jiraBaseUrl = data.jiraBaseUrl || '';
       currentData = data.projects;
-      renderDashboard(data.projects);
+      jiraDataLoaded = true;
+      
+      // Render based on which tab initiated the load
+      if (targetTab === 'dashboard') {
+        renderDashboard(data.projects);
+      } else if (targetTab === 'missing-data') {
+        missingDataLoading.style.display = 'none';
+        missingDataContent.style.display = 'block';
+        renderMissingDataTable(data.projects);
+      }
     } catch (err) {
       console.error('Error fetching data:', err);
-      loading.style.display = 'none';
+      dashboardLoading.style.display = 'none';
+      missingDataLoading.style.display = 'none';
       error.style.display = 'flex';
     }
   }
 
   function renderDashboard(data) {
-    loading.style.display = 'none';
-    dashboard.style.display = 'block';
-    
-    // Switch to dashboard tab
-    navTabs.forEach(t => t.classList.remove('active'));
-    const dashboardTab = document.querySelector('.nav-tab[data-tab="dashboard"]');
-    if (dashboardTab) dashboardTab.classList.add('active');
+    dashboardLoading.style.display = 'none';
+    dashboardContent.style.display = 'block';
+    dashboardRendered = true;
 
     // Calculate stats
     const projects = Object.keys(data);
@@ -544,8 +594,42 @@ document.addEventListener('DOMContentLoaded', () => {
     content.classList.toggle('expanded');
   };
 
-  refreshBtn.addEventListener('click', fetchData);
+  // Context-aware refresh button
+  refreshBtn.addEventListener('click', () => {
+    if (currentTab === 'dashboard' || currentTab === 'missing-data') {
+      // Reset flags to force refresh
+      jiraDataLoaded = false;
+      dashboardRendered = false;
+      fetchJiraData(currentTab);
+    } else if (currentTab === 'releases') {
+      // Trigger check button if a version is selected
+      const releaseVersionSelect = document.getElementById('releaseVersionSelect');
+      const checkReleaseBtn = document.getElementById('checkReleaseBtn');
+      const targetVersionSelect = document.getElementById('targetVersionSelect');
+      const checkHotfixBtn = document.getElementById('checkHotfixBtn');
+      
+      // Check which sub-view is active and refresh it
+      if (releaseContentsView.style.display !== 'none' && releaseVersionSelect.value) {
+        checkReleaseBtn.click();
+      } else if (hotfixesView.style.display !== 'none' && targetVersionSelect.value) {
+        checkHotfixBtn.click();
+      }
+    } else if (currentTab === 'cms') {
+      if (window.CmModule) {
+        window.CmModule.onTabShow();
+      }
+    }
+  });
 
-  // Initial load
-  fetchData();
+  // Handle browser back/forward buttons
+  window.addEventListener('hashchange', () => {
+    const hash = window.location.hash.slice(1) || 'dashboard';
+    if (validTabs.includes(hash) && hash !== currentTab) {
+      switchToTab(hash, false);
+    }
+  });
+
+  // Initial load based on URL hash
+  const initialTab = window.location.hash.slice(1) || 'dashboard';
+  switchToTab(initialTab);
 });
