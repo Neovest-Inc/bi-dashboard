@@ -8,6 +8,7 @@ const path = require('path');
 const { getJiraHeaders, getJiraBaseUrl } = require('./auth');
 const pmhRoutes = require('./pmh');
 const releasesRoutes = require('./releases');
+const cmRoutes = require('./cm');
 
 // Test Jira connectivity on server startup
 // (async () => {
@@ -40,6 +41,9 @@ app.use('/api', pmhRoutes);
 
 // Mount Releases routes
 app.use('/api', releasesRoutes);
+
+// Mount CM (Change Management) routes
+app.use('/api', cmRoutes);
 
 app.get('/api/jira', async (req, res) => {
   try {
@@ -153,7 +157,7 @@ app.get('/api/jira', async (req, res) => {
     }, { headers });
 
     const standaloneStories = standaloneStoriesResponse.data.issues;
-console.log('Fetched standalone stories:', standaloneStories.length);
+
     // 5. Add Stories to their Business Projects
     for (const story of standaloneStories) {
       const storyKey = story.key;

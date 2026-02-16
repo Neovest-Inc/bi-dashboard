@@ -1715,3 +1715,254 @@ body {
   color: #5f6368;
   margin: 0;
 }
+
+/* =============================================
+   CM (Change Management) Styles
+   ============================================= */
+
+.cms-view {
+  padding: 0;
+}
+
+.cms-header {
+  margin-bottom: 24px;
+}
+
+.cms-header h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Google Sans', sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  color: #202124;
+  margin-bottom: 8px;
+}
+
+.cms-header h2 .material-icons {
+  font-size: 28px;
+  color: #1a73e8;
+}
+
+.cms-subtitle {
+  color: #5f6368;
+  font-size: 14px;
+}
+
+.cm-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+}
+
+.cm-loading p {
+  margin-top: 16px;
+  color: #5f6368;
+  font-size: 14px;
+}
+
+.cm-results-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 16px;
+  background: #e8f0fe;
+  color: #1967d2;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 8px 8px 0 0;
+}
+
+.cm-results-header .material-icons {
+  font-size: 20px;
+}
+
+.cm-table-wrapper {
+  overflow-x: auto;
+}
+
+.cm-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 0 0 8px 8px;
+  margin-bottom: 16px;
+}
+
+.cm-table th,
+.cm-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #e8eaed;
+  font-size: 13px;
+  color: #202124;
+  vertical-align: middle;
+}
+
+.cm-table th {
+  background: #f8f9fa;
+  font-weight: 500;
+  color: #202124;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.cm-table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+.cm-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.cm-sort-header {
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.cm-sort-header:hover {
+  background: #e8eaed;
+}
+
+.cm-sort-header .sort-icon {
+  font-size: 16px;
+  vertical-align: middle;
+  margin-left: 4px;
+  color: #5f6368;
+}
+
+.cm-error,
+.cm-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.cm-error .material-icons,
+.cm-empty .material-icons {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.cm-error .material-icons {
+  color: #d93025;
+}
+
+.cm-empty .material-icons {
+  color: #9aa0a6;
+}
+
+.cm-error p,
+.cm-empty p {
+  font-size: 14px;
+  color: #5f6368;
+  margin: 0;
+}
+
+.cm-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Component Tags with Dynamic Colors */
+.component-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.component-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  border: 1px solid;
+  white-space: nowrap;
+}
+
+/* CM Status Classes */
+.cm-status-done {
+  background: #e6f4ea;
+  color: #1e8e3e;
+}
+
+.cm-status-cancelled {
+  background: #fce8e6;
+  color: #d93025;
+}
+
+.cm-status-default {
+  background: #f1f3f4;
+  color: #5f6368;
+}
+
+/* Collapsible List for Tags */
+.collapsible-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.collapsible-visible,
+.collapsible-hidden {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+}
+
+.expand-tags-btn,
+.collapse-tags-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  background: #e8eaed;
+  color: #5f6368;
+  border: none;
+  transition: background 0.2s;
+}
+
+.expand-tags-btn:hover,
+.collapse-tags-btn:hover {
+  background: #d2d4d7;
+  color: #202124;
+}
+
+/* CM Type Column */
+.cm-type-header {
+  width: 50px;
+  text-align: center;
+}
+
+.cm-type-cell {
+  text-align: center;
+}
+
+.cm-type-icon {
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+}
+

@@ -32,6 +32,10 @@
           <span class="material-icons">new_releases</span>
           Releases
         </button>
+        <button class="nav-tab" data-tab="cms">
+          <span class="material-icons">swap_horiz</span>
+          CMs
+        </button>
       </nav>
       <button id="refreshBtn" class="refresh-btn">
         <span class="material-icons">refresh</span>
@@ -126,11 +130,24 @@
       </div>
       <div id="releaseResults" class="release-results"></div>
     </div>
+
+    <div id="cms" class="cms-view tab-content" style="display: none;">
+      <div class="cms-header">
+        <h2><span class="material-icons">swap_horiz</span> Change Management Tickets</h2>
+        <p class="cms-subtitle">CM tickets raised by the VAL team in the last 30 days</p>
+      </div>
+      <div id="cmLoading" class="cm-loading" style="display: none;">
+        <div class="spinner"></div>
+        <p>Loading CM tickets...</p>
+      </div>
+      <div id="cmResults" class="cm-results"></div>
+    </div>
   </main>
 
   <script src="js/utils.js"></script>
   <script src="js/hotfixes.js"></script>
   <script src="js/releases.js"></script>
+  <script src="js/cm.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

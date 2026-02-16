@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Tab view elements
   const hotfixCheckView = document.getElementById('hotfix-check');
   const releasesView = document.getElementById('releases');
+  const cmsView = document.getElementById('cms');
 
   const projectCount = document.getElementById('projectCount');
   const epicCount = document.getElementById('epicCount');
@@ -30,6 +31,9 @@ document.addEventListener('DOMContentLoaded', () => {
   if (window.ReleasesModule) {
     window.ReleasesModule.init();
   }
+  if (window.CmModule) {
+    window.CmModule.init();
+  }
 
   // Tab switching
   navTabs.forEach(tab => {
@@ -43,6 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
       missingDataView.style.display = 'none';
       hotfixCheckView.style.display = 'none';
       releasesView.style.display = 'none';
+      cmsView.style.display = 'none';
       
       if (tabId === 'dashboard') {
         dashboard.style.display = 'block';
@@ -58,6 +63,11 @@ document.addEventListener('DOMContentLoaded', () => {
         releasesView.style.display = 'block';
         if (window.ReleasesModule) {
           window.ReleasesModule.onTabShow();
+        }
+      } else if (tabId === 'cms') {
+        cmsView.style.display = 'block';
+        if (window.CmModule) {
+          window.CmModule.onTabShow();
         }
       }
     });
