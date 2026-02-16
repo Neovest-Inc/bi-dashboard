@@ -10,9 +10,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const filterBtns = document.querySelectorAll('.filter-btn');
 
   // Tab view elements
-  const hotfixCheckView = document.getElementById('hotfix-check');
   const releasesView = document.getElementById('releases');
   const cmsView = document.getElementById('cms');
+  
+  // Releases sub-views
+  const releaseContentsView = document.getElementById('releaseContentsView');
+  const hotfixesView = document.getElementById('hotfixesView');
+  const pillBtns = document.querySelectorAll('.pill-btn');
 
   const projectCount = document.getElementById('projectCount');
   const epicCount = document.getElementById('epicCount');
@@ -45,7 +49,6 @@ document.addEventListener('DOMContentLoaded', () => {
       // Hide all tab content
       dashboard.style.display = 'none';
       missingDataView.style.display = 'none';
-      hotfixCheckView.style.display = 'none';
       releasesView.style.display = 'none';
       cmsView.style.display = 'none';
       
@@ -54,21 +57,37 @@ document.addEventListener('DOMContentLoaded', () => {
       } else if (tabId === 'missing-data') {
         missingDataView.style.display = 'block';
         if (currentData) renderMissingDataTable(currentData);
-      } else if (tabId === 'hotfix-check') {
-        hotfixCheckView.style.display = 'block';
-        if (window.HotfixesModule) {
-          window.HotfixesModule.onTabShow();
-        }
       } else if (tabId === 'releases') {
         releasesView.style.display = 'block';
+        // Initialize both modules when tab is shown
         if (window.ReleasesModule) {
           window.ReleasesModule.onTabShow();
+        }
+        if (window.HotfixesModule) {
+          window.HotfixesModule.onTabShow();
         }
       } else if (tabId === 'cms') {
         cmsView.style.display = 'block';
         if (window.CmModule) {
           window.CmModule.onTabShow();
         }
+      }
+    });
+  });
+
+  // Pill toggle for Releases sub-views
+  pillBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      pillBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      
+      const view = btn.dataset.view;
+      if (view === 'contents') {
+        releaseContentsView.style.display = 'block';
+        hotfixesView.style.display = 'none';
+      } else if (view === 'hotfixes') {
+        releaseContentsView.style.display = 'none';
+        hotfixesView.style.display = 'block';
       }
     });
   });

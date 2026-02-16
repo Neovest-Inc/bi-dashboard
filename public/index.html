@@ -24,10 +24,6 @@
           <span class="material-icons">warning</span>
           Missing Data
         </button>
-        <button class="nav-tab" data-tab="hotfix-check">
-          <span class="material-icons">bug_report</span>
-          Post-Release Hotfixes
-        </button>
         <button class="nav-tab" data-tab="releases">
           <span class="material-icons">new_releases</span>
           Releases
@@ -87,48 +83,60 @@
       <div id="missingDataTable" class="missing-data-table-container"></div>
     </div>
 
-    <div id="hotfix-check" class="hotfix-check tab-content" style="display: none;">
-      <div class="hotfix-check-header">
-        <h2><span class="material-icons">bug_report</span> Post-Release Hotfix Check</h2>
-        <p class="hotfix-check-subtitle">Identify stories included in hotfixes but missing from release versions</p>
-      </div>
-      <div class="hotfix-check-controls">
-        <label for="targetVersionSelect">Target Release Version:</label>
-        <select id="targetVersionSelect" class="version-select">
-          <option value="">Select a version...</option>
-        </select>
-        <button id="checkHotfixBtn" class="check-hotfix-btn">
-          <span class="material-icons">search</span>
-          Check
-        </button>
-      </div>
-      <div id="hotfixLoading" class="hotfix-loading" style="display: none;">
-        <div class="spinner"></div>
-        <p>Checking for missing stories...</p>
-      </div>
-      <div id="hotfixResults" class="hotfix-results"></div>
-    </div>
-
     <div id="releases" class="releases-view tab-content" style="display: none;">
       <div class="releases-header">
-        <h2><span class="material-icons">new_releases</span> Release Contents</h2>
-        <p class="releases-subtitle">View all stories and bugs included in a release version</p>
+        <h2><span class="material-icons">new_releases</span> Maintenance Releases</h2>
       </div>
-      <div class="releases-controls">
-        <label for="releaseVersionSelect">Target Release Version:</label>
-        <select id="releaseVersionSelect" class="version-select">
-          <option value="">Select a version...</option>
-        </select>
-        <button id="checkReleaseBtn" class="check-release-btn">
-          <span class="material-icons">search</span>
-          Check
+      
+      <!-- Pill Toggle -->
+      <div class="releases-pill-toggle">
+        <button class="pill-btn active" data-view="contents">
+          <span class="material-icons">inventory</span>
+          Release Features
+        </button>
+        <button class="pill-btn" data-view="hotfixes">
+          <span class="material-icons">bug_report</span>
+          Post-Release Hotfixes
         </button>
       </div>
-      <div id="releaseLoading" class="release-loading" style="display: none;">
-        <div class="spinner"></div>
-        <p>Loading release content...</p>
+
+      <!-- Release Contents View -->
+      <div id="releaseContentsView" class="releases-subview">
+        <div class="releases-controls">
+          <label for="releaseVersionSelect">Target Release Version:</label>
+          <select id="releaseVersionSelect" class="version-select">
+            <option value="">Select a version...</option>
+          </select>
+          <button id="checkReleaseBtn" class="check-release-btn">
+            <span class="material-icons">search</span>
+            Check
+          </button>
+        </div>
+        <div id="releaseLoading" class="release-loading" style="display: none;">
+          <div class="spinner"></div>
+          <p>Loading release content...</p>
+        </div>
+        <div id="releaseResults" class="release-results"></div>
       </div>
-      <div id="releaseResults" class="release-results"></div>
+
+      <!-- Hotfixes View -->
+      <div id="hotfixesView" class="releases-subview" style="display: none;">
+        <div class="hotfix-check-controls">
+          <label for="targetVersionSelect">Target Release Version:</label>
+          <select id="targetVersionSelect" class="version-select">
+            <option value="">Select a version...</option>
+          </select>
+          <button id="checkHotfixBtn" class="check-hotfix-btn">
+            <span class="material-icons">search</span>
+            Check
+          </button>
+        </div>
+        <div id="hotfixLoading" class="hotfix-loading" style="display: none;">
+          <div class="spinner"></div>
+          <p>Checking for missing stories...</p>
+        </div>
+        <div id="hotfixResults" class="hotfix-results"></div>
+      </div>
     </div>
 
     <div id="cms" class="cms-view tab-content" style="display: none;">
