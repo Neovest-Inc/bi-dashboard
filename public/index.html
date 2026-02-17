@@ -20,10 +20,6 @@
           <span class="material-icons">view_list</span>
           Projects
         </button>
-        <button class="nav-tab" data-tab="missing-data">
-          <span class="material-icons">warning</span>
-          Missing Data
-        </button>
         <button class="nav-tab" data-tab="releases">
           <span class="material-icons">new_releases</span>
           Releases
@@ -55,46 +51,63 @@
     </div>
 
     <div id="dashboard" class="dashboard tab-content" style="display: none;">
+      <div class="projects-header">
+        <h2><span class="material-icons">view_list</span> Projects</h2>
+        <p class="projects-subtitle">Track business projects, epics, and stories</p>
+      </div>
+
+      <!-- Pill Toggle -->
+      <div class="projects-pill-toggle">
+        <button class="pill-btn active" data-view="projects">
+          <span class="material-icons">folder</span>
+          Business Projects
+        </button>
+        <button class="pill-btn" data-view="missing-data">
+          <span class="material-icons">warning</span>
+          Missing Data
+        </button>
+      </div>
+
       <div id="dashboardLoading" class="tab-loading">
         <div class="spinner"></div>
         <p>Loading Projects data...</p>
       </div>
-      <div id="dashboardContent" style="display: none;">
-        <div class="stats-bar">
-        <div class="stat-item">
-          <span class="stat-value" id="projectCount">0</span>
-          <span class="stat-label">Business Projects</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-value" id="epicCount">0</span>
-          <span class="stat-label">Epics</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-value" id="storyCount">0</span>
-          <span class="stat-label">Stories</span>
+
+      <!-- Business Projects View -->
+      <div id="projectsSubview" class="projects-subview">
+        <div id="dashboardContent" style="display: none;">
+          <div class="stats-bar">
+            <div class="stat-item">
+              <span class="stat-value" id="projectCount">0</span>
+              <span class="stat-label">Business Projects</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value" id="epicCount">0</span>
+              <span class="stat-label">Epics</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value" id="storyCount">0</span>
+              <span class="stat-label">Stories</span>
+            </div>
+          </div>
+          <div id="projectsList" class="projects-list"></div>
         </div>
       </div>
 
-        <div id="projectsList" class="projects-list"></div>
-      </div>
-    </div>
-
-    <div id="missing-data" class="missing-data tab-content" style="display: none;">
-      <div id="missingDataLoading" class="tab-loading">
-        <div class="spinner"></div>
-        <p>Loading data...</p>
-      </div>
-      <div id="missingDataContent" style="display: none;">
-        <div class="missing-data-header">
-        <h2><span class="material-icons">warning</span> Items with Missing Information</h2>
-        <p class="missing-data-subtitle">The following Epics and Stories are missing required fields</p>
-      </div>
-      <div class="missing-data-filters">
-        <button class="filter-btn active" data-filter="all">All</button>
-        <button class="filter-btn" data-filter="epic">Epics Only</button>
-        <button class="filter-btn" data-filter="story">Stories Only</button>
-      </div>
-        <div id="missingDataTable" class="missing-data-table-container"></div>
+      <!-- Missing Data View -->
+      <div id="missingDataSubview" class="projects-subview" style="display: none;">
+        <div id="missingDataContent">
+          <div class="missing-data-header">
+            <h3><span class="material-icons">warning</span> Items with Missing Information</h3>
+            <p class="missing-data-subtitle">The following Epics and Stories are missing required fields</p>
+          </div>
+          <div class="missing-data-filters">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="epic">Epics Only</button>
+            <button class="filter-btn" data-filter="story">Stories Only</button>
+          </div>
+          <div id="missingDataTable" class="missing-data-table-container"></div>
+        </div>
       </div>
     </div>
 

@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const dashboard = document.getElementById('dashboard');
   const dashboardLoading = document.getElementById('dashboardLoading');
   const dashboardContent = document.getElementById('dashboardContent');
-  const missingDataView = document.getElementById('missing-data');
-  const missingDataLoading = document.getElementById('missingDataLoading');
+  const projectsSubview = document.getElementById('projectsSubview');
+  const missingDataSubview = document.getElementById('missingDataSubview');
   const missingDataContent = document.getElementById('missingDataContent');
   const missingDataTable = document.getElementById('missingDataTable');
   const projectsList = document.getElementById('projectsList');
@@ -24,7 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Releases sub-views
   const releaseContentsView = document.getElementById('releaseContentsView');
   const hotfixesView = document.getElementById('hotfixesView');
-  const pillBtns = document.querySelectorAll('.pill-btn');
+  const pillBtns = document.querySelectorAll('.releases-pill-toggle .pill-btn');
+  const projectsPillBtns = document.querySelectorAll('.projects-pill-toggle .pill-btn');
 
   // Stats elements
   const projectCount = document.getElementById('projectCount');
@@ -37,9 +38,10 @@ document.addEventListener('DOMContentLoaded', () => {
   let jiraDataLoaded = false;
   let dashboardRendered = false;
   let currentTab = 'dashboard';
+  let currentProjectsSubview = 'projects';
 
   // Valid tabs for hash routing
-  const validTabs = ['dashboard', 'missing-data', 'releases', 'cms', 'dependency-map', 'hotfix-booking'];
+  const validTabs = ['dashboard', 'releases', 'cms', 'dependency-map', 'hotfix-booking'];
 
   // Initialize modules
   initializeModules();
@@ -85,7 +87,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Hide all tab content
     dashboard.style.display = 'none';
-    missingDataView.style.display = 'none';
     releasesView.style.display = 'none';
     cmsView.style.display = 'none';
     dependencyMapView.style.display = 'none';
@@ -96,21 +97,18 @@ document.addEventListener('DOMContentLoaded', () => {
       dashboard.style.display = 'block';
       if (!jiraDataLoaded) {
         fetchJiraData('dashboard');
-      } else if (!dashboardRendered) {
-        renderProjectsDashboard(currentData);
       } else {
         dashboardLoading.style.display = 'none';
-        dashboardContent.style.display = 'block';
-      }
-    } else if (tabId === 'missing-data') {
-      missingDataView.style.display = 'block';
-      if (!jiraDataLoaded) {
-        fetchJiraData('missing-data');
-      } else {
-        missingDataLoading.style.display = 'none';
-        missingDataContent.style.display = 'block';
-        if (window.MissingDataModule) {
-          window.MissingDataModule.renderMissingDataTable(currentData, missingDataTable);
+        if (currentProjectsSubview === 'projects') {
+          if (!dashboardRendered) {
+            renderProjectsDashboard(currentData);
+          } else {
+            dashboardContent.style.display = 'block';
+          }
+        } else {
+          if (window.MissingDataModule) {
+            window.MissingDataModule.renderMissingDataTable(currentData, missingDataTable);
+          }
         }
       }
     } else if (tabId === 'releases') {
@@ -163,16 +161,36 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Pill toggle for Projects sub-views
+  projectsPillBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      projectsPillBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      
+      const view = btn.dataset.view;
+      currentProjectsSubview = view;
+      
+      if (view === 'projects') {
+        projectsSubview.style.display = 'block';
+        missingDataSubview.style.display = 'none';
+        if (jiraDataLoaded && !dashboardRendered) {
+          renderProjectsDashboard(currentData);
+        }
+      } else if (view === 'missing-data') {
+        projectsSubview.style.display = 'none';
+        missingDataSubview.style.display = 'block';
+        if (jiraDataLoaded && window.MissingDataModule) {
+          window.MissingDataModule.renderMissingDataTable(currentData, missingDataTable);
+        }
+      }
+    });
+  });
+
   // Fetch Jira data
   async function fetchJiraData(targetTab) {
-    // Show loading in the target tab
-    if (targetTab === 'dashboard') {
-      dashboardLoading.style.display = 'flex';
-      dashboardContent.style.display = 'none';
-    } else if (targetTab === 'missing-data') {
-      missingDataLoading.style.display = 'flex';
-      missingDataContent.style.display = 'none';
-    }
+    // Show loading
+    dashboardLoading.style.display = 'flex';
+    dashboardContent.style.display = 'none';
     error.style.display = 'none';
 
     try {
@@ -193,18 +211,18 @@ document.addEventListener('DOMContentLoaded', () => {
       
       // Render based on which tab initiated the load
       if (targetTab === 'dashboard') {
-        renderProjectsDashboard(data.projects);
-      } else if (targetTab === 'missing-data') {
-        missingDataLoading.style.display = 'none';
-        missingDataContent.style.display = 'block';
-        if (window.MissingDataModule) {
-          window.MissingDataModule.renderMissingDataTable(data.projects, missingDataTable);
+        if (currentProjectsSubview === 'projects') {
+          renderProjectsDashboard(data.projects);
+        } else {
+          dashboardLoading.style.display = 'none';
+          if (window.MissingDataModule) {
+            window.MissingDataModule.renderMissingDataTable(data.projects, missingDataTable);
+          }
         }
       }
     } catch (err) {
       console.error('Error fetching data:', err);
       dashboardLoading.style.display = 'none';
-      missingDataLoading.style.display = 'none';
       error.style.display = 'flex';
     }
   }
@@ -226,12 +244,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Context-aware refresh button
   refreshBtn.addEventListener('click', async () => {
-    if (currentTab === 'dashboard' || currentTab === 'missing-data') {
+    if (currentTab === 'dashboard') {
       jiraDataLoaded = false;
       dashboardRendered = false;
       try {
         await fetchJiraData(currentTab);
-        Utils.showToast('Dashboard data refreshed', 'success');
+        Utils.showToast('Projects data refreshed', 'success');
       } catch (error) {
         Utils.showToast('Failed to refresh data', 'error');
       }
