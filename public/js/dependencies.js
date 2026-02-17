@@ -772,9 +772,20 @@
     return div.innerHTML;
   }
 
+  /**
+   * Force refresh the data
+   */
+  async function refresh() {
+    dataLoaded = false;
+    currentData = null;
+    await loadFieldOptions();
+    Utils.showToast('Dependencies data refreshed', 'success');
+  }
+
   // Export module
   window.DependenciesModule = {
     init,
-    onTabShow
+    onTabShow,
+    refresh
   };
 })();

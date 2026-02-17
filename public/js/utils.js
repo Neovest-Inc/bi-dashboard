@@ -184,10 +184,82 @@ function renderHeatmap(data, selectedCells = []) {
   `;
 }
 
+/**
+ * Toast Notification System
+ * Global toast container reference
+ */
+let toastContainer = null;
+
+/**
+ * Show a toast notification
+ * @param {string} message - Message to display
+ * @param {string} type - Type: 'success', 'error', 'warning', 'info'
+ */
+function showToast(message, type = 'info') {
+  // Create container if it doesn't exist
+  if (!toastContainer) {
+    toastContainer = document.createElement('div');
+    toastContainer.className = 'hb-toast-container';
+    document.body.appendChild(toastContainer);
+  }
+
+  // Create toast element
+  const toast = document.createElement('div');
+  toast.className = `hb-toast hb-toast-${type}`;
+  
+  const icon = type === 'success' ? 'check_circle' 
+             : type === 'error' ? 'error' 
+             : type === 'warning' ? 'warning' 
+             : 'info';
+  
+  toast.innerHTML = `
+    <span class="material-icons hb-toast-icon">${icon}</span>
+    <span class="hb-toast-message">${escapeHtml(message)}</span>
+    <button class="hb-toast-close">
+      <span class="material-icons">close</span>
+    </button>
+  `;
+
+  // Add close button handler
+  toast.querySelector('.hb-toast-close').addEventListener('click', () => {
+    dismissToast(toast);
+  });
+
+  // Add to container
+  toastContainer.appendChild(toast);
+
+  // Trigger animation
+  requestAnimationFrame(() => {
+    toast.classList.add('show');
+  });
+
+  // Auto-dismiss after 4 seconds
+  setTimeout(() => {
+    dismissToast(toast);
+  }, 4000);
+}
+
+/**
+ * Dismiss a toast notification
+ * @param {HTMLElement} toast - Toast element to dismiss
+ */
+function dismissToast(toast) {
+  if (!toast || !toast.parentNode) return;
+  toast.classList.remove('show');
+  toast.classList.add('hide');
+  setTimeout(() => {
+    if (toast.parentNode) {
+      toast.parentNode.removeChild(toast);
+    }
+  }, 300);
+}
+
 // Export functions for use in other modules
 window.Utils = {
   escapeHtml,
   getStatusClass,
   buildHeatmapData,
-  renderHeatmap
+  renderHeatmap,
+  showToast,
+  dismissToast
 };

@@ -28,70 +28,6 @@
   let bookingsListEl;
   let matrixTableEl;
   let refreshMatrixBtn;
-  let toastContainer;
-
-  /**
-   * Show a toast notification
-   * @param {string} message - Message to display
-   * @param {string} type - 'success', 'error', or 'warning'
-   */
-  function showToast(message, type = 'info') {
-    // Create container if it doesn't exist
-    if (!toastContainer) {
-      toastContainer = document.createElement('div');
-      toastContainer.className = 'hb-toast-container';
-      document.body.appendChild(toastContainer);
-    }
-
-    // Create toast element
-    const toast = document.createElement('div');
-    toast.className = `hb-toast hb-toast-${type}`;
-    
-    const icon = type === 'success' ? 'check_circle' 
-               : type === 'error' ? 'error' 
-               : type === 'warning' ? 'warning' 
-               : 'info';
-    
-    toast.innerHTML = `
-      <span class="material-icons hb-toast-icon">${icon}</span>
-      <span class="hb-toast-message">${Utils.escapeHtml(message)}</span>
-      <button class="hb-toast-close">
-        <span class="material-icons">close</span>
-      </button>
-    `;
-
-    // Add close button handler
-    toast.querySelector('.hb-toast-close').addEventListener('click', () => {
-      dismissToast(toast);
-    });
-
-    // Add to container
-    toastContainer.appendChild(toast);
-
-    // Trigger animation
-    requestAnimationFrame(() => {
-      toast.classList.add('show');
-    });
-
-    // Auto-dismiss after 4 seconds
-    setTimeout(() => {
-      dismissToast(toast);
-    }, 4000);
-  }
-
-  /**
-   * Dismiss a toast notification
-   */
-  function dismissToast(toast) {
-    if (!toast || !toast.parentNode) return;
-    toast.classList.remove('show');
-    toast.classList.add('hide');
-    setTimeout(() => {
-      if (toast.parentNode) {
-        toast.parentNode.removeChild(toast);
-      }
-    }, 300);
-  }
 
   /**
    * Initialize the module
@@ -450,17 +386,17 @@
    */
   async function bookHotfix() {
     if (!nextVersion) {
-      showToast('No version available to book.', 'warning');
+      Utils.showToast('No version available to book.', 'warning');
       return;
     }
 
     if (selectedComponents.length === 0) {
-      showToast('Please select at least one component.', 'warning');
+      Utils.showToast('Please select at least one component.', 'warning');
       return;
     }
 
     if (selectedClients.length === 0) {
-      showToast('Please select at least one client environment.', 'warning');
+      Utils.showToast('Please select at least one client environment.', 'warning');
       return;
     }
 
@@ -484,7 +420,7 @@
       const data = await response.json();
 
       if (data.error) {
-        showToast(data.error, 'error');
+        Utils.showToast(data.error, 'error');
         return;
       }
 
@@ -500,10 +436,10 @@
       await loadNextVersion();
       await loadBookings();
 
-      showToast(`Successfully booked version ${data.booking.version}!`, 'success');
+      Utils.showToast(`Successfully booked version ${data.booking.version}!`, 'success');
     } catch (error) {
       console.error('Booking failed:', error);
-      showToast('Failed to book hotfix version. Please try again.', 'error');
+      Utils.showToast('Failed to book hotfix version. Please try again.', 'error');
     } finally {
       bookBtn.disabled = false;
       bookBtn.innerHTML = '<span class="material-icons">book_online</span> Book Hotfix Version';
@@ -612,9 +548,41 @@
     });
   }
 
+  /**
+   * Refresh all data (called by Refresh Data button)
+   */
+  async function refresh() {
+    showLoading(true);
+    
+    // Reset cached state to force reload
+    fieldOptionsLoaded = false;
+    
+    try {
+      // Reload field options, next version, and bookings in parallel
+      await Promise.all([
+        loadFieldOptions(),
+        loadNextVersion(),
+        loadBookings()
+      ]);
+      
+      // If matrix view is visible, reload it too
+      if (matrixView && matrixView.style.display !== 'none') {
+        await loadVersionMatrix();
+      }
+      
+      Utils.showToast('Data refreshed successfully', 'success');
+    } catch (error) {
+      console.error('Refresh failed:', error);
+      Utils.showToast('Failed to refresh data', 'error');
+    } finally {
+      showLoading(false);
+    }
+  }
+
   // Export module
   window.HotfixBookingModule = {
     init,
-    onTabShow
+    onTabShow,
+    refresh
   };
 })();

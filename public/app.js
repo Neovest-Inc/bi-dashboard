@@ -225,11 +225,16 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Context-aware refresh button
-  refreshBtn.addEventListener('click', () => {
+  refreshBtn.addEventListener('click', async () => {
     if (currentTab === 'dashboard' || currentTab === 'missing-data') {
       jiraDataLoaded = false;
       dashboardRendered = false;
-      fetchJiraData(currentTab);
+      try {
+        await fetchJiraData(currentTab);
+        Utils.showToast('Dashboard data refreshed', 'success');
+      } catch (error) {
+        Utils.showToast('Failed to refresh data', 'error');
+      }
     } else if (currentTab === 'releases') {
       const releaseVersionSelect = document.getElementById('releaseVersionSelect');
       const checkReleaseBtn = document.getElementById('checkReleaseBtn');
@@ -238,16 +243,22 @@ document.addEventListener('DOMContentLoaded', () => {
       
       if (releaseContentsView.style.display !== 'none' && releaseVersionSelect.value) {
         checkReleaseBtn.click();
+        Utils.showToast('Release data refreshed', 'success');
       } else if (hotfixesView.style.display !== 'none' && targetVersionSelect.value) {
         checkHotfixBtn.click();
+        Utils.showToast('Hotfix data refreshed', 'success');
       }
     } else if (currentTab === 'cms') {
       if (window.CmModule) {
-        window.CmModule.onTabShow();
+        window.CmModule.refresh();
       }
     } else if (currentTab === 'dependency-map') {
       if (window.DependenciesModule) {
-        window.DependenciesModule.onTabShow();
+        window.DependenciesModule.refresh();
+      }
+    } else if (currentTab === 'hotfix-booking') {
+      if (window.HotfixBookingModule) {
+        window.HotfixBookingModule.refresh();
       }
     }
   });

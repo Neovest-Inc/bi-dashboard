@@ -374,6 +374,19 @@
   }
 
   /**
+   * Force refresh the data with toast notification
+   */
+  async function refresh() {
+    try {
+      await loadCmData();
+      Utils.showToast('CMs data refreshed', 'success');
+    } catch (error) {
+      console.error('CM refresh failed:', error);
+      Utils.showToast('Failed to refresh CMs data', 'error');
+    }
+  }
+
+  /**
    * Check if data is loaded
    */
   function isDataLoaded() {
@@ -384,6 +397,7 @@
   window.CmModule = {
     init,
     onTabShow,
+    refresh,
     isDataLoaded
   };
 })();
