@@ -10,6 +10,7 @@ const pmhRoutes = require('./pmh');
 const releasesRoutes = require('./releases');
 const cmRoutes = require('./cm');
 const dependenciesRoutes = require('./dependencies');
+const hotfixBookingRoutes = require('./hotfix-booking');
 
 // Test Jira connectivity on server startup
 // (async () => {
@@ -48,6 +49,9 @@ app.use('/api', cmRoutes);
 
 // Mount Dependencies routes
 app.use('/api', dependenciesRoutes);
+
+// Mount Hotfix Booking routes
+app.use('/api', hotfixBookingRoutes);
 
 app.get('/api/jira', async (req, res) => {
   try {

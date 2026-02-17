@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const releasesView = document.getElementById('releases');
   const cmsView = document.getElementById('cms');
   const dependencyMapView = document.getElementById('dependency-map');
+  const hotfixBookingView = document.getElementById('hotfix-booking');
   
   // Releases sub-views
   const releaseContentsView = document.getElementById('releaseContentsView');
@@ -38,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentTab = 'dashboard';
 
   // Valid tabs for hash routing
-  const validTabs = ['dashboard', 'missing-data', 'releases', 'cms', 'dependency-map'];
+  const validTabs = ['dashboard', 'missing-data', 'releases', 'cms', 'dependency-map', 'hotfix-booking'];
 
   // Initialize modules
   initializeModules();
@@ -61,6 +62,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (window.DependenciesModule) {
       window.DependenciesModule.init();
+    }
+    if (window.HotfixBookingModule) {
+      window.HotfixBookingModule.init();
     }
   }
 
@@ -85,6 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
     releasesView.style.display = 'none';
     cmsView.style.display = 'none';
     dependencyMapView.style.display = 'none';
+    hotfixBookingView.style.display = 'none';
     error.style.display = 'none';
     
     if (tabId === 'dashboard') {
@@ -125,6 +130,11 @@ document.addEventListener('DOMContentLoaded', () => {
       dependencyMapView.style.display = 'block';
       if (window.DependenciesModule) {
         window.DependenciesModule.onTabShow();
+      }
+    } else if (tabId === 'hotfix-booking') {
+      hotfixBookingView.style.display = 'block';
+      if (window.HotfixBookingModule) {
+        window.HotfixBookingModule.onTabShow();
       }
     }
   }

@@ -36,6 +36,10 @@
           <span class="material-icons">account_tree</span>
           Dep Map
         </button>
+        <button class="nav-tab" data-tab="hotfix-booking">
+          <span class="material-icons">book_online</span>
+          Hotfix Booking
+        </button>
       </nav>
       <button id="refreshBtn" class="refresh-btn">
         <span class="material-icons">refresh</span>
@@ -179,6 +183,90 @@
       </div>
       <div id="depResults" class="dep-results"></div>
     </div>
+
+    <div id="hotfix-booking" class="hotfix-booking-view tab-content" style="display: none;">
+      <div class="hb-header">
+        <h2><span class="material-icons">book_online</span> Hotfix Booking</h2>
+        <p class="hb-subtitle">Book hotfix versions and track component deployments per client</p>
+      </div>
+
+      <!-- Pill Toggle -->
+      <div class="hb-pill-toggle">
+        <button class="pill-btn active" data-view="book">
+          <span class="material-icons">add_circle</span>
+          Book Hotfix
+        </button>
+        <button class="pill-btn" data-view="matrix">
+          <span class="material-icons">grid_on</span>
+          Version Matrix
+        </button>
+      </div>
+
+      <!-- Book Hotfix View -->
+      <div id="hbBookView" class="hb-subview">
+        <div id="hbLoading" class="hb-loading" style="display: none;">
+          <div class="spinner"></div>
+          <p>Loading...</p>
+        </div>
+        <div id="hbBookContent" class="hb-book-content">
+          <div class="hb-booking-form">
+            <div class="hb-version-display">
+              <label>Next Available Version:</label>
+              <span id="hbNextVersion" class="hb-version-badge">--</span>
+            </div>
+            
+            <div class="hb-form-group">
+              <label for="hbComponentSelect">Components:</label>
+              <div id="hbComponentSelect" class="hb-multi-select">
+                <div class="hb-select-toggle" id="hbComponentToggle">
+                  <span class="hb-select-text placeholder">Select components...</span>
+                  <span class="material-icons">expand_more</span>
+                </div>
+                <div class="hb-select-dropdown" id="hbComponentDropdown"></div>
+              </div>
+            </div>
+
+            <div class="hb-form-group">
+              <label for="hbClientSelect">Client Environments:</label>
+              <div id="hbClientSelect" class="hb-multi-select">
+                <div class="hb-select-toggle" id="hbClientToggle">
+                  <span class="hb-select-text placeholder">Select clients...</span>
+                  <span class="material-icons">expand_more</span>
+                </div>
+                <div class="hb-select-dropdown" id="hbClientDropdown"></div>
+              </div>
+            </div>
+
+            <button id="hbBookBtn" class="hb-book-btn">
+              <span class="material-icons">book_online</span>
+              Book Hotfix Version
+            </button>
+          </div>
+
+          <div class="hb-bookings-list">
+            <h3>Recent Bookings</h3>
+            <div id="hbBookingsList"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Version Matrix View -->
+      <div id="hbMatrixView" class="hb-subview" style="display: none;">
+        <div id="hbMatrixLoading" class="hb-loading" style="display: none;">
+          <div class="spinner"></div>
+          <p>Loading version matrix...</p>
+        </div>
+        <div id="hbMatrixContent" class="hb-matrix-content">
+          <div class="hb-matrix-controls">
+            <button id="hbRefreshMatrix" class="hb-refresh-btn">
+              <span class="material-icons">refresh</span>
+              Refresh
+            </button>
+          </div>
+          <div id="hbMatrixTable" class="hb-matrix-table-container"></div>
+        </div>
+      </div>
+    </div>
   </main>
 
   <script src="js/utils.js"></script>
@@ -188,6 +276,7 @@
   <script src="js/releases.js"></script>
   <script src="js/cm.js"></script>
   <script src="js/dependencies.js"></script>
+  <script src="js/hotfix-booking.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
