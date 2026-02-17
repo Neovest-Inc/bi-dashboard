@@ -17,13 +17,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Tab view elements
   const releasesView = document.getElementById('releases');
-  const cmsView = document.getElementById('cms');
   const dependencyMapView = document.getElementById('dependency-map');
   const hotfixBookingView = document.getElementById('hotfix-booking');
   
   // Releases sub-views
   const releaseContentsView = document.getElementById('releaseContentsView');
   const hotfixesView = document.getElementById('hotfixesView');
+  const cmsSubview = document.getElementById('cmsSubview');
   const pillBtns = document.querySelectorAll('.releases-pill-toggle .pill-btn');
   const projectsPillBtns = document.querySelectorAll('.projects-pill-toggle .pill-btn');
 
@@ -39,9 +39,10 @@ document.addEventListener('DOMContentLoaded', () => {
   let dashboardRendered = false;
   let currentTab = 'dashboard';
   let currentProjectsSubview = 'projects';
+  let currentReleasesSubview = 'contents';
 
   // Valid tabs for hash routing
-  const validTabs = ['dashboard', 'releases', 'cms', 'dependency-map', 'hotfix-booking'];
+  const validTabs = ['dashboard', 'releases', 'dependency-map', 'hotfix-booking'];
 
   // Initialize modules
   initializeModules();
@@ -88,7 +89,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Hide all tab content
     dashboard.style.display = 'none';
     releasesView.style.display = 'none';
-    cmsView.style.display = 'none';
     dependencyMapView.style.display = 'none';
     hotfixBookingView.style.display = 'none';
     error.style.display = 'none';
@@ -119,9 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (window.HotfixesModule) {
         window.HotfixesModule.onTabShow();
       }
-    } else if (tabId === 'cms') {
-      cmsView.style.display = 'block';
-      if (window.CmModule) {
+      if (currentReleasesSubview === 'cms' && window.CmModule) {
         window.CmModule.onTabShow();
       }
     } else if (tabId === 'dependency-map') {
@@ -151,12 +149,21 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.classList.add('active');
       
       const view = btn.dataset.view;
+      currentReleasesSubview = view;
+      
+      releaseContentsView.style.display = 'none';
+      hotfixesView.style.display = 'none';
+      cmsSubview.style.display = 'none';
+      
       if (view === 'contents') {
         releaseContentsView.style.display = 'block';
-        hotfixesView.style.display = 'none';
       } else if (view === 'hotfixes') {
-        releaseContentsView.style.display = 'none';
         hotfixesView.style.display = 'block';
+      } else if (view === 'cms') {
+        cmsSubview.style.display = 'block';
+        if (window.CmModule) {
+          window.CmModule.onTabShow();
+        }
       }
     });
   });
@@ -259,16 +266,16 @@ document.addEventListener('DOMContentLoaded', () => {
       const targetVersionSelect = document.getElementById('targetVersionSelect');
       const checkHotfixBtn = document.getElementById('checkHotfixBtn');
       
-      if (releaseContentsView.style.display !== 'none' && releaseVersionSelect.value) {
+      if (currentReleasesSubview === 'contents' && releaseVersionSelect.value) {
         checkReleaseBtn.click();
         Utils.showToast('Release data refreshed', 'success');
-      } else if (hotfixesView.style.display !== 'none' && targetVersionSelect.value) {
+      } else if (currentReleasesSubview === 'hotfixes' && targetVersionSelect.value) {
         checkHotfixBtn.click();
         Utils.showToast('Hotfix data refreshed', 'success');
-      }
-    } else if (currentTab === 'cms') {
-      if (window.CmModule) {
-        window.CmModule.refresh();
+      } else if (currentReleasesSubview === 'cms') {
+        if (window.CmModule) {
+          window.CmModule.refresh();
+        }
       }
     } else if (currentTab === 'dependency-map') {
       if (window.DependenciesModule) {

@@ -12,6 +12,7 @@
   let cmSortDirection = 'none';
   let currentCmData = null;
   let jiraBaseUrl = '';
+  let currentCmFilter = 'all';
 
   // Pre-defined colors for components (consistent color assignment)
   const COMPONENT_COLORS = [
@@ -44,6 +45,29 @@
 
     // Setup click handlers using event delegation
     document.addEventListener('click', handleCmClicks);
+    
+    // Setup CM filter button handlers
+    setupCmFilterHandlers();
+  }
+
+  /**
+   * Setup CM filter button handlers
+   */
+  function setupCmFilterHandlers() {
+    const cmsSubview = document.getElementById('cmsSubview');
+    if (!cmsSubview) return;
+    
+    const filterBtns = cmsSubview.querySelectorAll('.cm-filters .filter-btn');
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentCmFilter = btn.dataset.filter;
+        if (currentCmData) {
+          renderCmResults(currentCmData, true);
+        }
+      });
+    });
   }
 
   /**
@@ -230,6 +254,15 @@
   }
 
   /**
+   * Check if a CM is considered "completed"
+   */
+  function isCmCompleted(status) {
+    if (!status) return false;
+    const statusLower = status.toLowerCase();
+    return statusLower === 'done' || statusLower === 'deployment completed' || statusLower === 'cancelled' || statusLower === 'canceled';
+  }
+
+  /**
    * Render CM results
    */
   function renderCmResults(data, preserveSort = false) {
@@ -238,11 +271,24 @@
     
     currentCmData = data;
 
-    if (cms.length === 0) {
+    // Apply filter
+    let filteredCms = cms;
+    if (currentCmFilter === 'active') {
+      filteredCms = cms.filter(cm => !isCmCompleted(cm.status));
+    } else if (currentCmFilter === 'completed') {
+      filteredCms = cms.filter(cm => isCmCompleted(cm.status));
+    }
+
+    if (filteredCms.length === 0) {
+      const emptyMessage = currentCmFilter === 'all' 
+        ? 'No CMs found in the last 30 days.'
+        : currentCmFilter === 'active'
+          ? 'No active CMs found.'
+          : 'No completed CMs found.';
       cmResults.innerHTML = `
         <div class="cm-empty">
           <span class="material-icons">info</span>
-          <p>No CMs found in the last 30 days.</p>
+          <p>${emptyMessage}</p>
         </div>
       `;
       return;
@@ -254,7 +300,7 @@
     }
 
     // Sort CMs if needed
-    let sortedCms = [...cms];
+    let sortedCms = [...filteredCms];
     if (cmSortColumn !== 'none' && cmSortDirection !== 'none') {
       sortedCms.sort((a, b) => {
         let valA, valB;
@@ -295,7 +341,7 @@
     const tableHtml = `
       <div class="cm-results-header">
         <span class="material-icons">swap_horiz</span>
-        <span>Change Management Tickets: ${cms.length} found in the last 30 days</span>
+        <span>Change Management Tickets: ${filteredCms.length} of ${cms.length} shown</span>
       </div>
       <div class="cm-table-wrapper">
         <table class="cm-table">
@@ -304,6 +350,10 @@
               <th>Key</th>
               <th class="cm-type-header">Type</th>
               <th>Summary</th>
+              <th class="cm-sort-header" data-sort="status">
+                Status
+                <span class="material-icons sort-icon">${getSortIcon('status')}</span>
+              </th>
               <th>Client Environment(s)</th>
               <th class="cm-sort-header" data-sort="reporter">
                 Reporter
@@ -321,10 +371,6 @@
                 Fix Versions
                 <span class="material-icons sort-icon">${getSortIcon('fixVersions')}</span>
               </th>
-              <th class="cm-sort-header" data-sort="status">
-                Status
-                <span class="material-icons sort-icon">${getSortIcon('status')}</span>
-              </th>
             </tr>
           </thead>
           <tbody>
@@ -339,6 +385,7 @@
                     : '-'}
                 </td>
                 <td class="summary-cell">${escapeHtml(cm.summary)}</td>
+                <td><span class="cm-status ${getCmStatusClass(cm.status)}">${escapeHtml(cm.status || 'Unknown')}</span></td>
                 <td>
                   ${renderCollapsibleList(cm.clientEnvironments, 'client', 2, `${cm.key}-clients`)}
                 </td>
@@ -354,7 +401,6 @@
                       : '-'}
                   </div>
                 </td>
-                <td><span class="cm-status ${getCmStatusClass(cm.status)}">${escapeHtml(cm.status || 'Unknown')}</span></td>
               </tr>
             `).join('')}
           </tbody>
