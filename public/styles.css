@@ -1967,6 +1967,11 @@ body {
   color: #1e8e3e;
 }
 
+.cm-status-booked {
+  background: #fef7e0;
+  color: #b06000;
+}
+
 .cm-status-cancelled {
   background: #fce8e6;
   color: #d93025;
@@ -3131,8 +3136,8 @@ body {
 .hb-version-value {
   display: inline-block;
   padding: 4px 10px;
-  background: #e6f4ea;
-  color: #137333;
+  background: #f1f3f4;
+  color: #3c4043;
   border-radius: 4px;
   font-family: 'Google Sans', sans-serif;
   font-weight: 500;
@@ -3153,6 +3158,132 @@ body {
 
 .hb-error {
   color: #d93025;
+}
+
+/* History View Styles */
+.hb-history-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.hb-history-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.hb-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hb-filter-group label {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #5f6368;
+}
+
+.hb-select {
+  padding: 8px 12px;
+  font-family: 'Google Sans', sans-serif;
+  font-size: 14px;
+  border: 1px solid #dadce0;
+  border-radius: 8px;
+  background: white;
+  color: #202124;
+  cursor: pointer;
+  min-width: 120px;
+}
+
+.hb-select:focus {
+  outline: none;
+  border-color: #1a73e8;
+  box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+}
+
+.hb-history-table-container {
+  overflow: auto;
+  max-height: 500px;
+  border: 1px solid #e8eaed;
+  border-radius: 8px;
+}
+
+.hb-history-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 13px;
+}
+
+.hb-history-table th {
+  background: #f8f9fa;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 12px 16px;
+  text-align: left;
+  color: #5f6368;
+  border-bottom: 1px solid #e8eaed;
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.hb-history-table td {
+  padding: 10px 16px;
+  border-bottom: 1px solid #f1f3f4;
+  background: white;
+  vertical-align: top;
+}
+
+.hb-history-table tr:hover td {
+  background: #f8f9fa;
+}
+
+.hb-status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.hb-status-deployed {
+  background: #e6f4ea;
+  color: #137333;
+}
+
+.hb-status-booked {
+  background: #fef7e0;
+  color: #b06000;
+}
+
+.hb-components-cell,
+.hb-clients-cell {
+  max-width: 200px;
+}
+
+.hb-components-cell .hb-tag,
+.hb-clients-cell .hb-tag {
+  margin: 2px;
+  font-size: 11px;
+}
+
+.hb-cm-link {
+  color: #1a73e8;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.hb-cm-link:hover {
+  text-decoration: underline;
 }
 
 /* Responsive */

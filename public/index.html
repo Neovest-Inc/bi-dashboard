@@ -200,6 +200,10 @@
           <span class="material-icons">grid_on</span>
           Version Matrix
         </button>
+        <button class="pill-btn" data-view="history">
+          <span class="material-icons">history</span>
+          Hotfix History
+        </button>
       </div>
 
       <!-- Book Hotfix View -->
@@ -264,6 +268,27 @@
             </button>
           </div>
           <div id="hbMatrixTable" class="hb-matrix-table-container"></div>
+        </div>
+      </div>
+
+      <!-- Hotfix History View -->
+      <div id="hbHistoryView" class="hb-subview" style="display: none;">
+        <div id="hbHistoryLoading" class="hb-loading" style="display: none;">
+          <div class="spinner"></div>
+          <p>Loading hotfix history...</p>
+        </div>
+        <div id="hbHistoryContent" class="hb-history-content">
+          <div class="hb-history-controls">
+            <div class="hb-filter-group">
+              <label for="hbMinorVersionSelect">Minor Version:</label>
+              <select id="hbMinorVersionSelect" class="hb-select"></select>
+            </div>
+            <button id="hbRefreshHistory" class="hb-refresh-btn">
+              <span class="material-icons">refresh</span>
+              Refresh
+            </button>
+          </div>
+          <div id="hbHistoryTable" class="hb-history-table-container"></div>
         </div>
       </div>
     </div>

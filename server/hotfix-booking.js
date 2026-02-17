@@ -84,7 +84,8 @@ async function fetchDeployedCMs(deployedOnly = true) {
       'components',
       'fixVersions',
       'customfield_13235',  // Client Environments
-      'customfield_10751'   // TargetDeploymentDate
+      'customfield_10751',  // TargetDeploymentDate
+      'reporter'
     ],
     maxResults: 500
   }, { headers });
@@ -96,29 +97,87 @@ async function fetchDeployedCMs(deployedOnly = true) {
     components: (issue.fields.components || []).map(c => c.name),
     fixVersions: (issue.fields.fixVersions || []).map(v => v.name),
     clientEnvironments: (issue.fields.customfield_13235 || []).map(c => c.value),
-    targetDeploymentDate: issue.fields.customfield_10751 || null
+    targetDeploymentDate: issue.fields.customfield_10751 || null,
+    reporter: issue.fields.reporter?.displayName || null
+  }));
+}
+
+/**
+ * Fetch CMs by fixVersion pattern (for history - no date limit)
+ * @param {number} major - Major version number (e.g., 9)
+ * @param {number} minor - Minor version number (e.g., 92)
+ * @returns {Promise<Array>} - Array of CM objects
+ */
+async function fetchCMsByVersion(major, minor) {
+  const headers = getJiraHeaders();
+  const baseUrl = getJiraBaseUrl();
+
+  const response = await axios.post(`${baseUrl}/rest/api/3/search/jql`, {
+    jql: `project = CM AND fixVersion ~ "${major}.${minor}.*" ORDER BY created DESC`,
+    fields: [
+      'summary',
+      'status',
+      'components',
+      'fixVersions',
+      'customfield_13235',  // Client Environments
+      'customfield_10751',  // TargetDeploymentDate
+      'reporter'
+    ],
+    maxResults: 500
+  }, { headers });
+
+  return response.data.issues.map(issue => ({
+    key: issue.key,
+    summary: issue.fields.summary,
+    status: issue.fields.status?.name || 'Unknown',
+    components: (issue.fields.components || []).map(c => c.name),
+    fixVersions: (issue.fields.fixVersions || []).map(v => v.name),
+    clientEnvironments: (issue.fields.customfield_13235 || []).map(c => c.value),
+    targetDeploymentDate: issue.fields.customfield_10751 || null,
+    reporter: issue.fields.reporter?.displayName || null
   }));
 }
 
 /**
  * Calculate next available version from CMs and bookings
+ * Also performs auto-cleanup of bookings that have been deployed
  * @param {Array} cms - Array of CM objects
  * @returns {object} - { currentHighest, nextVersion, baseVersion }
  */
 function calculateNextVersion(cms) {
   const allVersions = [];
+  const deployedVersions = new Set();
 
   // Collect versions from deployed CMs
   cms.forEach(cm => {
     cm.fixVersions.forEach(v => {
       if (/^\d+\.\d+\.\d+$/.test(v)) {
         allVersions.push(v);
+        deployedVersions.add(v);
       }
     });
   });
 
-  // Add booked versions
+  // Load bookings and perform auto-cleanup
   const bookingsData = loadBookings();
+  const originalCount = bookingsData.bookings.length;
+  
+  // Filter out bookings where the version now exists in Jira
+  bookingsData.bookings = bookingsData.bookings.filter(booking => {
+    const isDeployed = deployedVersions.has(booking.version);
+    if (isDeployed) {
+      console.log(`Auto-cleanup: Removing booking ${booking.version} (now deployed)`);
+    }
+    return !isDeployed;
+  });
+  
+  // Save if any bookings were cleaned up
+  if (bookingsData.bookings.length < originalCount) {
+    saveBookings(bookingsData);
+    console.log(`Auto-cleanup: Removed ${originalCount - bookingsData.bookings.length} deployed bookings`);
+  }
+
+  // Add remaining booked versions (not yet deployed)
   bookingsData.bookings.forEach(booking => {
     if (/^\d+\.\d+\.\d+$/.test(booking.version)) {
       allVersions.push(booking.version);
@@ -332,6 +391,122 @@ router.get('/hotfix-booking/client-versions', async (req, res) => {
   } catch (error) {
     console.error('Client versions error:', error.response?.data || error.message);
     res.status(500).json({ error: 'Failed to fetch client versions' });
+  }
+});
+
+/**
+ * GET /api/hotfix-booking/history
+ * Returns hotfix history for a specific minor version
+ * Query params:
+ *   - minor: The minor version number (e.g., 92 for 9.92.x)
+ *   - major: Optional major version (defaults to 9)
+ */
+router.get('/hotfix-booking/history', async (req, res) => {
+  try {
+    const requestedMinor = req.query.minor ? parseInt(req.query.minor) : null;
+    const requestedMajor = req.query.major ? parseInt(req.query.major) : 9;
+    
+    // First, fetch recent CMs to determine current minor version
+    const recentCMs = await fetchDeployedCMs(false);
+    
+    // Determine current minor version from recent CMs
+    let currentMajor = requestedMajor;
+    let currentMinor = 0;
+    
+    recentCMs.forEach(cm => {
+      cm.fixVersions.forEach(version => {
+        if (/^\d+\.\d+\.\d+$/.test(version)) {
+          const parsed = parseVersion(version);
+          if (parsed.major === currentMajor && parsed.minor > currentMinor) {
+            currentMinor = parsed.minor;
+          }
+        }
+      });
+    });
+    
+    // Generate last 5 minor versions
+    const minorVersions = [];
+    for (let i = 0; i < 5; i++) {
+      if (currentMinor - i >= 0) {
+        minorVersions.push({
+          major: currentMajor,
+          minor: currentMinor - i,
+          label: `${currentMajor}.${currentMinor - i}.x`
+        });
+      }
+    }
+    
+    // Use requested minor or default to current
+    const targetMinor = requestedMinor !== null ? requestedMinor : currentMinor;
+    
+    // Fetch CMs specifically for the target version (no date limit)
+    const versionCMs = await fetchCMsByVersion(currentMajor, targetMinor);
+    
+    // Load bookings
+    const bookingsData = loadBookings();
+    const bookings = bookingsData.bookings || [];
+    
+    // Build hotfixes list from version-specific CMs
+    const hotfixes = [];
+    
+    // Add CMs from version query
+    versionCMs.forEach(cm => {
+      cm.fixVersions.forEach(version => {
+        if (/^\d+\.\d+\.\d+$/.test(version)) {
+          const parsed = parseVersion(version);
+          if (parsed.major === currentMajor && parsed.minor === targetMinor) {
+            hotfixes.push({
+              version,
+              type: 'deployed',
+              cmKey: cm.key,
+              summary: cm.summary,
+              status: cm.status,
+              components: cm.components,
+              clientEnvironments: cm.clientEnvironments,
+              deployedAt: cm.targetDeploymentDate,
+              reporter: cm.reporter
+            });
+          }
+        }
+      });
+    });
+    
+    // Add booked versions (not yet deployed)
+    bookings.forEach(booking => {
+      const parsed = parseVersion(booking.version);
+      if (parsed.major === currentMajor && parsed.minor === targetMinor) {
+        // Check if this version is already in deployed list
+        const alreadyDeployed = hotfixes.some(h => h.version === booking.version && h.type === 'deployed');
+        if (!alreadyDeployed) {
+          hotfixes.push({
+            version: booking.version,
+            type: 'booked',
+            cmKey: null,
+            summary: null,
+            status: 'Booked',
+            components: booking.components,
+            clientEnvironments: booking.clientEnvironments,
+            bookedAt: booking.bookedAt,
+            bookedBy: booking.bookedBy,
+            reporter: booking.bookedBy
+          });
+        }
+      }
+    });
+    
+    // Sort by version descending
+    hotfixes.sort((a, b) => compareVersions(b.version, a.version));
+    
+    res.json({
+      minorVersions,
+      currentMinor,
+      targetMinor,
+      hotfixes,
+      jiraBaseUrl: getJiraBaseUrl()
+    });
+  } catch (error) {
+    console.error('Hotfix history error:', error.response?.data || error.message);
+    res.status(500).json({ error: 'Failed to fetch hotfix history' });
   }
 });
 
