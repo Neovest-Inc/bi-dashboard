@@ -199,9 +199,9 @@
           ${filteredItems.map(item => `
             <tr class="${item.type}-row">
               <td>
-                <span class="type-badge type-${item.type}">
-                  <span class="material-icons">${item.type === 'epic' ? 'bolt' : 'bookmark'}</span>
-                  ${item.type === 'epic' ? 'Epic' : 'Story'}
+                <span class="type-badge type-${item.type}${item.issueType ? ' type-' + item.issueType.toLowerCase() : ''}">
+                  <span class="material-icons">${item.type === 'epic' ? 'bolt' : (item.issueType === 'Bug' ? 'bug_report' : (item.issueType === 'Task' ? 'check_box' : 'bookmark'))}</span>
+                  ${item.type === 'epic' ? 'Epic' : (item.issueType || 'Story')}
                 </span>
               </td>
               <td>

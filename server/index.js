@@ -107,10 +107,10 @@ app.get('/api/jira', async (req, res) => {
       const epicClientEnvironments = epic.fields.customfield_13235;
       const businessProjects = epic.fields.customfield_16369 || [];
 
-      // Fetch Stories linked to this Epic
+      // Fetch Stories, Bugs, and Tasks linked to this Epic
       const storiesResponse = await axios.post(`${baseUrl}/rest/api/3/search/jql`, {
-        jql: `project = VT AND issuetype = Story AND "Epic Link" = ${epicKey}`,
-        fields: ['summary', 'status', 'customfield_10115', 'customfield_10400', 'parent', 'customfield_16369'],
+        jql: `project = VT AND issuetype IN (Story, Bug, Task) AND "Epic Link" = ${epicKey}`,
+        fields: ['summary', 'status', 'customfield_10115', 'customfield_10400', 'parent', 'customfield_16369', 'issuetype'],
         maxResults: 100
       }, { headers });
       
@@ -122,7 +122,8 @@ app.get('/api/jira', async (req, res) => {
         storyPoints: story.fields.customfield_10115,
         responsibleForChange: story.fields.customfield_10400?.displayName,
         parent: story.fields.parent?.key,
-        businessProjects: story.fields.customfield_16369 || []
+        businessProjects: story.fields.customfield_16369 || [],
+        issueType: story.fields.issuetype?.name || 'Story'
       }));
 
       // Calculate progress for this epic
@@ -157,16 +158,16 @@ app.get('/api/jira', async (req, res) => {
       }
     }
 
-    // 4. Fetch Stories with Business Projects populated
+    // 4. Fetch Stories, Bugs, and Tasks with Business Projects populated
     const standaloneStoriesResponse = await axios.post(`${baseUrl}/rest/api/3/search/jql`, {
-      jql: 'project = VT AND issuetype = Story AND "Business Projects[Select List (multiple choices)]" is not empty',
-      fields: ['summary', 'status', 'customfield_10115', 'customfield_10400', 'parent', 'customfield_16369'],
+      jql: 'project = VT AND issuetype IN (Story, Bug, Task) AND "Business Projects[Select List (multiple choices)]" is not empty',
+      fields: ['summary', 'status', 'customfield_10115', 'customfield_10400', 'parent', 'customfield_16369', 'issuetype'],
       maxResults: 100
     }, { headers });
 
     const standaloneStories = standaloneStoriesResponse.data.issues;
 
-    // 5. Add Stories to their Business Projects
+    // 5. Add Stories, Bugs, and Tasks to their Business Projects
     for (const story of standaloneStories) {
       const storyKey = story.key;
       const storySummary = story.fields.summary;
@@ -175,6 +176,7 @@ app.get('/api/jira', async (req, res) => {
       const responsibleForChange = story.fields.customfield_10400?.displayName;
       const parent = story.fields.parent?.key;
       const businessProjects = story.fields.customfield_16369 || [];
+      const issueType = story.fields.issuetype?.name || 'Story';
 
       const storyData = {
         key: storyKey,
@@ -184,6 +186,7 @@ app.get('/api/jira', async (req, res) => {
         responsibleForChange: responsibleForChange,
         parent: parent,
         type: 'story',
+        issueType: issueType,
         stories: [] // Empty array for consistency
       };
 

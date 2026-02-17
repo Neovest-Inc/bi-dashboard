@@ -164,6 +164,14 @@
     `;
   }
 
+  function getIssueTypeIcon(issueType) {
+    if (!issueType) return 'bookmark';
+    const type = issueType.toLowerCase();
+    if (type === 'bug') return 'bug_report';
+    if (type === 'task') return 'check_box';
+    return 'bookmark'; // Story
+  }
+
   function renderStory(story) {
     const statusClass = getStatusClass(story.status);
     const hasNoPoints = story.storyPoints === null || story.storyPoints === undefined;
@@ -171,11 +179,12 @@
     const responsibleDisplay = story.responsibleForChange 
       ? `<span class="story-responsible"><span class="material-icons">person</span>${escapeHtml(story.responsibleForChange)}</span>`
       : '';
+    const issueIcon = getIssueTypeIcon(story.issueType);
 
     return `
       <div class="story-item${hasNoPoints ? ' story-warning' : ''}">
         <div class="story-icon">
-          <span class="material-icons">bookmark</span>
+          <span class="material-icons">${issueIcon}</span>
         </div>
         <div class="story-info">
           <div class="story-key"><a href="${jiraBaseUrl}/browse/${escapeHtml(story.key)}" target="_blank" rel="noopener noreferrer">${escapeHtml(story.key)}</a></div>
@@ -196,12 +205,13 @@
       ? `<span class="story-responsible"><span class="material-icons">person</span>${escapeHtml(story.responsibleForChange)}</span>`
       : '';
     const hasWarning = hasNoPoints;
+    const issueIcon = getIssueTypeIcon(story.issueType);
 
     return `
       <div class="standalone-story-card${hasWarning ? ' story-warning' : ''}">
         <div class="standalone-story-header">
           <div class="story-icon">
-            <span class="material-icons">bookmark</span>
+            <span class="material-icons">${issueIcon}</span>
           </div>
           <div class="story-info">
             <div class="story-key"><a href="${jiraBaseUrl}/browse/${escapeHtml(story.key)}" target="_blank" rel="noopener noreferrer">${escapeHtml(story.key)}</a></div>
